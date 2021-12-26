@@ -1,9 +1,14 @@
 ## 성능 확인
 
 ```
-hey -c 50 -n 2000 -m GET http://192.168.142.11:8000/
+hey -c 50 -n 2000 -m GET http://localhost:8090/
 ```
 
+## front 만 실행
+
+```
+cd front/super
+```
 
 ## alembic 사용
 
