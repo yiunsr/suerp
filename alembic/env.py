@@ -19,16 +19,17 @@ from alembic.config import Config
 # print("==== start alembic ==")
 
 # https://stackoverflow.com/a/66772223/6652082
-if sys.platform.startswith('win'):
+if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
-sys.path.append(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(
     os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
- 
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    )
+)
+
 from config.db import Base
 from app import create_app
 
@@ -36,8 +37,8 @@ try:
     config = context.config  # noqa
 except Exception:
     ini_path = os.path.join(
-         os.path.dirname(
-             os.path.abspath(__file__)), "../alembic.ini")
+        os.path.dirname(os.path.abspath(__file__)), "../alembic.ini"
+    )
     ini_path = os.path.abspath(ini_path)
     config = Config(ini_path)
 
@@ -65,12 +66,13 @@ def exclude_tables_from_config(config_):
         new_tables.append(table)
     return new_tables
 
+
 # [alembic:exclude]
 # table_col = products.create_at, users.updated_at
 def exclude_colum_from_config(config_):
     columns_ = config_.get("table_col")
     if columns_ is not None:
-            columns = columns_.split(",")
+        columns = columns_.split(",")
     else:
         columns = []
     new_columns = []
@@ -79,24 +81,30 @@ def exclude_colum_from_config(config_):
         new_columns.append(column)
     return new_columns
 
-        
-exclude_tables = exclude_tables_from_config(config.get_section('alembic:exclude'))
-exclude_table_cols = exclude_colum_from_config(config.get_section('alembic:exclude'))
+
+exclude_tables = exclude_tables_from_config(
+    config.get_section("alembic:exclude")
+)
+exclude_table_cols = exclude_colum_from_config(
+    config.get_section("alembic:exclude")
+)
+
 
 def include_object(object, name, type_, *args, **kwargs):
-    ret_table = not (type_ == 'table' and name in exclude_tables)
-    ret_col = not (type_ == 'column' and name in exclude_table_cols)
+    ret_table = not (type_ == "table" and name in exclude_tables)
+    ret_col = not (type_ == "column" and name in exclude_table_cols)
     return ret_table and ret_col
 
 
-application = create_app(os.getenv('FASTAPI_CONFIG') or 'default')
+application = create_app(os.getenv("FASTAPI_CONFIG") or "default")
 target_metadata = Base.metadata
 
 
 def get_url():
     global application
-    url = application.config['DATABASE_URI']
+    url = application.config["DATABASE_URI"]
     return url
+
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -114,9 +122,12 @@ def run_migrations_offline():
     global configure
     url = get_url()
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True,
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
         include_object=include_object,
-        dialect_opts={"paramstyle": "named"})
+        dialect_opts={"paramstyle": "named"},
+    )
 
     with context.begin_transaction():
         context.run_migrations()
@@ -124,8 +135,10 @@ def run_migrations_offline():
 
 def do_run_migrations(connection):
     context.configure(
-        connection=connection, target_metadata=target_metadata,
-        include_object=include_object)
+        connection=connection,
+        target_metadata=target_metadata,
+        include_object=include_object,
+    )
 
     with context.begin_transaction():
         context.run_migrations()
@@ -154,7 +167,8 @@ async def run_migrations_online():
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # run_migrations_offline()
     asyncio.run(run_migrations_online())
 else:

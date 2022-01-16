@@ -11,4 +11,7 @@ async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession
 Base = declarative_base()
 
 async def init_models():
-    from app.models.users import User
+    from app.models.user import User
+    from app.models.person import Person
+    from app.models.permission import Permission
+    from app.models.deal import Deal

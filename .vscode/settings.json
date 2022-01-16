@@ -1,8 +1,17 @@
 {
-    "editor.rulers": [79, 99],
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#302E1A",
-        "titleBar.activeBackground": "#444124",
-        "titleBar.activeForeground": "#FBFBF8"
-    }
+  "python.pythonPath": "C:/tools/python3_10_64/py_envs/suerp/Scripts/python.exe",
+  "editor.rulers": [79, 99],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#302E1A",
+    "titleBar.activeBackground": "#444124",
+    "titleBar.activeForeground": "#FBFBF8"
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.pylintPath": "C:/tools/python3_10_64/py_envs/suerp/Scripts/pylint.exe",
+  "python.linting.pylintArgs": [
+    "--load-plugins", "pylint_flask_sqlalchemy", "pylint_flask",
+    "--disable=C0111",
+    "--disable=too-few-public-methods,consider-using-f-string,unnecessary-pass",
+]
 }
