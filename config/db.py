@@ -26,6 +26,12 @@ class Base(object):
         query = select(cls).where(cls.id==int(id))
         result = await session.execute(query)
         return result.scalars().first()
+    
+    @classmethod
+    async def listing(cls, session, filter={}):
+        query = select(cls)
+        result = await session.execute(query)
+        return result.scalars().all()
 
     def pydantic(self, schema):
         # https://stackoverflow.com/a/1398059/6652082

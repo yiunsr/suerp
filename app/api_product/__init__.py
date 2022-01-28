@@ -2,15 +2,9 @@ from fastapi import APIRouter
 from fastapi import Depends
 from app.app_utils import get_token_header
 
-api_pub_user = APIRouter(
-    prefix="/users",
-    tags=["users"],
-    responses={404: {"description": "Not found"}},
-)
-
-api_user = APIRouter(
-    prefix="/users",
-    tags=["users"],
+api_product = APIRouter(
+    prefix="/products",
+    tags=["products"],
     dependencies=[Depends(get_token_header)],
     responses={404: {"description": "Not found"}},
 )

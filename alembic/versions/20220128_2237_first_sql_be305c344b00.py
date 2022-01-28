@@ -1,8 +1,8 @@
 """first sql
 
-Revision ID: 00653224c9ab
+Revision ID: be305c344b00
 Revises: 
-Create Date: 2022-01-16 22:41:42.433544
+Create Date: 2022-01-28 22:37:08.591992
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '00653224c9ab'
+revision = 'be305c344b00'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -127,6 +127,8 @@ def upgrade():
     sa.Column('display', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('nickname', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('avatar', sa.String(length=256), server_default=sa.text("''"), nullable=False),
+    sa.Column('api_key', sa.String(length=256), server_default=sa.text("''"), nullable=False),
+    sa.Column('api_key_last_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('password', sa.String(length=256), server_default=sa.text("''"), nullable=False),
     sa.Column('password_last_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),

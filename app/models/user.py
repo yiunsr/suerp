@@ -1,3 +1,5 @@
+import string
+import secrets
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
@@ -27,6 +29,9 @@ class User(Base):
     nickname = Column(String(64), nullable=False, server_default=text("''"))
     avatar = Column(String(256), nullable=False, server_default=text("''"))
 
+    api_key = Column(String(256), nullable=False, server_default=text("''"))
+    api_key_last_at = Column(DateTime(True), nullable=False)
+
     password = Column(String(256), nullable=False, server_default=text("''"))
     password_last_at = Column(DateTime(True), nullable=False)
     created_at = Column(DateTime(True), default=func.now(), nullable=False)
@@ -35,6 +40,12 @@ class User(Base):
     )
     data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
     tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
+
+    def gen_api_key(self):
+        alphabet = string.ascii_letters + string.digits
+        key = ''.join(secrets.choice(alphabet) for i in range(20))
+        return key
+
 
 
 class UGroup(Base):

@@ -4,6 +4,27 @@
 hey -c 50 -n 2000 -m GET http://localhost:8090/
 ```
 
+## 환경변수 설정
+
+### 맥, 리눅스
+
+```
+export FASTAPI_CONFIG=development
+```
+
+### 윈도우즈 cmd
+
+```
+SET FASTAPI_CONFIG=development
+```
+
+### 윈도우즈 Powershell
+
+```
+$env:FASTAPI_CONFIG="development"
+```
+
+
 ## front 만 실행
 
 ```
@@ -11,6 +32,8 @@ cd front/super
 ```
 
 ## alembic 사용
+* 꼭 위의 환경변수 설정이 필요하다.
+
 
 ### SQL 파일 생성(offline mode)
 
