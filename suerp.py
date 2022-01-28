@@ -20,4 +20,6 @@ def root():
 
 
 if __name__ == "__main__":
-    uvicorn.run(application, host="0.0.0.0", port=8070)
+    uvicorn.run("__main__:application", host="0.0.0.0", port=9070, workers=2)
+    # uvicorn.run("__main__:application", host="0.0.0.0",
+    #     port=9070, reload=True, workers=2)
