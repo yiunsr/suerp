@@ -7,7 +7,7 @@ from sqlalchemy import func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import BIT
 
-from config.db import Base
+from .base import Base
 
 class Permission(Base):
     __tablename__ = "permission"

@@ -30,7 +30,7 @@ sys.path.append(
     )
 )
 
-from config.db import Base
+from app.models.base import Base
 from app import create_app
 
 try:

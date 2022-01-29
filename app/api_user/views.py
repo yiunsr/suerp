@@ -1,6 +1,7 @@
 from typing import Any, List
 from fastapi import Depends
 from fastapi import HTTPException
+from fastapi import status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
@@ -13,7 +14,8 @@ from app.schemas.user import UserCreate
 from app.app_utils import get_token_header
 from . import api_user, api_pub_user
 
-@api_pub_user.post("/", response_model=UserSimple)
+@api_pub_user.post(
+        "/", response_model=UserSimple, status_code=status.HTTP_201_CREATED)
 async def create_user(
         data: UserCreate, session: Session = Depends(get_session)) -> Any:
     db_user = User(**data.dict())

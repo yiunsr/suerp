@@ -11,7 +11,6 @@ def create_app(config_name):
     app = FastAPI()
     config[config_name].init_app(app)
     urls.init_app(app)
-    asyncio.run(db.init_models())
     middleware.init_app(app)
     
     return app
