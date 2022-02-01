@@ -13,6 +13,6 @@ engine = create_async_engine(DATABASE_URL, future=True, echo=True)
 SessionLocal = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 # Dependency
-async def get_session(request: Request)-> AsyncSession:
-    async with SessionLocal() as session:
-        yield session
+async def get_db_session(request: Request)-> AsyncSession:
+    async with SessionLocal() as db_session:
+        yield db_session

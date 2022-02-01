@@ -16,15 +16,15 @@ class Base(object):
         return cls.__name__.lower()
 
     @classmethod
-    async def get(cls, session, id):
+    async def get(cls, db_session, id):
         query = select(cls).where(cls.id==int(id))
-        result = await session.execute(query)
+        result = await db_session.execute(query)
         return result.scalars().first()
     
     @classmethod
-    async def listing(cls, session, filter={}):
+    async def listing(cls, db_session, filter={}):
         query = select(cls)
-        result = await session.execute(query)
+        result = await db_session.execute(query)
         return result.scalars().all()
 
     def pydantic(self, schema):
@@ -37,19 +37,11 @@ class Base(object):
 
 class BaseInfo():
     id = Column(Integer, primary_key=True)
-    status = Column(String(1), nullable=False, server_default=text("''"))
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
-
     ref_id1 = Column(Integer)
     ref_id0 = Column(Integer)
 
-class BaseInfo():
-    id = Column(Integer, primary_key=True)
-    status = Column(String(1), nullable=False, server_default=text("''"))
+    status = Column(String(1), nullable=False, server_default=text("'A'"))
     testmode = Column(String(1), nullable=False, server_default=text("''"))
-
-    ref_id1 = Column(Integer)
-    ref_id0 = Column(Integer)
 
 class BaseCU():
     created_user_id = Column(Integer)
