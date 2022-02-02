@@ -31,7 +31,7 @@ VALUES(NULL, NULL, 'A', '', NULL, '{}'::jsonb, '[]'::jsonb, '{}'::jsonb, '[]'::j
 INSERT INTO public."user"
 (ref_id1, ref_id0, status, testmode, category, data_jb, tags_jb, category_data_jb, category_tags_jb, user_role, created_at, updated_at, "name", email, first_name, last_name, display, nickname, avatar, api_key, api_key_last_at, hash_password, password_last_at, last_join_dt)
 VALUES(NULL, NULL, 'A', '', NULL, '{}'::jsonb, '[]'::jsonb, '{}'::jsonb, '[]'::jsonb, 'M', '2022-02-01 21:32:26.749', '2022-02-01 21:32:26.749', 'manager0003', 'manager0003@test.com', 'first0003', 'last0003', '', '', '', 'esGXbEThXiNF3XKXN6Xq', '2022-02-01 21:32:26.749', 
-$pbkdf2-sha256$29000$aw0hpFSKMab03ltrjZHyPg$uWem8cugYaOT8NMN3N9zswbFnU3W18j7HXQDQLP4Q5k, '2022-02-01 21:32:26.749', NULL);
+'$pbkdf2-sha256$29000$aw0hpFSKMab03ltrjZHyPg$uWem8cugYaOT8NMN3N9zswbFnU3W18j7HXQDQLP4Q5k', '2022-02-01 21:32:26.749', NULL);
 
 INSERT INTO public."user"
 (ref_id1, ref_id0, status, testmode, category, data_jb, tags_jb, category_data_jb, category_tags_jb, user_role, created_at, updated_at, "name", email, first_name, last_name, display, nickname, avatar, api_key, api_key_last_at, hash_password, password_last_at, last_join_dt)
