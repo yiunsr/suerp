@@ -14,5 +14,6 @@ def create_app(config_name):
     urls.init_app(app)
     middleware.init_app(app)
     http_err.init_app(app)
-    
+    db.init_app(app)
+  
     return app

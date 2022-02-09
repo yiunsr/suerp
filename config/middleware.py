@@ -1,7 +1,10 @@
 from fastapi import Response, Request
-from config.db import SessionLocal
 
 def init_app(app):
+    server_type = app.config["SERVER_TYPE"]
+    if server_type == "unittest":
+        return
+    from config.db import SessionLocal
     @app.middleware("http")
     async def db_session_middleware(request: Request, call_next):
         response = Response("Internal server error", status_code=500)

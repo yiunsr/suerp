@@ -20,5 +20,11 @@
     "--class-naming-style=PascalCase",
     "--const-naming-style=UPPER_CASE",
     "--function-naming-style=snake_case",
-  ]
+  ],
+  "python.testing.pytestArgs": [
+    "-c", "D:/workspace/vscode/suerp/tests/pytest.ini",
+    "tests"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

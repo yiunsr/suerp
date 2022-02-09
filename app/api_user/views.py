@@ -1,3 +1,4 @@
+import traceback
 from typing import Any, List
 from fastapi import Depends
 from fastapi import status
@@ -55,6 +56,9 @@ async def singup_user(
                 status_code=409,
                 err_code=ErrCode.EMAIL_DUPLICATED
             )
+    except Exception as e:
+        err_text = traceback.format_exc()
+        print(err_text)
     return db_user.pydantic(UserPubSimple)
 
 @api_user.get("/{id}", response_model=UserPubSimple)

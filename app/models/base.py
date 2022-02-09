@@ -20,7 +20,7 @@ class Base(object):
         query = select(cls).where(cls.id==int(id))
         result = await db_session.execute(query)
         return result.scalars().first()
-    
+
     @classmethod
     async def listing(cls, db_session, filter={}):
         query = select(cls)

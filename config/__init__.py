@@ -1,6 +1,16 @@
 import os
 import inspect
 
+
+def _get_class_dict(klass):
+    class_dict = {}
+    for key, value in inspect.getmembers(klass):
+        if not key.startswith('_'):
+            # Ignores methods
+            if not inspect.ismethod(value):
+                class_dict[key] = value
+    return class_dict
+
 class Config:
     SERVER_TYPE = 'none'
     DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
@@ -16,13 +26,10 @@ class Config:
     @classmethod
     def init_app(cls, app):
         print('==== choose server type ====')
+        # Config 데이터를 app.config 에 저장한다.
         app.config = {}
         # Config 데이터를 app.config 에 저장한다.
-        for key, value in inspect.getmembers(cls):
-            if not key.startswith('_'):
-                # Ignores methods
-                if not inspect.ismethod(value):
-                    app.config[key] = value
+        app.config = _get_class_dict(cls)
 
 
 
@@ -32,7 +39,20 @@ class DevelopmentConfig(Config):
     @classmethod
     def init_app(cls, app):
         print('==== THIS APP IS IN DevelopmentConfig MODE ====')
-        Config.init_app(app)
+        app.config = _get_class_dict(cls)
+
+    @classmethod
+    def get_super_secret_token(cls):
+        return cls.SUPER_SECRET_TOKEN
+
+
+class UnittestConfig(Config):
+    SERVER_TYPE = 'unittest'
+
+    @classmethod
+    def init_app(cls, app):
+        print('==== THIS APP IS IN TestConfig MODE ====')
+        app.config = _get_class_dict(cls)
 
     @classmethod
     def get_super_secret_token(cls):
@@ -47,13 +67,14 @@ class ProductionConfig(Config):
     @classmethod
     def init_app(cls, app):
         print('==== THIS APP IS IN production MODE ====')
-        Config.init_app(app)
-    
+        app.config = _get_class_dict(cls)
+
     @classmethod
     def get_super_secret_token(cls):
         return cls.SUPER_SECRET_TOKEN
 
 config = {
+    'unittest': UnittestConfig,
     'development': DevelopmentConfig,
     'production': ProductionConfig,
 }

@@ -25,7 +25,7 @@ VALUES(NULL, NULL, 'A', '', NULL, '{}'::jsonb, '[]'::jsonb, '{}'::jsonb, '[]'::j
 
 INSERT INTO public."user"
 (ref_id1, ref_id0, status, testmode, category, data_jb, tags_jb, category_data_jb, category_tags_jb, user_role, created_at, updated_at, "name", email, first_name, last_name, display, nickname, avatar, api_key, api_key_last_at, hash_password, password_last_at, last_join_dt)
-VALUES(NULL, NULL, 'A', '', NULL, '{}'::jsonb, '[]'::jsonb, '{}'::jsonb, '[]'::jsonb, 'M', '2022-02-01 21:32:26.749', '2022-02-01 21:32:26.749', 'manager0002', 'manager0002@test.com', 'first0002', 'last0002', '', '', '', 'l6I7c46i7Z4QjArcnQIJ', '2022-02-01 21:32:26.749', '$pbkdf2-sha256$29000$8r63Nsb4n3PunZOy1jpHiA$POEE0JxMLja3b6PXqGoruxOvOQ7V19cgxAgdoKxGHVs', '2022-02-01 21:32:26.749', NULL);
+VALUES(NULL, NULL, 'A', '', NULL, '{}'::jsonb, '[]'::jsonb, '{}'::jsonb, '[]'::jsonb, 'M', '2022-02-01 21:32:26.749', '2022-02-01 21:32:26.749', 'manager0002', 'manager0002@test.com', 'first0002', 'last0002', '', '', '', 'l6I7c46i7Z4QjArcnQIJ', '2022-02-01 21:32:26.749', '$pbkdf2-sha256$29000$du79n9Na6x0jhDCGcI5xTg$Sqdnagq/FHcffCnbNiGXzy7GPSWH1IIbQekP7zqjbEQ', '2022-02-01 21:32:26.749', NULL);
 
 
 INSERT INTO public."user"

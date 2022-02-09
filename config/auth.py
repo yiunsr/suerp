@@ -64,6 +64,6 @@ async def authenticate_user(db_session: Session, email: str, password: str,
     return user
 
 async def get_current_active_user(current_user: User = Depends(get_current_user)):
-    if current_user is None:
+    if current_user.status == 'A':
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
