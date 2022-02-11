@@ -15,9 +15,9 @@ except Exception:
 FASTAPI_CONFIG = 'unittest'
 os.environ["FASTAPI_CONFIG"] = FASTAPI_CONFIG
 
-@pytest.mark.usefixtures("event_loop", "app", "db_session")
+@pytest.mark.usefixtures("event_loop", "app", "engine", "db_session")
 class TestUser01(asynctest.TestCase):
-    fixture_names = ("client")
+    fixture_names = ("engine", "db_session")
 
     @pytest.mark.asyncio
     async def test_singup(self):
@@ -25,7 +25,7 @@ class TestUser01(asynctest.TestCase):
             email="test0100@test.com", name="test0100",
             first_name="first0100", last_name="last0100",
             password="Test0100")
-        response = self.client.post("/users/singup", json=data)
+        response = await self.client.post("/users/singup", json=data)
         assert response.status_code == 201
 
     # def test_read_main(self):
