@@ -19,7 +19,7 @@ config = get_config()
 server_type = config.SERVER_TYPE
 DATABASE_URL = config.DATABASE_URI
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="class")
 def event_loop():
     loop = asyncio.new_event_loop()
     loop.set_debug(True)
@@ -48,13 +48,13 @@ async def db_session(request):
     connection = request.cls.connection
     trans = connection.sync_connection.begin()
     nested = await connection.begin_nested()
-    async_session = AsyncSession(bind=connection)
+    async_session = AsyncSession(bind=connection, expire_on_commit=False)
 
     @event.listens_for(async_session.sync_session, "after_transaction_end")
     def end_savepoint(session_, transaction):
         nonlocal nested
         if not nested.is_active:
-            nested = connection.sync_connection.begin_nested()
+           nested = connection.sync_connection.begin_nested()
 
     request.cls.db_session = async_session
     request.cls.app.db_session = async_session
