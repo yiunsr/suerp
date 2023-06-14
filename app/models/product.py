@@ -8,23 +8,16 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import BIT
 
 from .base import Base
+from .base import BaseInfo
+from .base import BaseCU
+from .base import BaseCT
 
-class Product(Base):
+class Product(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "product"
-
-    id = Column(Integer, primary_key=True)
-    status = Column(String(1), nullable=False, server_default=text("''"))
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
-    create_user = Column(Integer, nullable=False)
-    update_user = Column(Integer, nullable=False)
 
     name = Column(String(128), nullable=False, server_default=text("''"))
     display = Column(String(128), nullable=False, server_default=text("''"))
 
-    ref_id1 = Column(Integer)
-    ref_id0 = Column(Integer)
-
-    data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
-    tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    category_data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
-    category_tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
+    owner_user_id = Column(Integer, nullable=True)
+    owner_group_id = Column(Integer, nullable=True)
+    owner_person_id = Column(Integer, nullable=True)

@@ -1,5 +1,5 @@
 from typing import Optional
-from pendulum import datetime
+from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from app.models.user import User as DB_User
 
@@ -20,7 +20,7 @@ class UserUpdate(UserBase):
     old_password: str = None
     new_password: str = None
 
-class UserPubSimple(BaseModel):
+class UserPublic(BaseModel):
     id: int
     email: EmailStr
     name: str = None
@@ -30,13 +30,13 @@ class UserPubSimple(BaseModel):
         arbitrary_types_allowed = True
 
 
-class UserPrivateDetail(BaseModel):
+class UserPrivate(BaseModel):
     id: int
     email: EmailStr
     name: str
     first_name: str
     last_name: str
-    last_password_at: str
+    password_last_at: datetime
 
     class Config:
         orm_mode = True

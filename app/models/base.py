@@ -35,15 +35,18 @@ class Base(object):
             result[member] = getattr(self, member)
         return result
 
-class BaseInfo():
+class BaseInfo():  # Base Of All Table
     id = Column(Integer, primary_key=True)
-    ref_id1 = Column(Integer)
-    ref_id0 = Column(Integer)
-
-    status = Column(String(1), nullable=False, server_default=text("'A'"))
     testmode = Column(String(1), nullable=False, server_default=text("''"))
+    status = Column(String(1), nullable=False, server_default=text("'A'"))
 
-class BaseCU():
+    ref_id0 = Column(Integer, nullable=True)
+    ref_id1 = Column(Integer, nullable=True)
+    ref_id2 = Column(Integer, nullable=True)
+    ref_id3 = Column(Integer, nullable=True)
+
+
+class BaseCU():  # BaseCreateUpdate
     created_user_id = Column(Integer)
     updated_user_id = Column(Integer)
     created_at = Column(DateTime(True), default=func.now(), nullable=False)
@@ -51,7 +54,7 @@ class BaseCU():
         DateTime(True), default=func.now(), onupdate=func.now(), nullable=False
     )
 
-class BaseCT():
+class BaseCT():  # BaseCategory
     category = Column(Integer)
     data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
     tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))

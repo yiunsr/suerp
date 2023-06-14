@@ -14,6 +14,7 @@ from sqlalchemy.future import select
 
 from .base import Base
 from .base import BaseInfo
+from .base import BaseCU
 from .base import BaseCT
 
 class User(Base, BaseInfo, BaseCT):
@@ -69,14 +70,11 @@ class User(Base, BaseInfo, BaseCT):
         elif self.user_role == "N":
             return "Normal"
 
-class UGroup(Base):
+class UGroup(Base, BaseInfo, BaseCU):
     __tablename__ = "ugroup"
 
-    id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
     detail = Column(String(64), nullable=False, server_default=text("''"))
-    status = Column(String(1), nullable=False, server_default=text("''"))
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
 
     created_at = Column(DateTime(True), default=func.now(), nullable=False)
     updated_at = Column(
@@ -89,4 +87,4 @@ class UserUGroup(Base):
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
-    group_id = Column(Integer)
+    ugroup_id = Column(Integer)

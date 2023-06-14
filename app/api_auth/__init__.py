@@ -6,5 +6,4 @@ api_auth = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-
 from . import views # noqa

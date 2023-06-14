@@ -18,11 +18,34 @@
       "justMyCode": false
     },
     {
-      "name": "dev",
+      "name": "dev server",
       "type": "python",
       "request": "launch",
-      "program": "suerp.py",
+      "program": "main_server.py",
       "console": "integratedTerminal",
+      "env": {
+        "FASTAPI_CONFIG": "development"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "dev cli",
+      "type": "python",
+      "request": "launch",
+      "program": "main_cli.py",
+      "console": "integratedTerminal",
+      "env": {
+        "FASTAPI_CONFIG": "development"
+      },
+      "justMyCode": false
+    },
+    {
+      "name": "dev cli initdb",
+      "type": "python",
+      "request": "launch",
+      "program": "main_cli.py",
+      "console": "integratedTerminal",
+      "args": ["initdb"],
       "env": {
         "FASTAPI_CONFIG": "development"
       },

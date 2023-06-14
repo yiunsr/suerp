@@ -26,6 +26,9 @@ else:
         # await db_session_.begin()
         yield request.app.db_session
 
+async def get_db_session2()-> AsyncSession:
+    async with SessionLocal() as db_session:
+        yield db_session
 
 def init_app(app):
     if server_type != "unittest":

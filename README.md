@@ -58,3 +58,10 @@ alembic upgrade +1
 ```
 alembic downgrade -1
 ```
+
+### admin 및 테스트 사용자 추가
+* admin 추가
+
+```
+
+```

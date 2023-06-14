@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import Union
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -13,12 +14,15 @@ from config.auth import authenticate_user
 from config.db import get_db_session
 from app.models.user import User
 from app.schemas.token import Token
+from app.schemas.token import TokenClientSecret
 from . import api_auth
 
 
 @api_auth.post("/token", response_model=Token)
 async def login_for_access_token(
-        form_data: OAuth2PasswordRequestForm = Depends(),
+        form_data: Union[
+            OAuth2PasswordBearer, OAuth2PasswordRequestForm ]=Depends(),
+        # form_data: OAuth2PasswordRequestForm = Depends(),
         db_session: Session=Depends(get_db_session)):
     user = await authenticate_user(
         db_session, form_data.username, form_data.password)
@@ -35,3 +39,4 @@ async def login_for_access_token(
         data={"email": user.email}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
