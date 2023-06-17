@@ -65,3 +65,12 @@ alembic downgrade -1
 ```
 
 ```
+
+
+
+
+### windows10에서 wsl2 에 설치된 ubuntu 의 ip 확인
+
+```
+wsl -- hostname -I
+```

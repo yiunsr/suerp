@@ -10,8 +10,9 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.future import select
 
 @as_declarative()
-class Base(object):
+class Base:
     @declared_attr
+    # pylint: disable=no-member, no-self-argument
     def __tablename__(cls):
         return cls.__name__.lower()
 
@@ -22,7 +23,7 @@ class Base(object):
         return result.scalars().first()
 
     @classmethod
-    async def listing(cls, db_session, filter={}):
+    async def listing(cls, db_session, filter_={}):
         query = select(cls)
         result = await db_session.execute(query)
         return result.scalars().all()
