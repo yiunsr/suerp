@@ -41,7 +41,7 @@
 <script setup>
   import { i18n } from '@/plugins/i18n';
   import {useStore} from 'vuex';
-  import {defineEmits} from "vue";
+  import {defineEmits, computed} from "vue";
 
   const store = useStore();
   function changeLang(newLocale){
