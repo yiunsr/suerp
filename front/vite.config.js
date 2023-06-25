@@ -39,9 +39,12 @@ export default defineConfig({
     port: 8021,
     proxy: {
       '^/api/': {
-        target: 'http://localhost:8020/',
+        target: 'http://127.0.0.1:8020',
         changeOrigin: true,
-        secure: false,
+      },
+      '^/auth/': {
+        target: 'http://127.0.0.1:8020',
+        changeOrigin: true,
       },
     } 
   },

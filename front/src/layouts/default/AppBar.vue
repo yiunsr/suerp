@@ -9,9 +9,16 @@
       <v-icon>mdi-help</v-icon>
     </v-btn>
     
-    <v-btn icon @click="$emit('show-login-dialog')">
-      <v-icon>mdi-login</v-icon>
-    </v-btn>
+    <template v-if="isLogin">
+      <v-btn icon @click="$emit('show-login-dialog')">
+        <v-icon>mdi-login</v-icon>
+      </v-btn>
+    </template>
+    <template v-else>
+      <v-btn icon>
+        <v-icon>mdi-account-circle</v-icon>
+      </v-btn>
+    </template>
 
     <v-menu>
       <template v-slot:activator="{ props }">
@@ -32,10 +39,11 @@
 </template>
 
 <script setup>
-  import { i18n } from '@/plugins/i18n'
+  import { i18n } from '@/plugins/i18n';
+  import {useStore} from 'vuex';
   import {defineEmits} from "vue";
 
-
+  const store = useStore();
   function changeLang(newLocale){
     i18n.global.locale.value = newLocale;
   }
@@ -43,4 +51,8 @@
   const emit = defineEmits([
     'onShowLoginDialog'
   ]);
+
+  const isLogin = computed(() => {
+    return store.getters.isLogin;
+  });
 </script>

@@ -22,7 +22,7 @@ def upgrade():
     # direct query
     # conn = op.get_bind()   # noqa
     # raw_sql = """   """
-    # conn.execute(text(raw_sql))
+    # conn.execute(sa.text(raw_sql))
 
 
 def downgrade():
@@ -31,4 +31,4 @@ def downgrade():
     # direct query
     # conn = op.get_bind()   # noqa
     # raw_sql = """   """"
-    # conn.execute(raw_sql)
+    # conn.execute(sa.text(raw_sql))

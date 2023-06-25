@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from fastapi import Depends
 
-api_auth = APIRouter(
+auth = APIRouter(
+    prefix="/auth",
     tags=["auth"],
     responses={404: {"description": "Not found"}},
 )

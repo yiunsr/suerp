@@ -40,12 +40,12 @@
       "justMyCode": false
     },
     {
-      "name": "dev cli initdb",
+      "name": "dev cli init_test_user",
       "type": "python",
       "request": "launch",
       "program": "main_cli.py",
       "console": "integratedTerminal",
-      "args": ["initdb"],
+      "args": ["init-test-user"],
       "env": {
         "FASTAPI_CONFIG": "development"
       },

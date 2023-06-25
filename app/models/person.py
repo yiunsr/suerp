@@ -29,6 +29,7 @@ class Person(Base, BaseInfo, BaseCU, BaseCT):
 class Organization(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "organization"
 
+    id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
 
     address_jb = Column(JSONB, server_default=text("'[]'::jsonb"))

@@ -20,6 +20,7 @@ from .base import BaseCT
 class User(Base, BaseInfo, BaseCT):
     __tablename__ = "user"
 
+    id = Column(Integer, primary_key=True)
     user_role = Column(String(1), nullable=False, server_default=text("'N'"))
 
     created_at = Column(DateTime(True), default=func.now(), nullable=False)
@@ -73,6 +74,7 @@ class User(Base, BaseInfo, BaseCT):
 class UGroup(Base, BaseInfo, BaseCU):
     __tablename__ = "ugroup"
 
+    id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
     detail = Column(String(64), nullable=False, server_default=text("''"))
 
