@@ -14,13 +14,18 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import(/* webpackChunkName: "home" */ '@/components/First.vue'),
       },
+      {
+        path: '/account/list',
+        name: 'account',
+        component: () => import('@/views/account/List.vue'),
+      },
     ],
   },
-]
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+});
 
 export default router

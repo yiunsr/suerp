@@ -1,12 +1,17 @@
 import { createStore } from 'vuex';
 
+let init_login = false;
+let access_token = sessionStorage.getItem("access_token");
+if(access_token)
+  init_login = true;
+
 const store = createStore({
   state : {
     snackbar: {
       isShow: false,
       body: "", timeout:5000,
     },
-    login: false,
+    login: init_login,
   },
   mutations: { // 동기작업
     showSnackbar(state, body, timeout){

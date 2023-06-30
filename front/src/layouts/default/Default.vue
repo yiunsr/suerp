@@ -116,6 +116,7 @@
       function(response){
         dialog.login = false;
         let msg = i18n.global.t("login_form.success");
+        store.commit('changeLogin', true);
         store.commit('showSnackbar', msg, 3000);
         let access_token = response.data.access_token;
         sessionStorage.setItem("access_token", access_token);

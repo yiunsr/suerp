@@ -5,6 +5,13 @@ const messages = {
     common: {
       title: "Startup ERP",
     },
+    menu: {
+      user: "account",
+      person: "person",
+      deal: "deal",
+      product: "product",
+      accounting: "accounting",
+    },
     dialog: {
       login: 'Login',
       close: 'Close',
@@ -20,6 +27,13 @@ const messages = {
   ko: {
     common: {
       title: "스타트업 ERP",
+    },
+    menu: {
+      user: "계정",
+      person: "사용자",
+      deal: "거래",
+      product: "재화",
+      accounting: "회계",
     },
     dialog: {
       login: '로그인',
