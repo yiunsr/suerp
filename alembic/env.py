@@ -119,7 +119,7 @@ def run_migrations_offline():
 
     """
     print("offline mode")
-    global configure
+    # global configure
     url = get_url()
     context.configure(
         url=url,
@@ -153,15 +153,6 @@ async def run_migrations_online():
     """
     print("online mode")
     url = get_url()
-    # connectable = AsyncEngine(
-    #     engine_from_config(
-    #         config,
-    #         url=url,
-    #         prefix="sqlalchemy.",
-    #         poolclass=pool.NullPool,
-    #         future=True,
-    #     )
-    # )
     connectable = create_async_engine(url, future=True, echo=True)
 
     async with connectable.connect() as connection:
@@ -169,8 +160,8 @@ async def run_migrations_online():
 
 
 if __name__ == "__main__":
-    # run_migrations_offline()
-    asyncio.run(run_migrations_online())
+    run_migrations_offline()
+    # asyncio.run(run_migrations_online())
 else:
     if context.is_offline_mode():
         run_migrations_offline()

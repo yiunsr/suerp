@@ -19,6 +19,7 @@ def root():
     return {"url": "/tt" }
 
 if __name__ == "__main__":
-    uvicorn.run("__main__:application", host="0.0.0.0", port=8020, workers=2)
+    uvicorn.run("__main__:application", host="0.0.0.0", port=8020, workers=2,
+    reload=True)
     # uvicorn.run("__main__:application", host="0.0.0.0",
     #     port=9070, reload=True, workers=2)

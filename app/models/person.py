@@ -14,16 +14,22 @@ from .base import BaseCT
 
 class Person(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "person"
+    id = Column(Integer, primary_key=True)
 
     name = Column(String(64), nullable=False, server_default=text("''"))
     first_name = Column(String(64), nullable=False, server_default=text("''"))
     last_name = Column(String(64), nullable=False, server_default=text("''"))
 
-    address_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    phone_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    email_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    messenger_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    url_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
+    address_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    phone_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    email_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    messenger_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    url_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
 
 
 class Organization(Base, BaseInfo, BaseCU, BaseCT):
@@ -32,12 +38,16 @@ class Organization(Base, BaseInfo, BaseCU, BaseCT):
     id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
 
-    address_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    phone_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    email_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    messenger_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    url_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-
+    address_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    phone_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    email_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    messenger_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    url_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
 
 class PersonOrganization(Base):
     __tablename__ = "person_organization"
@@ -46,7 +56,8 @@ class PersonOrganization(Base):
     person_id = Column(Integer)
     org_id = Column(Integer)
 
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
-    status = Column(String(1), nullable=False, server_default=text("''"))
+    created_ets = Column(Integer, default=func.now_ets(), nullable=False)
+    status = Column(String(1), nullable=False, server_default=text("'A'"))
     testmode = Column(String(1), nullable=False, server_default=text("''"))
-    role_jsonb = Column(JSONB, server_default=text("'[]'::jsonb"))
+    role_jsonb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))

@@ -24,9 +24,9 @@ from . import api_user, api_pub_user
 async def create_user(
         data: UserCreate, db_session: Session = Depends(get_db_session)) -> Any:
     db_user = User(**data.dict())
-    db_user.password_last_at = func.now()
+    db_user.password_last_ets = func.now_ets()
     db_user.api_key = db_user.gen_api_key()
-    db_user.api_key_last_at = func.now()
+    db_user.api_key_last_ets = func.now_ets()
     db_session.add(db_user)
     try:
         await db_session.commit()
@@ -44,9 +44,9 @@ async def singup_user(
         data: UserSignup, db_session: Session=Depends(get_db_session)) -> Any:
     db_user = User(**data.dict(exclude={'password'}))
     db_user.hash_password = User.gen_password_hash(data.password)
-    db_user.password_last_at = func.now()
+    db_user.password_last_ets = func.now_ets()
     db_user.api_key = db_user.gen_api_key()
-    db_user.api_key_last_at = func.now()
+    db_user.api_key_last_ets = func.now_ets()
     db_session.add(db_user)
     try:
         await db_session.commit()
@@ -89,5 +89,7 @@ def parse_users_as(db_users, share_type):
             item = parse_obj_as(UserPublic, db_user)
         elif share_type == "pri":
             item = parse_obj_as(UserPrivate, db_user)
+        else:
+            raise
         results.append(item)
     return results

@@ -5,8 +5,11 @@ const messages = {
     common: {
       title: "Startup ERP",
     },
+    model: {
+      user: "user",
+    },
     menu: {
-      user: "account",
+      user: "user",
       person: "person",
       deal: "deal",
       product: "product",
@@ -28,8 +31,11 @@ const messages = {
     common: {
       title: "스타트업 ERP",
     },
+    model: {
+      user: "유저",
+    },
     menu: {
-      user: "계정",
+      user: "유저",
       person: "사용자",
       deal: "거래",
       product: "재화",

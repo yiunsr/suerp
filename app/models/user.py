@@ -23,11 +23,6 @@ class User(Base, BaseInfo, BaseCT):
     id = Column(Integer, primary_key=True)
     user_role = Column(String(1), nullable=False, server_default=text("'N'"))
 
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
-    updated_at = Column(
-        DateTime(True), default=func.now(), onupdate=func.now(), nullable=False
-    )
-
     name = Column(String(64), nullable=False, server_default=text("''"))
     email = Column(String(256), nullable=False, unique=True)
     first_name = Column(String(64), nullable=False, server_default=text("''"))
@@ -37,25 +32,25 @@ class User(Base, BaseInfo, BaseCT):
     avatar = Column(String(256), nullable=False, server_default=text("''"))
 
     api_key = Column(String(256), nullable=False, server_default=text("''"))
-    api_key_last_at = Column(DateTime(True), nullable=False)
+    api_key_last_ets = Column(Integer, nullable=False)
 
     hash_password = Column(
         String(256), nullable=False, server_default=text("''"))
-    password_last_at = Column(DateTime(True), nullable=False)
-    last_join_dt = Column(DateTime(True))
+    password_last_ets = Column(Integer, nullable=False)
+    last_join_ets = Column(Integer)
 
     @staticmethod
-    def gen_api_key():
+    def gen_api_key() -> str:
         alphabet = string.ascii_letters + string.digits
         key = ''.join(secrets.choice(alphabet) for i in range(20))
         return key
 
     @staticmethod
-    def gen_password_hash( password):
+    def gen_password_hash( password) -> str:
         hash_pw = pbkdf2_sha256.hash(password)
         return hash_pw
 
-    def check_password(self, password):
+    def check_password(self, password) -> bool:
         return pbkdf2_sha256.verify(password, self.hash_password)
 
     @classmethod
@@ -70,6 +65,7 @@ class User(Base, BaseInfo, BaseCT):
             return "Manager"
         elif self.user_role == "N":
             return "Normal"
+        return ""
 
 class UGroup(Base, BaseInfo, BaseCU):
     __tablename__ = "ugroup"
@@ -78,10 +74,6 @@ class UGroup(Base, BaseInfo, BaseCU):
     name = Column(String(64), nullable=False, server_default=text("''"))
     detail = Column(String(64), nullable=False, server_default=text("''"))
 
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
-    updated_at = Column(
-        DateTime(True), default=func.now(), onupdate=func.now(), nullable=False
-    )
     data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
 
 class UserUGroup(Base):

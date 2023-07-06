@@ -1,7 +1,6 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy import DateTime
 from sqlalchemy import text
 from sqlalchemy import func
 from sqlalchemy.orm import as_declarative
@@ -37,7 +36,6 @@ class Base:
         return result
 
 class BaseInfo():  # Base Of All Table
-    id = Column(Integer, primary_key=True)
     testmode = Column(String(1), nullable=False, server_default=text("''"))
     status = Column(String(1), nullable=False, server_default=text("'A'"))
 
@@ -50,14 +48,16 @@ class BaseInfo():  # Base Of All Table
 class BaseCU():  # BaseCreateUpdate
     created_user_id = Column(Integer)
     updated_user_id = Column(Integer)
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
-    updated_at = Column(
-        DateTime(True), default=func.now(), onupdate=func.now(), nullable=False
+    create_ets = Column(Integer, default=func.now_ets(), nullable=False)
+    update_ets = Column(
+        Integer, default=func.now_ets(), onupdate=func.now_ets(), nullable=False
     )
 
 class BaseCT():  # BaseCategory
     category = Column(Integer)
-    data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
-    tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
-    category_data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
-    category_tags_jb = Column(JSONB, server_default=text("'[]'::jsonb"))
+    data_jb = Column(JSONB, nullable=False, server_default=text("'{}'::jsonb"))
+    tags_jb = Column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    category_data_jb = Column(
+        JSONB, nullable=False, server_default=text("'{}'::jsonb"))
+    category_tags_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))

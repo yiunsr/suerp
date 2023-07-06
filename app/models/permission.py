@@ -24,7 +24,7 @@ class UserPermission(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
     permission_id = Column(Integer)
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
+    created_ets = Column(Integer, default=func.now_ets(), nullable=False)
 
 class UgroupPermission(Base):
     __tablename__ = "ugroup_permission"
@@ -32,4 +32,4 @@ class UgroupPermission(Base):
     id = Column(Integer, primary_key=True)
     ugroup_id = Column(Integer)
     permission_id = Column(Integer)
-    created_at = Column(DateTime(True), default=func.now(), nullable=False)
+    created_ets = Column(Integer, default=func.now_ets(), nullable=False)

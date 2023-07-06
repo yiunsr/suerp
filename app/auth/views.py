@@ -1,21 +1,15 @@
 from datetime import datetime, timedelta
 from typing import Union
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from config import get_config
 from config.auth import create_access_token
 from config.auth import authenticate_user
 from config.db import get_db_session
-from app.models.user import User
 from app.schemas.token import Token
-from app.schemas.token import TokenClientSecret
-from app.schemas.user import UserSignup
 from . import auth
 
 @auth.post("/token", response_model=Token)

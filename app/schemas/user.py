@@ -36,7 +36,7 @@ class UserPrivate(BaseModel):
     name: str
     first_name: str
     last_name: str
-    password_last_at: datetime
+    password_last_ets: int
 
     class Config:
         orm_mode = True

@@ -14,7 +14,8 @@ from .base import BaseCT
 
 class Product(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "product"
-
+    id = Column(Integer, primary_key=True)
+    
     name = Column(String(128), nullable=False, server_default=text("''"))
     display = Column(String(128), nullable=False, server_default=text("''"))
 

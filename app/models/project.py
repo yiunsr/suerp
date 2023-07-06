@@ -14,5 +14,5 @@ from .base import BaseCT
 
 class Project(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "project"
-
+    id = Column(Integer, primary_key=True)
     

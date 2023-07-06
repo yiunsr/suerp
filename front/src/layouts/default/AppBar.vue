@@ -62,7 +62,7 @@
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-account-key"
           :title="i18n.global.t('menu.user')" 
-          value="user" to="/account/list">
+          value="user" to="/user/list">
         </v-list-item>
         <v-list-item prepend-icon="mdi-clipboard-account"
           :title="i18n.global.t('menu.person')" 

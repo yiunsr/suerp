@@ -15,7 +15,8 @@
         "LC_ALL": "ko_KR.utf8",
         "LANG": "ko_KR.utf8",
       },
-      "justMyCode": false
+      "justMyCode": false,
+      "cwd": "${workspaceFolder}" //  "Current File" 
     },
     {
       "name": "dev server",
@@ -37,7 +38,8 @@
       "env": {
         "FASTAPI_CONFIG": "development"
       },
-      "justMyCode": false
+      "justMyCode": false,
+      "args":["init-test-db"],
     },
     {
       "name": "dev cli init_test_user",
