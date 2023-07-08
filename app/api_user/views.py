@@ -63,7 +63,8 @@ async def singup_user(
 
 @api_user.get("/{id}", response_model=UserPublic)
 async def get_user(
-        id: int, db_session: Session = Depends(get_db_session)) -> Any:
+        id: int, db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
     db_user = await User.get(db_session, id)
     if db_user is None:
         raise ResError(
@@ -73,7 +74,8 @@ async def get_user(
     return UserPublic.from_orm(db_user)
 
 @api_user.get("/", response_model=(List[UserPrivate] | List[UserPublic]))
-async def list_user(db_session: Session = Depends(get_db_session)) -> Any:
+async def list_user(db_session: Session = Depends(get_db_session),
+                    _ = Depends(get_current_active_user)) -> Any:
     db_users = await User.listing(db_session)
     # return parse_obj_as(List[UserPublic], db_users)
     return parse_users_as(db_users, "pri")

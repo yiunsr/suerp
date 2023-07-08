@@ -19,3 +19,9 @@ class ColMetaSchema(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ColMetaSCreate(BaseModel):
+    table_meta_id: int
+    col_meta: str
+    data_type: str
+    name_lang_jb: dict

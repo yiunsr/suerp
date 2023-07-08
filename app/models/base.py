@@ -1,6 +1,7 @@
 from sqlalchemy import Column
+from sqlalchemy import SmallInteger
 from sqlalchemy import Integer
-from sqlalchemy import String
+from sqlalchemy import CHAR
 from sqlalchemy import text
 from sqlalchemy import func
 from sqlalchemy.orm import as_declarative
@@ -36,8 +37,9 @@ class Base:
         return result
 
 class BaseInfo():  # Base Of All Table
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
-    status = Column(String(1), nullable=False, server_default=text("'A'"))
+    app_meta_id = Column(SmallInteger, nullable=False)
+    testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
+    status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
 
     ref_id0 = Column(Integer, nullable=True)
     ref_id1 = Column(Integer, nullable=True)

@@ -30,7 +30,7 @@
       "justMyCode": false
     },
     {
-      "name": "dev cli",
+      "name": "dev cli init-db",
       "type": "python",
       "request": "launch",
       "program": "main_cli.py",
@@ -39,15 +39,15 @@
         "FASTAPI_CONFIG": "development"
       },
       "justMyCode": false,
-      "args":["init-test-db"],
+      "args":["init-db"],
     },
     {
-      "name": "dev cli init_test_user",
+      "name": "dev cli init-test-db",
       "type": "python",
       "request": "launch",
       "program": "main_cli.py",
       "console": "integratedTerminal",
-      "args": ["init-test-user"],
+      "args": ["init-test-db"],
       "env": {
         "FASTAPI_CONFIG": "development"
       },

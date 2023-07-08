@@ -1,6 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import SmallInteger
+from sqlalchemy import CHAR
 from sqlalchemy import String
 from sqlalchemy import text
 from sqlalchemy import func
@@ -14,12 +15,12 @@ class ColMeta(Base, BaseCU):
     id = Column(Integer, primary_key=True)
     
     table_meta_id = Column(SmallInteger, nullable=False)
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
-    status = Column(String(1), nullable=False, server_default=text("'A'"))
-    col_meta = Column(String(1), nullable=False, server_default=text("''"))
-    data_type = Column(String(1), nullable=False, server_default=text("''"))
+    testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
+    status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
+    col_meta = Column(CHAR(1), nullable=False, server_default=text("''"))
+    data_type = Column(CHAR(1), nullable=False, server_default=text("''"))
 
-    code = Column(String(16), nullable=False, server_default=text("''"))
+    code = Column(CHAR(16), nullable=False, server_default=text("''"))
     name_lang_jb = Column(
         JSONB, nullable=False, server_default=text("'{}'::jsonb"))
     options_jb = Column(

@@ -16,13 +16,15 @@ from app.schemas.col_meta import ColMetaSchema
 from . import api_col_meta
 
 @api_col_meta.get("/")
-async def list_obj(db_session: Session = Depends(get_db_session)) -> Any:
+async def list_obj(db_session: Session = Depends(get_db_session),
+                   _ = Depends(get_current_active_user)) -> Any:
     db_table_metas = await ColMeta.listing(db_session)
     return parse_obj_as(List[ColMetaSchema], db_table_metas)
 
 @api_col_meta.get("/{id}")
 async def get_obj(
-        id: int, db_session: Session = Depends(get_db_session)) -> Any:
+        id: int, db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
     db_obj = await ColMeta.get(db_session, id)
     if db_obj is None:
         raise ResError(
@@ -31,9 +33,10 @@ async def get_obj(
             )
     return parse_obj_as(ColMeta, db_obj)
 
-@api_col_meta.post("/{id}")
+@api_col_meta.post("/")
 async def get_obj(
-        id: int, db_session: Session = Depends(get_db_session)) -> Any:
+        db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
     db_obj = await ColMeta.get(db_session, id)
     if db_obj is None:
         raise ResError(

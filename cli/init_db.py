@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.models.user import User
+from app.models.app_meta import AppMeta
 from app.models.table_meta import TableMeta
 
 def get_db_session(config):
@@ -32,6 +33,20 @@ async def _add_user(db_session, data):
     db_user.api_key_last_ets = func.now_ets()
     db_session.add(db_user)
 
+async def _add_app_meta(db_session, data):
+    query = select(AppMeta).where(AppMeta.name==data["name"])
+    result = await db_session.execute(query)
+    db_app_meta = result.scalars().first()
+    if db_app_meta:
+        return
+    db_app_meta = AppMeta(**data)
+    db_session.add(db_app_meta)
+
+async def _get_app_meta(db_session, name):
+    query = select(AppMeta).where(AppMeta.name==name)
+    result = await db_session.execute(query)
+    return result.scalars().first()
+
 async def _add_table_meta(db_session, data):
     query = select(TableMeta).where(TableMeta.code==data["code"])
     result = await db_session.execute(query)
@@ -45,22 +60,29 @@ async def script(config):
     click.echo('== start init_db script ==')
     print("== start init_db script ==")
     SessionLocal = get_db_session(config)
+
+    app_id = None
+    async with SessionLocal() as db_session:
+        param = dict(name="default", detail="기본앱", )
+        await _add_app_meta(db_session, param)
+        default_app = await _get_app_meta(db_session, "default")
+        app_id = default_app.id
+
     async with SessionLocal() as db_session:
         param = dict(email="system@system.system", name="system",
             first_name="system", last_name="system", status="S", 
-            user_role="M")
+            user_role="M", app_meta_id=app_id)
         await _add_user(db_session, param)
 
         param = dict(email="readonly@system.system", name="readonly",
             first_name="systemreadonly", last_name="systemreadonly", 
-            status="S", user_role="M")
+            status="S", user_role="M", app_meta_id=app_id)
         await _add_user(db_session, param)
 
         param = dict(email="api@system.system", name="api",
             first_name="api", last_name="api", 
-            status="S", user_role="M")
+            status="S", user_role="M", app_meta_id=app_id)
         await _add_user(db_session, param)
-
         await db_session.commit()
 
     async with SessionLocal() as db_session:
@@ -95,6 +117,10 @@ async def script(config):
         param = dict(code="permission", name_lang_jb=dict(
             ko="권한", en="perm"), 
             detail="권한. user 들의 데이터 접속을 허용하거나 제한할 때 사용하는 권한 종류들")
+        await _add_table_meta(db_session, param)
+
+        param = dict(code="app_meta", name_lang_jb=dict(ko="앱", en="app"), 
+            detail="app 정보")
         await _add_table_meta(db_session, param)
 
         await db_session.commit()
