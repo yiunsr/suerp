@@ -27,6 +27,12 @@ class Base:
         query = select(cls)
         result = await db_session.execute(query)
         return result.scalars().all()
+    
+    @classmethod
+    async def update(cls, db_session, db_obj, **kwargs):
+        for k, v in kwargs.items():
+            setattr(db_obj, k, v)
+        return db_obj
 
     def pydantic(self, schema):
         # https://stackoverflow.com/a/1398059/6652082
@@ -37,7 +43,7 @@ class Base:
         return result
 
 class BaseInfo():  # Base Of All Table
-    app_meta_id = Column(SmallInteger, nullable=False)
+    app_meta_id = Column(SmallInteger, nullable=True)
     testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
     status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
 

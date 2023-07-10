@@ -59,6 +59,7 @@ async def singup_user(
     except Exception as e:
         err_text = traceback.format_exc()
         print(err_text)
+    await db_session.refresh(db_user)
     return db_user.pydantic(UserPublic)
 
 @api_user.get("/{id}", response_model=UserPublic)
