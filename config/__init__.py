@@ -24,7 +24,7 @@ class Config:
     SECRET_KEY = \
         "44c16e6a662d60120012edcf0c8bb4244101b51c3484ee041fe664d91dadcc48"
     ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 30
+    ACCESS_TOKEN_EXPIRE_MINUTES = 90
 
     @classmethod
     def init_app(cls, app):

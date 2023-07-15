@@ -29,6 +29,13 @@ class UserPublic(BaseModel):
         orm_mode = True
         arbitrary_types_allowed = True
 
+class UserPublicList(BaseModel):
+    total: int
+    data: list[UserPublic]
+
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True
 
 class UserPrivate(BaseModel):
     id: int
@@ -37,6 +44,14 @@ class UserPrivate(BaseModel):
     first_name: str
     last_name: str
     password_last_ets: int
+
+    class Config:
+        orm_mode = True
+        arbitrary_types_allowed = True
+
+class UserPrivateList(BaseModel):
+    total: int
+    data: list[UserPrivate]
 
     class Config:
         orm_mode = True

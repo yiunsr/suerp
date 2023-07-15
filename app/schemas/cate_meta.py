@@ -23,3 +23,11 @@ class CateMetaCreate(BaseModel):
     testmode: str
     db_key: str
     api_key: str
+
+class CateMetaUpdate(BaseModel):
+    app_meta_id: int = None
+    table_meta_id: int
+    status: str
+    testmode: str
+    db_key: str
+    api_key: str

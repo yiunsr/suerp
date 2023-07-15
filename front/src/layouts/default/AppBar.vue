@@ -95,7 +95,7 @@
   }
 
   const emit = defineEmits([
-    'onShowLoginDialog'
+    'show-login-dialog'
   ]);
 
   const isLogin = computed(() => {

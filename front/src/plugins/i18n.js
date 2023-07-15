@@ -4,6 +4,7 @@ const messages = {
   en: {
     common: {
       title: "Startup ERP",
+      login_required: "Login required.",
     },
     model: {
       user: "user",
@@ -26,10 +27,21 @@ const messages = {
       success: 'log-in succeed',
       id_or_pw_incorrect: 'ID or password is incorrect.',
     },
+    ui_table: {
+      no_data: "No data available",
+      per_page: "Items per page"
+    },
+    page_user_list: {
+      title: "User List",
+      email: "email",
+      last_name: "last name",
+      first_name: "rist name",
+    },
   },
   ko: {
     common: {
       title: "스타트업 ERP",
+      login_required: "로그인 필요합니다.",
     },
     model: {
       user: "유저",
@@ -51,6 +63,16 @@ const messages = {
       password_req: '패스워드는 필수 입니다.',
       success: '로그인 성공',
       id_or_pw_incorrect: '아이디나 패스워드가 올바르지 않습니다.',
+    },
+    ui_table: {
+      no_data: "데이터 없음",
+      per_page: "페이지당 아이템수"
+    },
+    page_user_list: {
+      title: "유저 리스트",
+      email: "이메일",
+      last_name: "성",
+      first_name: "이름",
     },
   }
 };

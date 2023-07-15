@@ -4,8 +4,9 @@
     <default-view />
   </v-app>
 
-  <v-dialog
-    v-model="dialog.login" width="auto" min-width="600" 
+  <v-dialog :model-value="isShowLoginModal"
+    @click:outside="closeLoginDialog"
+    width="auto" min-width="600" 
     transition="dialog-bottom-transition"
   >
     <v-card>
@@ -41,7 +42,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="dialog.login = false">{{ $t('dialog.close') }}</v-btn>
+          <v-btn color="primary" @click="closeLoginDialog">{{ $t('dialog.close') }}</v-btn>
           <v-btn color="success" type="submit">{{ $t('dialog.login') }}</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -64,7 +65,7 @@
 </template>
 
 <script setup>
-  import {reactive, ref, computed} from "vue";
+  import {reactive, ref, computed, watch} from "vue";
   import {useStore} from 'vuex';
   import DefaultBar from './AppBar.vue';
   import DefaultView from './View.vue';
@@ -78,6 +79,10 @@
   const isShowSnackbar = computed(() => {
     return store.getters.isSnackbarShow;
   });
+  const isShowLoginModal = computed(() => {
+    return store.getters.isLoginDialogShow;
+  });
+
 
   const login_form = ref(null);
   let login_data = reactive({email: "", password: ""});
@@ -102,7 +107,12 @@
   ];
 
   function showLoginDialog(){
-    dialog.login = true;
+    console.log("showLoginDialog");
+    store.commit('changeVisibleLoginDialog', true);
+  }
+  function closeLoginDialog(){
+    console.log("closeLoginDialog");
+    store.commit('changeVisibleLoginDialog', false);
   }
 
   function onLogin(e){
@@ -114,12 +124,12 @@
     }
     auth.login(login_data.email, login_data.password).then(
       function(response){
-        dialog.login = false;
+        closeLoginDialog();
         let msg = i18n.global.t("login_form.success");
         store.commit('changeLogin', true);
         store.commit('showSnackbar', msg, 3000);
         let access_token = response.data.access_token;
-        sessionStorage.setItem("access_token", access_token);
+        auth.setLoginToken(access_token);
       }
     ).catch(
       function(error){

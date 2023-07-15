@@ -13,8 +13,8 @@ from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.user import User
-from app.schemas.user import UserPublic
-from app.schemas.user import UserPrivate
+from app.schemas.user import UserPublic, UserPublicList
+from app.schemas.user import UserPrivate, UserPrivateList
 from app.schemas.user import UserCreate
 from app.schemas.user import UserSignup
 from . import api_user, api_pub_user
@@ -74,12 +74,15 @@ async def get_user(
             )
     return UserPublic.from_orm(db_user)
 
-@api_user.get("/", response_model=(List[UserPrivate] | List[UserPublic]))
+@api_user.get("/")
 async def list_user(db_session: Session = Depends(get_db_session),
                     _ = Depends(get_current_active_user)) -> Any:
+    db_count = await User.count(db_session)
     db_users = await User.listing(db_session)
-    # return parse_obj_as(List[UserPublic], db_users)
-    return parse_users_as(db_users, "pri")
+    return dict(total=db_count, data=parse_users_as(db_users, "pri"))
+    # return parse_users_as(db_users, "pri")
+    # if share_type == "pub":
+
 
 @api_user.get("/me/", response_model=UserPrivate)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):

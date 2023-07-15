@@ -23,7 +23,17 @@ class Base:
         return result.scalars().first()
 
     @classmethod
-    async def listing(cls, db_session, filter_={}):
+    async def count(cls, db_session, filters={}):
+        count_query = select(func.count()).select_from(cls)
+
+        for k, v in filters.items():
+            count_query = count_query.where(getattr(cls, k) == v)
+
+        result = await db_session.scalar(count_query)
+        return result
+
+    @classmethod
+    async def listing(cls, db_session, filters={}):
         query = select(cls)
         result = await db_session.execute(query)
         return result.scalars().all()

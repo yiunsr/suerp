@@ -13,6 +13,7 @@ from config.auth import get_current_active_user
 from app.models.cate_meta import CateMeta
 from app.schemas.cate_meta import CateMetaSchema
 from app.schemas.cate_meta import CateMetaCreate
+from app.schemas.cate_meta import CateMetaUpdate
 
 from . import api_cate_meta
 
@@ -47,3 +48,19 @@ async def get_obj(
         err_text = traceback.format_exc()
         print(err_text)
     return db_cate_meta.pydantic(CateMetaSchema)
+
+@api_cate_meta.put("/{id}")
+async def put_obj(
+        id: int, data: CateMetaUpdate, 
+        db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
+    db_obj = await CateMeta.get(db_session, id)
+    if db_obj is None:
+        raise ResError(
+                status_code=404,
+                err_code=ErrCode.NO_ITEM
+            )
+    await CateMeta.update(db_session, db_obj, **data.dict())
+    await db_session.commit()
+    await db_session.refresh(db_obj)
+    return parse_obj_as(CateMetaUpdate, db_obj)
