@@ -80,6 +80,7 @@
   import { i18n } from '@/plugins/i18n';
   import {useStore} from 'vuex';
   import {defineEmits, computed, reactive} from "vue";
+  import {auth} from '@/api/service/auth'
 
   let nav = reactive({
     drawer: true, rail: false,
@@ -91,7 +92,8 @@
   }
   function logout(){
     store.commit('changeLogin', false);
-    sessionStorage.removeItem("access_token");
+    // sessionStorage.removeItem("access_token");
+    auth.removeLoginToken();
   }
 
   const emit = defineEmits([

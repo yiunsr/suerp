@@ -1,11 +1,14 @@
 import traceback
-from typing import Any, List
+from typing import Annotated
+from typing import Any, List, Optional
 from fastapi import Depends
 from fastapi import status
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import Integer
+
 from pydantic import parse_obj_as
 
 from config.db import get_db_session
@@ -17,7 +20,12 @@ from app.schemas.user import UserPublic, UserPublicList
 from app.schemas.user import UserPrivate, UserPrivateList
 from app.schemas.user import UserCreate
 from app.schemas.user import UserSignup
+from app.utils.common_param_utils import common_paging_param
+from app.utils.common_param_utils import common_order_param
 from . import api_user, api_pub_user
+
+def user_filter_param(id: str = "", email: str = ""):
+    return {"id": id, "email": email}
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
@@ -75,13 +83,15 @@ async def get_user(
     return UserPublic.from_orm(db_user)
 
 @api_user.get("/")
-async def list_user(db_session: Session = Depends(get_db_session),
-                    _ = Depends(get_current_active_user)) -> Any:
-    db_count = await User.count(db_session)
-    db_users = await User.listing(db_session)
+async def list_user(
+        filter_param: Annotated[dict, Depends(user_filter_param)],
+        paging_param: Annotated[dict, Depends(common_paging_param)],
+        order_param: Annotated[dict, Depends(common_order_param)],
+        db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
+    db_count = await User.count(db_session, filter_param)
+    db_users = await User.listing(db_session, filter_param, order_param, paging_param)
     return dict(total=db_count, data=parse_users_as(db_users, "pri"))
-    # return parse_users_as(db_users, "pri")
-    # if share_type == "pub":
 
 
 @api_user.get("/me/", response_model=UserPrivate)

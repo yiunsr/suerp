@@ -66,12 +66,14 @@
 
 <script setup>
   import {reactive, ref, computed, watch} from "vue";
+  import { useRouter } from 'vue-router';
   import {useStore} from 'vuex';
   import DefaultBar from './AppBar.vue';
   import DefaultView from './View.vue';
   import {i18n} from '@/plugins/i18n';
   import {auth} from '@/api/service/auth'
 
+  let $router = useRouter();
   const store = useStore();
   const getSnackbarBody = computed(() => {
     return store.getters.getSnackbarBody;
@@ -130,6 +132,7 @@
         store.commit('showSnackbar', msg, 3000);
         let access_token = response.data.access_token;
         auth.setLoginToken(access_token);
+        $router.go(0)
       }
     ).catch(
       function(error){

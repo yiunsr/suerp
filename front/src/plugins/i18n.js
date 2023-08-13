@@ -28,6 +28,7 @@ const messages = {
       id_or_pw_incorrect: 'ID or password is incorrect.',
     },
     ui_table: {
+      search: "search",
       no_data: "No data available",
       per_page: "Items per page"
     },
@@ -65,6 +66,7 @@ const messages = {
       id_or_pw_incorrect: '아이디나 패스워드가 올바르지 않습니다.',
     },
     ui_table: {
+      search: "검색",
       no_data: "데이터 없음",
       per_page: "페이지당 아이템수"
     },

@@ -1,6 +1,6 @@
 <template>
   <v-main class="main">
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </v-main>
 </template>
 

@@ -3,11 +3,30 @@ from sqlalchemy import SmallInteger
 from sqlalchemy import Integer
 from sqlalchemy import CHAR
 from sqlalchemy import text
+from sqlalchemy import desc
+from sqlalchemy import asc
 from sqlalchemy import func
 from sqlalchemy.orm import as_declarative
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.future import select
+
+def query_filter(cls, query, filter_param):
+    new_query = query
+    for key, value in filter_param.items():
+        if value in (None, ""):
+            continue
+        column = getattr(cls, key)
+        class_name = column.type.__class__.__name__
+        if class_name in ("Integer", ):
+            value = int(value)
+            new_query = new_query.where(column == value)
+        elif class_name in ("String", ):
+            new_query = new_query.filter(column.like('%'+value+'%'))
+        else:
+            new_query = new_query.where(column == value)
+    return new_query
+
 
 @as_declarative()
 class Base:
@@ -23,18 +42,30 @@ class Base:
         return result.scalars().first()
 
     @classmethod
-    async def count(cls, db_session, filters={}):
+    async def count(cls, db_session, filter_param={}):
         count_query = select(func.count()).select_from(cls)
-
-        for k, v in filters.items():
-            count_query = count_query.where(getattr(cls, k) == v)
+        count_query = query_filter(cls, count_query, filter_param)
 
         result = await db_session.scalar(count_query)
         return result
 
     @classmethod
-    async def listing(cls, db_session, filters={}):
+    async def listing(cls, db_session, filter_param, order_param, paging_param):
         query = select(cls)
+        query = query_filter(cls, query, filter_param)
+
+        if order_param:
+            orders = order_param.split(",") or "-id".split(",")
+            for order in orders:
+                key = order
+                if key[0] == "-":
+                    key = key[1:]
+                    query = query.order_by(desc(getattr(cls, key)))
+                else:
+                    query = query.order_by(asc(getattr(cls, key)))
+        skip = paging_param.get("skip")
+        limit = paging_param.get("limit")
+        query = query.offset(skip).limit(limit)
         result = await db_session.execute(query)
         return result.scalars().all()
     
