@@ -36,7 +36,15 @@ const messages = {
       title: "User List",
       email: "email",
       last_name: "last name",
-      first_name: "rist name",
+      first_name: "frist name",
+    },
+    page_person_list: {
+      title: "Person List",
+      email: "email",
+      last_name: "last name",
+      first_name: "frist name",
+      phone: "phone",
+      first_name: "frist name",
     },
   },
   ko: {
@@ -59,7 +67,7 @@ const messages = {
       close: '닫기',
     },
     login_form: {
-      email_req: '이메일은 필수 입니다.',
+      email_req: ' 이메일은 필수 입니다.',
       email_format_req: '이메일 형식에 맞지 않습니다.',
       password_req: '패스워드는 필수 입니다.',
       success: '로그인 성공',
@@ -72,6 +80,12 @@ const messages = {
     },
     page_user_list: {
       title: "유저 리스트",
+      email: "이메일",
+      last_name: "성",
+      first_name: "이름",
+    },
+    page_person_list: {
+      title: "사용자 리스트",
       email: "이메일",
       last_name: "성",
       first_name: "이름",
