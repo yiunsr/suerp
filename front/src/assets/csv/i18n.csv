@@ -1,0 +1,28 @@
+key,en,ko
+common.title,Startup ERP,스타트업 ERP
+common.login_required,Login required.,로그인 필요합니다.
+model.user,user,유저
+menu.user,user,유저
+menu.person,person,사용자
+menu.deal,deal,거래
+menu.product,product,재화
+menu.accounting,accounting,회계
+dialog.login,Login,로그인
+dialog.close,Close,닫기
+login_form.email_req,Email is required.,이메일은 필수 입니다
+login_form.email_format_req,The email format is not correct.,이메일 형식에 맞지 않습니다.
+login_form.password_req,Password is required.,패스워드는 필수 입니다.
+login_form.success,log-in succeed,로그인 성공
+login_form.id_or_pw_incorrect,ID or password is incorrect.,아이디나 패스워드가 올바르지 않습니다.
+ui_table.search,search,검색
+ui_table.no_data,No data available,데이터 없음
+ui_table.per_page,Items per page,페이지당 아이템수
+page_user_list.title,User List,유저 리스트
+page_user_list.email,email,이메일
+page_user_list.last_name,last name,성
+page_user_list.first_name,frist name,이름
+page_person_list.title,Person List,사용자 리스트
+page_person_list.email,email,이메일
+page_person_list.last_name,last name,성
+page_person_list.first_name,frist name,이름
+page_person_list.phone,phone,전화

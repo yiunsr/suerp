@@ -7,7 +7,7 @@ from app.models.table_meta import TableMeta
 from .cli_utils import get_db_session
 from .cli_utils import add_app_meta
 from .cli_utils import get_app_meta
-from .cli_utils import add_user
+from .cli_utils import add_user, add_person
 from .cli_utils import add_table_meta
 
 
@@ -40,6 +40,11 @@ async def script(config):
             status="S", user_role="M")
         await add_user(db_session, param)
         await db_session.commit()
+
+    async with SessionLocal() as db_session:
+        param = dict(name="system", 
+            first_name="system", last_name="system", status="S")
+        await add_person(db_session, param)
 
     async with SessionLocal() as db_session:
         param = dict(code="user", name_lang_jb=dict(ko="사용자", en="user"), 

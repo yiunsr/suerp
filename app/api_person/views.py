@@ -16,13 +16,10 @@ from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.person import Person
-from app.schemas.person import UserPublic, UserPublicList
-from app.schemas.user import UserPrivate, UserPrivateList
-from app.schemas.user import UserCreate
-from app.schemas.user import UserSignup
+from app.schemas.person import PersonPublic
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
-from . import api_user, api_pub_user
+from . import api_person, api_pub_person
 
 def person_filter_param(
         id: str = "", first_name: str = "", last_name: str = "",
@@ -31,21 +28,39 @@ def person_filter_param(
     return {"id": id, "first_name": first_name, "last_name": last_name,
         "phone": phone, "email": email}
 
-@api_pub_user.post(
-        "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
+@api_person.post(
+        "/", response_model=PersonPublic, status_code=status.HTTP_201_CREATED)
 async def create_user(
-        data: UserCreate, db_session: Session = Depends(get_db_session)) -> Any:
-    db_user = User(**data.dict())
-    db_user.password_last_ets = func.now_ets()
-    db_user.api_key = db_user.gen_api_key()
-    db_user.api_key_last_ets = func.now_ets()
-    db_session.add(db_user)
-    try:
-        await db_session.commit()
-    except IntegrityError as err:
-        if "user_email_key" in err.args[0]:
-            raise ResError(
-                status_code=409,
-                err_code=ErrCode.EMAIL_DUPLICATED
-            )
-    return db_user.pydantic(UserPublic)
+        data: PersonPublic, db_session: Session = Depends(get_db_session)) -> Any:
+    db_person = Person(**data.dict())
+    db_session.add(db_person)
+    # try:
+    #     await db_session.commit()
+    # except IntegrityError as err:
+    #     if "user_email_key" in err.args[0]:
+    #         raise ResError(
+    #             status_code=409,
+    #             err_code=ErrCode.EMAIL_DUPLICATED
+    #         )
+    return db_person.pydantic(PersonPublic)
+
+@api_person.get("/")
+async def list_user(
+        filter_param: Annotated[dict, Depends(person_filter_param)],
+        paging_param: Annotated[dict, Depends(common_paging_param)],
+        order_param: Annotated[dict, Depends(common_order_param)],
+        db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
+    db_count = await Person.count(db_session, filter_param)
+    db_persons = await Person.listing(db_session, filter_param, order_param, paging_param)
+    return dict(total=db_count, data=parse_person_as(db_persons, "pub"))
+
+def parse_person_as(db_persons, share_type):
+    results = []
+    for db_person in db_persons:
+        if share_type == "pub":
+            item = parse_obj_as(PersonPublic, db_person)
+        else:
+            raise
+        results.append(item)
+    return results

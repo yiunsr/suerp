@@ -6,6 +6,7 @@ from sqlalchemy import func
 from sqlalchemy.future import select
 
 from app.models.user import User
+from app.models.person import Person
 from app.models.app_meta import AppMeta
 from app.models.table_meta import TableMeta
 
@@ -33,6 +34,10 @@ async def add_user(db_session, data):
     db_user.api_key = db_user.gen_api_key()
     db_user.api_key_last_ets = func.now_ets()
     db_session.add(db_user)
+
+async def add_person(db_session, data):
+    db_person = Person(**data)
+    db_session.add(db_person)
 
 async def add_app_meta(db_session, data):
     query = select(AppMeta).where(AppMeta.name==data["name"])
