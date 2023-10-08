@@ -20,20 +20,19 @@ let utils = {
     }
     return defualtSortBy;
   },
-  initFilters: function(query, filters){
-    let query_sorts = query.sort;
-    if(!query_sorts)
-      return [];
-    let sorts = query_sorts.split(",");
-    let newSorts=[];
-    for(const key of sorts){
-      if(!key){
-        continue
+  initFilters: function(query, defaultFilters){
+    if(!query)
+      return defaultFilters;
+    let filterDict={};
+    for(const key in query){
+      if(key in query){
+        filterDict[key] = query[key];
       }
-      if(key[0] == "-") newSorts.push({ key: key.slice(1), order: 'desc' })
-      else newSorts.push({ key: key, order: 'asc' })
+      else{
+        filterDict[key] = defaultFilters[key];
+      }
     }
-    return {sortBy: newSorts};
+    return filterDict;
   },
   changeSortUrl: function($route, $router, sortBy){
     let query = {...$route.query};

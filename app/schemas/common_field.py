@@ -2,24 +2,23 @@ from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
 from app.models.person import Person as DB_Person
-from pydantic import BaseModel, EmailStr
 
-class EmailField:
+class EmailField(BaseModel):
     email: EmailStr = None
     type: str = None
 
-class AddressField:
+class AddressField(BaseModel):
     address: str = None
     type: str = None
 
-class PhoneField:
+class PhoneField(BaseModel):
     phone: str = None
     type: str = None
 
-class MessengerField:
+class MessengerField(BaseModel):
     messenge: str = None
     type: str = None
 
-class UrlField:
+class UrlField(BaseModel):
     url: str = None
     type: str = None

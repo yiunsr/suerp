@@ -17,12 +17,15 @@
                         <div class="ms-4">{{ t("ui_table.search") }}</div>
                       </v-col>
                       <v-col md="2" sm="4">
-                        <v-text-field type="email" density="compact" v-model="filters.id" hide-details label="ID" />
+                        <v-text-field type="number" density="compact" v-model="filters.id" @keyup.enter="submitFilter" hide-details label="ID" />
+                      </v-col>
+                      <v-col md="2" sm="4">
+                        <v-text-field type="name" density="compact" v-model="filters.name" @keyup.enter="submitFilter" hide-details label="name" />
                       </v-col>
                       <v-col md="3" sm="5">
-                        <v-text-field density="compact" v-model="filters.email" hide-details label="email" />
+                        <v-text-field density="compact" v-model="filters.email" hide-details @keyup.enter="submitFilter" label="email" />
                       </v-col>
-                      <v-col md="6" sm="1"></v-col>
+                      <v-col md="4" sm="1"></v-col>
                     </v-row>
                   </v-container>
                 </td>
@@ -93,16 +96,18 @@ import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import { VDataTableServer } from 'vuetify/lib/labs/components';
-import {users} from '@/api/service/users';
+import {persons} from '@/api/service/persons';
 
 const store = useStore();
 let t=i18n.global.t;
 
 let headers = [
   { title: 'id', key: 'id' },
-  { title: t('page_user_list.email'), key: 'email' },
-  { title: t('page_user_list.last_name'), key: 'last_name' },
-  { title: t('page_user_list.first_name'), key: 'first_name' },
+  { title: t('page_common.email'), key: 'email_jb[0].email' },
+  { title: t('page_common.phone'), key: 'phone_jb[0].phone' },
+  { title: t('page_common.name'), key: 'name' },
+  { title: t('page_common.last_name'), key: 'last_name' },
+  { title: t('page_common.first_name'), key: 'first_name' },
 ];
 
 let skip = 0;
@@ -116,9 +121,10 @@ let defualtSortBy = utils.getDefaultSortBy($route.query.sort);
 let searchTable = reactive(
   {detail: false}
 );
-let filters = reactive(
-  {id: "", email: ""}
+let initFilter = utils.initFilters($route.query,
+  {id: "", name: "", email: ""}
 );
+let filters = reactive(initFilter);
 let tableData = reactive({
   data: [], total: 0, sortBy: defualtSortBy,
 });
@@ -138,7 +144,7 @@ onMounted(() => {
   limit = parseInt($route.query.limit || 0) || limit;
   tableData.limit = limit;
   let sort = utils.query2sortBy($route.query) || "-id";
-  users.list(filters, sort, skip, limit).then(function(res){
+  persons.list(filters, sort, skip, limit).then(function(res){
     let resData = res.data;
     tableData.data = resData.data;
     tableData.total = resData.total;

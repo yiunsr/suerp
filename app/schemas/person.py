@@ -14,12 +14,12 @@ class PersonBase(BaseModel):
     first_name: str = None
     last_name: str = None
     email_jb: List[EmailField] = []
-    address_jb: List[AddressField] = []
     phone_jb: List[PhoneField] = []
+    address_jb: List[AddressField] = []
     url_jb: List[UrlField] = []
 
-
 class PersonPublic(PersonBase):
+    id: int
     class Config:
         orm_mode = True
         arbitrary_types_allowed = True

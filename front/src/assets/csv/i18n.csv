@@ -17,12 +17,10 @@ login_form.id_or_pw_incorrect,ID or password is incorrect.,아이디나 패스�
 ui_table.search,search,검색
 ui_table.no_data,No data available,데이터 없음
 ui_table.per_page,Items per page,페이지당 아이템수
+page_common.email,email,이메일
+page_common.name,Display Name,표시이름
+page_common.last_name,last name,성
+page_common.first_name,frist name,이름
+page_common.phone,phone,전화
 page_user_list.title,User List,유저 리스트
-page_user_list.email,email,이메일
-page_user_list.last_name,last name,성
-page_user_list.first_name,frist name,이름
 page_person_list.title,Person List,사용자 리스트
-page_person_list.email,email,이메일
-page_person_list.last_name,last name,성
-page_person_list.first_name,frist name,이름
-page_person_list.phone,phone,전화

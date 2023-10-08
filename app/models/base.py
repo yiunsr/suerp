@@ -6,9 +6,12 @@ from sqlalchemy import text
 from sqlalchemy import desc
 from sqlalchemy import asc
 from sqlalchemy import func
+from sqlalchemy import Text
+from sqlalchemy import cast
 from sqlalchemy.orm import as_declarative
 from sqlalchemy.orm import declared_attr
 from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.future import select
 
 def query_filter(cls, query, filter_param):
@@ -16,13 +19,21 @@ def query_filter(cls, query, filter_param):
     for key, value in filter_param.items():
         if value in (None, ""):
             continue
-        column = getattr(cls, key)
+        new_key = key.replace("__in", "")
+        column = getattr(cls, new_key)
         class_name = column.type.__class__.__name__
         if class_name in ("Integer", ):
             value = int(value)
             new_query = new_query.where(column == value)
         elif class_name in ("String", ):
             new_query = new_query.filter(column.like('%'+value+'%'))
+        elif class_name in ("JSONB", ):
+            if "__in" in key:
+                value = '%' + value +'%'
+                new_query = new_query.filter(
+                    cast(column, Text).like('%'+value+'%'))
+            else:
+                new_query = new_query.where(column == value)
         else:
             new_query = new_query.where(column == value)
     return new_query

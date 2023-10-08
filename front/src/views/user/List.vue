@@ -100,9 +100,9 @@ let t=i18n.global.t;
 
 let headers = [
   { title: 'id', key: 'id' },
-  { title: t('page_user_list.email'), key: 'email' },
-  { title: t('page_user_list.last_name'), key: 'last_name' },
-  { title: t('page_user_list.first_name'), key: 'first_name' },
+  { title: t('page_common.email'), key: 'email' },
+  { title: t('page_common.last_name'), key: 'last_name' },
+  { title: t('page_common.first_name'), key: 'first_name' },
 ];
 
 let skip = 0;
@@ -116,13 +116,15 @@ let defualtSortBy = utils.getDefaultSortBy($route.query.sort);
 let searchTable = reactive(
   {detail: false}
 );
-let filters = reactive(
+
+
+let initFilter = utils.initFilters($route.query,
   {id: "", email: ""}
 );
+let filters = reactive(initFilter);
 let tableData = reactive({
   data: [], total: 0, sortBy: defualtSortBy,
 });
-let table
 
 const isLogin = computed(() => {
   return store.getters.isLogin;

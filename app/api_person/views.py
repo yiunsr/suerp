@@ -19,14 +19,16 @@ from app.models.person import Person
 from app.schemas.person import PersonPublic
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
-from . import api_person, api_pub_person
+from . import api_person
 
 def person_filter_param(
-        id: str = "", first_name: str = "", last_name: str = "",
+        id: str = "", name: str = "",
+        first_name: str = "", last_name: str = "",
         phone: str = "", email: str = ""
         ):
-    return {"id": id, "first_name": first_name, "last_name": last_name,
-        "phone": phone, "email": email}
+    return {"id": id, "name": name,
+        "first_name": first_name, "last_name": last_name,
+        "phone_jb": phone, "email_jb__in": email}
 
 @api_person.post(
         "/", response_model=PersonPublic, status_code=status.HTTP_201_CREATED)
