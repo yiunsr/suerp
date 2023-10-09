@@ -24,7 +24,7 @@ let utils = {
     if(!query)
       return defaultFilters;
     let filterDict={};
-    for(const key in query){
+    for(const key in defaultFilters){
       if(key in query){
         filterDict[key] = query[key];
       }
@@ -52,6 +52,19 @@ let utils = {
     else if(query["sort"]){
       delete  query["sort"];
     }
+    let path = $route.path;
+    $router.push({path, query}).catch(()=>{});
+  },
+  changeLimit: function($route, $router, limit){
+    let query = {...$route.query};
+    query["limit"] = limit;
+    query["page"] = 1;
+    let path = $route.path;
+    $router.push({path, query}).catch(()=>{});
+  },
+  changePage: function($route, $router, page){
+    let query = {...$route.query};
+    query["page"] = page;
     let path = $route.path;
     $router.push({path, query}).catch(()=>{});
   }

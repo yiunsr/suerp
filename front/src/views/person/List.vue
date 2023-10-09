@@ -70,15 +70,37 @@
         </v-row>
         -->
       </div>
-      <v-data-table-server 
-        density="compact" class="data-list-table my-2"
+      <v-data-table-server
+        density="compact" class="data-list-table my-2" hide-default-footer
         :no-data-text="t('ui_table.no_data')" :items-per-page-text="t('ui_table.per_page')"	
         :headers="headers"
-        v-model:sort-by="tableData.sortBy" :multi-sort="true" :must-sort="false"	
-        :items-per-page="tableData.limit"
+        v-model:sort-by="tableData.sortBy" :multi-sort="true" :must-sort="false"
         :items="tableData.data"
         :items-length="tableData.total"
       >
+        <template v-slot:bottom>
+          <v-row class="text-center pt-2">
+            <v-col cols="2"></v-col>
+            <v-col cols="8">
+              <v-pagination class="text-center"
+                v-model="tableData.page" density="compact" 
+                :length="Math.ceil(tableData.total / tableData.limit)"
+                @update:model-value="changePage"
+              ></v-pagination>
+            </v-col>
+            <v-col cols="2">
+              <v-select :hide-details="true" class="ma-0"
+                :model-value="tableData.limit"
+                :items="[{value: 2, title: '2'}, {value: 25, title: '25'},
+                  {value: 50, title: '50'}, {value: 100, title: '100'},
+                ]"
+                density="compact"
+                label="Item Per Page"
+                @update:model-value="changeItemsPerPage"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </template>
       </v-data-table-server>
     </div>
     <div v-else class="mt-8">
@@ -99,9 +121,11 @@ import { VDataTableServer } from 'vuetify/lib/labs/components';
 import {persons} from '@/api/service/persons';
 
 const store = useStore();
+const $route = useRoute();
+let $router = useRouter();
 let t=i18n.global.t;
 
-let headers = [
+const headers = [
   { title: 'id', key: 'id' },
   { title: t('page_common.email'), key: 'email_jb[0].email' },
   { title: t('page_common.phone'), key: 'phone_jb[0].phone' },
@@ -109,26 +133,24 @@ let headers = [
   { title: t('page_common.last_name'), key: 'last_name' },
   { title: t('page_common.first_name'), key: 'first_name' },
 ];
+let initFilter = utils.initFilters($route.query,
+  {id: "", name: "", email: ""}
+);
 
-let skip = 0;
-let limit = 50;
-
-const $route = useRoute();
-let $router = useRouter();
+/**** common code start ****/
+const page = parseInt($route.query.page || 1);
+const limit = parseInt($route.query.limit || 0) || 50;
 
 let defualtSortBy = utils.getDefaultSortBy($route.query.sort);
 
 let searchTable = reactive(
   {detail: false}
 );
-let initFilter = utils.initFilters($route.query,
-  {id: "", name: "", email: ""}
-);
+
 let filters = reactive(initFilter);
 let tableData = reactive({
-  data: [], total: 0, sortBy: defualtSortBy,
+  data: [], total: 0, sortBy: defualtSortBy, limit: limit, page: page,
 });
-let table
 
 const isLogin = computed(() => {
   return store.getters.isLogin;
@@ -139,12 +161,17 @@ function submitFilter (){
   $router.push({ path, query: filters});
 }
 
+function changeItemsPerPage(limit){
+  utils.changeLimit($route, $router, limit);
+}
+function changePage(page){
+  utils.changePage($route, $router, page);
+}
+/**** common code end ****/
+
 onMounted(() => {
-  skip = parseInt($route.query.skip || 0) || skip;
-  limit = parseInt($route.query.limit || 0) || limit;
-  tableData.limit = limit;
   let sort = utils.query2sortBy($route.query) || "-id";
-  persons.list(filters, sort, skip, limit).then(function(res){
+  persons.list(filters, sort, page, limit).then(function(res){
     let resData = res.data;
     tableData.data = resData.data;
     tableData.total = resData.total;
@@ -152,12 +179,6 @@ onMounted(() => {
   });
 })
 
-watch(
-  () => tableData.sortBy,
-  (sortBy) => {
-    utils.changeSortUrl($route, $router, sortBy);
-  }
-)
 
 watch(
   () => tableData.sortBy,
