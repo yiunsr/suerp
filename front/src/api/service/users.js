@@ -9,6 +9,14 @@ class Users{
       params
     });
   }
+
+  add(data){
+    return $axios({
+      method: 'post',
+      url: '/api/users/',
+      data
+    });
+  }
   
 }
 export let users = new Users();

@@ -29,7 +29,7 @@ def user_filter_param(id: str = "", email: str = ""):
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
-async def create_user(
+async def create_(
         data: UserCreate, db_session: Session = Depends(get_db_session)) -> Any:
     db_user = User(**data.dict())
     db_user.password_last_ets = func.now_ets()
@@ -44,7 +44,9 @@ async def create_user(
                 status_code=409,
                 err_code=ErrCode.EMAIL_DUPLICATED
             )
-    return db_user.pydantic(UserPublic)
+    await db_session.refresh(db_user)
+    db_data = parse_obj_as(UserPublic, db_user)
+    return db_data
 
 @api_pub_user.post("/singup", response_model=UserPublic, 
         status_code=status.HTTP_201_CREATED)

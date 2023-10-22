@@ -2,7 +2,7 @@ import {$axios, param2formdata} from "@/api/service/request"
 
 // https://stackoverflow.com/a/38699214
 const setCookie = (name, value, hours = 2, path = '/') => {
-  const expires = new Date(Date.now() + hours * 24 * 24 * 60 * 60 * 1000).toUTCString()
+  const expires = new Date(Date.now() + hours * 2 * 60 * 60 * 1000).toUTCString()
   document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=' + path
 }
 const deleteCookie = (name, path = '/') => {

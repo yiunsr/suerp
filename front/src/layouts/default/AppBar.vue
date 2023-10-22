@@ -68,8 +68,8 @@
           :title="i18n.global.t('menu.person')" 
           value="person" to="/person/list">
         </v-list-item>
-        <v-list-item prepend-icon="mdi-handshake-outline" :title="i18n.global.t('menu.deal')" value="deal"></v-list-item>
         <v-list-item prepend-icon="mdi-gift" :title="i18n.global.t('menu.product')" value="product"></v-list-item>
+        <v-list-item prepend-icon="mdi-handshake-outline" :title="i18n.global.t('menu.deal')" value="deal"></v-list-item>
         <v-list-item prepend-icon="mdi-calculator" :title="i18n.global.t('menu.accounting')" value="accounting"></v-list-item>
       </v-list>
     </v-navigation-drawer>

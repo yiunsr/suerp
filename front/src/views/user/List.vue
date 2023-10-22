@@ -1,7 +1,10 @@
 <template>
   <div>
     <h2>
-      {{ t("page_user_list.title") }}
+      {{ t("page_user.list_title") }}
+      <v-btn to="/user/new" density="comfortable" class="ml-4 mb-2" size="large" color="blue-darken-4">
+        {{  t('page_common.add') }}
+      </v-btn>
     </h2>
     <div v-if="isLogin">
       <div class="my-2">
@@ -64,6 +67,10 @@
         :items="tableData.data"
         :items-length="tableData.total"
       >
+        <template v-slot:item.id="row">
+          <router-link :to="'/user/' + row.item.id">{{ row.item.id }}</router-link>
+        </template>
+
         <template v-slot:bottom>
           <v-row class="text-center pt-2">
             <v-col cols="2"></v-col>
@@ -122,7 +129,7 @@ let initFilter = utils.initFilters($route.query,
 );
 
 
-/**** common code start ****/
+/**** common list code start ****/
 const page = parseInt($route.query.page || 1);
 const limit = parseInt($route.query.limit || 0) || 50;
 
@@ -152,7 +159,7 @@ function changeItemsPerPage(limit){
 function changePage(page){
   utils.changePage($route, $router, page);
 }
-/**** common code end ****/
+/**** common list code start ****/
 
 
 onMounted(() => {

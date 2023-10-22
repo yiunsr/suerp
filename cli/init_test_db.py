@@ -29,6 +29,10 @@ async def script(config):
     async with SessionLocal() as db_session:
         await add_test_person(db_session)
         await db_session.commit()
+    
+    async with SessionLocal() as db_session:
+        await add_test_org(db_session)
+        await db_session.commit()
 
 
 async def add_test_user(db_session):
@@ -123,5 +127,14 @@ async def add_test_person(db_session):
         {"phone":"010-0001-0006", "type":"home"}]
     param = dict(name="person0006", first_name="first0006", 
         last_name="last0006", status="A", phone_jb=phone_jb,
+        created_user_id=1, updated_user_id=1)
+    await add_person(db_session, param)
+
+
+async def add_test_org(db_session):
+    email_jb = [{"email":"test0001@test.work", "type": "work"},
+        {"email":"test0001@test.kr", "type": "home"}]
+    param = dict(name="person0001", first_name="first0001", 
+        last_name="last0001", status="A", email_jb=email_jb,
         created_user_id=1, updated_user_id=1)
     await add_person(db_session, param)

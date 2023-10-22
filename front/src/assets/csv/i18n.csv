@@ -22,5 +22,11 @@ page_common.name,Display Name,표시이름
 page_common.last_name,last name,성
 page_common.first_name,frist name,이름
 page_common.phone,phone,전화
-page_user_list.title,User List,유저 리스트
+page_common.add,Add,추가
+page_common.add_success,Addition was successful.,추가 완료 했습니다.
+page_user.list_title,User List,유저 리스트
+page_user.new_title,User New,유저 추가
+page_user.edit_title,User Edit,유저 수정
+page_user.nickname,nickname,별칭
 page_person_list.title,Person List,사용자 리스트
+,,

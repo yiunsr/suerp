@@ -32,7 +32,7 @@ def person_filter_param(
 
 @api_person.post(
         "/", response_model=PersonPublic, status_code=status.HTTP_201_CREATED)
-async def create_user(
+async def create(
         data: PersonPublic, db_session: Session = Depends(get_db_session)) -> Any:
     db_person = Person(**data.dict())
     db_session.add(db_person)
@@ -66,3 +66,12 @@ def parse_person_as(db_persons, share_type):
             raise
         results.append(item)
     return results
+
+# @api_person.post("/")
+# async def add_user(
+#         person_add_param: Annotated[dict, Depends(person_add_param)],
+#         db_session: Session = Depends(get_db_session),
+#         _ = Depends(get_current_active_user)) -> Any:
+#     db_person = await Person.insert(db_session, person_add_param)
+#     data = parse_obj_as(PersonPublic, db_person)
+#     return data

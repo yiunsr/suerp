@@ -39,6 +39,10 @@ async def add_person(db_session, data):
     db_person = Person(**data)
     db_session.add(db_person)
 
+async def add_ugroup(db_session, data):
+    db_person = Person(**data)
+    db_session.add(db_person)
+
 async def add_app_meta(db_session, data):
     query = select(AppMeta).where(AppMeta.name==data["name"])
     result = await db_session.execute(query)

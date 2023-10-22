@@ -137,7 +137,7 @@ let initFilter = utils.initFilters($route.query,
   {id: "", name: "", email: ""}
 );
 
-/**** common code start ****/
+/**** common list code start ****/
 const page = parseInt($route.query.page || 1);
 const limit = parseInt($route.query.limit || 0) || 50;
 
@@ -167,7 +167,7 @@ function changeItemsPerPage(limit){
 function changePage(page){
   utils.changePage($route, $router, page);
 }
-/**** common code end ****/
+/**** common list code start ****/
 
 onMounted(() => {
   let sort = utils.query2sortBy($route.query) || "-id";
