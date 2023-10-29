@@ -1,12 +1,12 @@
 <template>
-  <v-radio-group v-model="radios"  v-for="item in items">
+  <v-radio-group v-model="radios"  v-for="item in items" v-if="mode == 'edit'">
     <template v-slot:label>
       <div>{{ label }}</div>
     </template>
     <v-radio :label="item.label" :value="item.value"></v-radio>
   </v-radio-group>
 
-  <span v-show="mode == 'detail'">
+  <span v-show="mode == 'read'">
     {{ label }}  {{  modelValue }}
   </span>
 </template>
@@ -21,6 +21,5 @@ const props = defineProps({
 });
 
 const $route = useRoute();
-let mode = $route.path.includes("new")?"edit":"detail";
   
 </script>

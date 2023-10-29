@@ -1,12 +1,14 @@
 <template>
-  <v-text-field v-show="mode == 'edit' || mode == 'new'" 
-    :model-value="modelValue"  density="compact"
-    :label="label"
-    v-bind="$attrs"
-    @update:modelValue="v => $emit('update:modelValue', v)" 
-  ></v-text-field>
-  <span v-show="mode == 'detail'">
-    {{ label }}  {{  modelValue }}
+  <span>
+    <v-text-field v-if="mode == 'edit'"
+      :model-value="props.modelValue"  density="compact"
+      :label="props.label"
+      v-bind="$attrs"
+      @update:modelValue="v => $emit('update:modelValue', v)" 
+    ></v-text-field>
+    <span v-show="mode == 'read'">
+      <b class="mr-4">{{ props.label }} :</b> {{  props.modelValue }}
+    </span>
   </span>
 </template>
 
@@ -14,11 +16,11 @@
 import { useRoute } from 'vue-router';
 
 const props = defineProps({
-  modelValue: {},
-  label: { type: String, default: ""}
+  modelValue: { type: String, default: ""},
+  label: { type: String, default: ""},
+  mode: { type: String, required: true }
 });
 
 const $route = useRoute();
-let mode = $route.path.includes("new")?"edit":"detail";
   
 </script>

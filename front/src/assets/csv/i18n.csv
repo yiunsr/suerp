@@ -18,15 +18,31 @@ ui_table.search,search,검색
 ui_table.no_data,No data available,데이터 없음
 ui_table.per_page,Items per page,페이지당 아이템수
 page_common.email,email,이메일
+page_common.status,status,상태
 page_common.name,Display Name,표시이름
 page_common.last_name,last name,성
 page_common.first_name,frist name,이름
 page_common.phone,phone,전화
 page_common.add,Add,추가
 page_common.add_success,Addition was successful.,추가 완료 했습니다.
+page_common.edit_mode,Edit Mode,수정모드
+page_common.read_mode,Read Only,읽기전용
+page_common.apply_modify,Apply modifications,수정사항 적용하기
+==== User ====,,
 page_user.list_title,User List,유저 리스트
 page_user.new_title,User New,유저 추가
 page_user.edit_title,User Edit,유저 수정
 page_user.nickname,nickname,별칭
+page_uesr.display,Display Name,표시 이름
+page_uesr.user_role,Role,역할
+==== Person ====,,
 page_person_list.title,Person List,사용자 리스트
-,,
+==== Common Const ===
+common_const.status.available,Available,정상
+common_const.status.system,System,시스템
+common_const.status.deleted,Deleted,삭제됨
+common_const.status.leave,Leave,퇴사
+common_const.status.unusable,Unusable,사용불가
+common_const.status.hidden,Hidden,숨김
+common_const.user_role.manager,manager,매니저
+common_const.user_role.normal,normal user,일반 유저

@@ -17,6 +17,13 @@ class Users{
       data
     });
   }
+
+  detail(id){
+    return $axios({
+      method: 'get',
+      url: '/api/users/' + id,
+    });
+  }
   
 }
 export let users = new Users();

@@ -72,7 +72,32 @@ async def singup_user(
     await db_session.refresh(db_user)
     return db_user.pydantic(UserPublic)
 
-@api_user.get("/{id}", response_model=UserPublic)
+@api_pub_user.put("/{id}", response_model=UserPrivate, 
+        status_code=status.HTTP_201_CREATED)
+async def update(
+        id: int, data: UserCreate, db_session: Session=Depends(get_db_session)) -> Any:
+    db_obj = await User.get(db_session, id)
+    db_users = await User.update(db_session, filter_param, order_param, paging_param)
+    db_user.hash_password = User.gen_password_hash(data.password)
+    db_user.password_last_ets = func.now_ets()
+    db_user.api_key = db_user.gen_api_key()
+    db_user.api_key_last_ets = func.now_ets()
+    db_session.add(db_user)
+    try:
+        await db_session.commit()
+    except IntegrityError as err:
+        if "user_email_key" in err.args[0]:
+            raise ResError(
+                status_code=409,
+                err_code=ErrCode.EMAIL_DUPLICATED
+            )
+    except Exception as e:
+        err_text = traceback.format_exc()
+        print(err_text)
+    await db_session.refresh(db_user)
+    return db_user.pydantic(UserPublic)
+
+@api_user.get("/{id}", response_model=UserPrivate)
 async def get_user(
         id: int, db_session: Session = Depends(get_db_session),
         _ = Depends(get_current_active_user)) -> Any:
@@ -82,7 +107,7 @@ async def get_user(
                 status_code=404,
                 err_code=ErrCode.NO_ITEM
             )
-    return UserPublic.from_orm(db_user)
+    return UserPrivate.from_orm(db_user)
 
 @api_user.get("/")
 async def list_user(

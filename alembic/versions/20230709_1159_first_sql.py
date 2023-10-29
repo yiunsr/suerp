@@ -229,7 +229,6 @@ def upgrade():
     op.create_table('user',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_role', sa.String(length=1), server_default=sa.text("'N'"), nullable=False),
-    sa.Column('name', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('email', sa.String(length=256), nullable=False),
     sa.Column('first_name', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('last_name', sa.String(length=64), server_default=sa.text("''"), nullable=False),

@@ -36,52 +36,52 @@ async def script(config):
 
 
 async def add_test_user(db_session):
-    param = dict(email="manager0001@test.com", name="manager0001",
+    param = dict(email="manager0001@test.com", display="manager0001",
         first_name="first0001", last_name="last0001", status="S", 
         user_role="M", password="man_0001")
     await add_user(db_session, param)
 
-    param = dict(email="manager0002@test.com", name="manager0002",
+    param = dict(email="manager0002@test.com", display="manager0002",
         first_name="first0002", last_name="last0002", status="S", 
         user_role="M", password="man_0002")
     await add_user(db_session, param)
 
-    param = dict(email="manager0003@test.com", name="manager0003",
+    param = dict(email="manager0003@test.com", display="manager0003",
         first_name="first0003", last_name="last0003", status="A", 
         user_role="M", password="man_0003")
     await add_user(db_session, param)
 
-    param = dict(email="manager0004@test.com", name="manager0004",
+    param = dict(email="manager0004@test.com", display="manager0004",
         first_name="first0004", last_name="last0004", status="A", 
         user_role="M", password="man_0004")
     await add_user(db_session, param)
 
-    param = dict(email="tester0005@test.com", name="tester0005",
+    param = dict(email="tester0005@test.com", display="tester0005",
         first_name="first0005", last_name="last0005", status="A", 
         user_role="N", password="test_0005")
     await add_user(db_session, param)
 
-    param = dict(email="tester0006@test.com", name="tester0006",
+    param = dict(email="tester0006@test.com", display="tester0006",
         first_name="first0006", last_name="last0006", status="A", 
         user_role="N", password="test_0006")
     await add_user(db_session, param)
 
-    param = dict(email="tester0007@test.com", name="tester0007",
+    param = dict(email="tester0007@test.com", display="tester0007",
         first_name="first0007", last_name="last0007", status="A", 
         user_role="N", password="test_0007")
     await add_user(db_session, param)
 
-    param = dict(email="tester0008@test.com", name="tester0008",
+    param = dict(email="tester0008@test.com", display="tester0008",
         first_name="first0008", last_name="last0008", status="A", 
         user_role="N", password="test_0008")
     await add_user(db_session, param)
 
-    param = dict(email="tester0009@test.com", name="tester0009",
+    param = dict(email="tester0009@test.com", display="tester0009",
         first_name="first0009", last_name="last0009", status="A", 
         user_role="N", password="test_0009")
     await add_user(db_session, param)
 
-    param = dict(email="tester0010@test.com", name="tester0010",
+    param = dict(email="tester0010@test.com", display="tester0010",
         first_name="first0010", last_name="last0010", status="A", 
         user_role="N", password="test_0010")
     await add_user(db_session, param)

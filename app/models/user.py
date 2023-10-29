@@ -23,7 +23,6 @@ class User(Base, BaseInfo, BaseCT):
     id = Column(Integer, primary_key=True)
     user_role = Column(String(1), nullable=False, server_default=text("'N'"))
 
-    name = Column(String(64), nullable=False, server_default=text("''"))
     email = Column(String(256), nullable=False, unique=True)
     first_name = Column(String(64), nullable=False, server_default=text("''"))
     last_name = Column(String(64), nullable=False, server_default=text("''"))

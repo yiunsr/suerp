@@ -25,17 +25,17 @@ async def script(config):
         # app_id = default_app.id
 
     async with SessionLocal() as db_session:
-        param = dict(email="system@system.system", name="system",
+        param = dict(email="system@system.system", display="system",
             first_name="system", last_name="system", status="S", 
             user_role="M")
         await add_user(db_session, param)
 
-        param = dict(email="readonly@system.system", name="readonly",
+        param = dict(email="readonly@system.system", display="readonly",
             first_name="systemreadonly", last_name="systemreadonly", 
             status="S", user_role="M")
         await add_user(db_session, param)
 
-        param = dict(email="api@system.system", name="api",
+        param = dict(email="api@system.system", display="api",
             first_name="api", last_name="api", 
             status="S", user_role="M")
         await add_user(db_session, param)

@@ -10,7 +10,6 @@ from app.schemas.common_field import MessengerField
 from app.schemas.common_field import UrlField
 
 class PersonBase(BaseModel):
-    nickname: str
     first_name: str = None
     last_name: str = None
     email_jb: List[EmailField] = []

@@ -67,7 +67,16 @@ let utils = {
     query["page"] = page;
     let path = $route.path;
     $router.push({path, query}).catch(()=>{});
+  },
+  getItemByValue(items, value){
+    for(const item of items){
+      if(item.value == value){
+        return item;
+      }
+    }
+    return null;
   }
+
 }
 
 export {utils}

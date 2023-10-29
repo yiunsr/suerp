@@ -1,21 +1,45 @@
 <template>
-  <v-select label="User" :items="items"></v-select>
+  <div>
+    <v-select :label="props.label" :items="i18nItems" v-show="props.mode == 'edit'"
+      :model-value="props.modelValue"  density="compact"
+    ></v-select>
 
-  <span v-show="mode == 'detail'">
-    {{ label }}  {{  modelValue }}
-  </span>
+    <span v-show="mode == 'read'">
+      <b class="mr-4">{{ props.label }} :</b>  {{  modelValueLabel }}
+    </span>
+  </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import {i18n} from '@/plugins/i18n';
+import {utils} from '@/plugins/utils';
+
+
+import { computed } from 'vue';
+let t=i18n.global.t;
 
 const props = defineProps({
   modelValue: {},
   label: { type: String, default: ""},
   items: { type: Object, default: []},
+  mode: { type: String, required: true }
+});
+  
+const modelValueLabel = computed(() => {
+  let item = utils.getItemByValue(props.items, props.modelValue)
+  if(item){
+    return t(item.title) + "(" + item.value + ")";
+  }
+  return "";
 });
 
-const $route = useRoute();
-let mode = $route.path.includes("new")?"edit":"detail";
-  
+const i18nItems= computed(() => {
+  let items = [];
+  for(const item of props.items){
+    items.push({title: t(item.title) + "(" + item.value + ")", value: item.value})
+  }
+  return items;
+});
+
+
 </script>

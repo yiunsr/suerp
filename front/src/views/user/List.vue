@@ -71,6 +71,14 @@
           <router-link :to="'/user/' + row.item.id">{{ row.item.id }}</router-link>
         </template>
 
+        <template v-slot:item.status="row">
+          <div>{{ rowStaus(row.item.status) }}</div>
+        </template>
+
+        <template v-slot:item.user_role="row">
+          <div>{{ rowUserRole(row.item.user_role) }}</div>
+        </template>
+
         <template v-slot:bottom>
           <v-row class="text-center pt-2">
             <v-col cols="2"></v-col>
@@ -111,7 +119,10 @@ import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import { VDataTableServer } from 'vuetify/lib/labs/components';
+
+import {UserStatusItems, UserRoleItems} from '@/commonValue';
 import {users} from '@/api/service/users';
+
 
 const store = useStore();
 const $route = useRoute();
@@ -120,6 +131,8 @@ let t=i18n.global.t;
 
 const headers = [
   { title: 'id', key: 'id' },
+  { title: t('page_common.status'), key: 'status' },
+  { title: t('page_uesr.user_role'), key: 'user_role' },
   { title: t('page_common.email'), key: 'email' },
   { title: t('page_common.last_name'), key: 'last_name' },
   { title: t('page_common.first_name'), key: 'first_name' },
@@ -179,5 +192,16 @@ watch(
   }
 )
 
+function rowStaus(status){
+  let item = utils.getItemByValue(UserStatusItems, status);
+  if(!item) return "";
+  return t(item.title) + "(" + item.value + ")";
+}
+
+function rowUserRole(role){
+  let item = utils.getItemByValue(UserRoleItems, role);
+  if(!item) return "";
+  return t(item.title) + "(" + item.value + ")";
+}
 
 </script>
