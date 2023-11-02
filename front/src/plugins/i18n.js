@@ -10,6 +10,8 @@ const messages = {
   }
 };
 
+
+
 export const i18n = new createI18n({
   legacy: false,
   locale: 'ko', // set locale

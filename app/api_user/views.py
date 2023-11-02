@@ -9,7 +9,7 @@ from sqlalchemy.future import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Integer
 
-from pydantic import parse_obj_as
+from pydantic import TypeAdapter
 
 from config.db import get_db_session
 from config.http_err import ErrCode
@@ -17,8 +17,8 @@ from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.user import User
 from app.schemas.user import UserPublic, UserPublicList
-from app.schemas.user import UserPrivate, UserPrivateList
-from app.schemas.user import UserCreate
+from app.schemas.user import UserPrivate, UserPrivateList, UserPrivateUpdate
+from app.schemas.user import UserPrivateUpdate
 from app.schemas.user import UserSignup
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
@@ -29,9 +29,9 @@ def user_filter_param(id: str = "", email: str = ""):
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
-async def create_(
-        data: UserCreate, db_session: Session = Depends(get_db_session)) -> Any:
-    db_user = User(**data.dict())
+async def create(
+        data: UserPrivateUpdate, db_session: Session = Depends(get_db_session)) -> Any:
+    db_user = User(**data.model_dump())
     db_user.password_last_ets = func.now_ets()
     db_user.api_key = db_user.gen_api_key()
     db_user.api_key_last_ets = func.now_ets()
@@ -45,14 +45,14 @@ async def create_(
                 err_code=ErrCode.EMAIL_DUPLICATED
             )
     await db_session.refresh(db_user)
-    db_data = parse_obj_as(UserPublic, db_user)
+    db_data = UserPrivate.model_validate(db_user)
     return db_data
 
 @api_pub_user.post("/singup", response_model=UserPublic, 
         status_code=status.HTTP_201_CREATED)
 async def singup_user(
         data: UserSignup, db_session: Session=Depends(get_db_session)) -> Any:
-    db_user = User(**data.dict(exclude={'password'}))
+    db_user = User(**data.model_dump(exclude={'password'}))
     db_user.hash_password = User.gen_password_hash(data.password)
     db_user.password_last_ets = func.now_ets()
     db_user.api_key = db_user.gen_api_key()
@@ -75,13 +75,12 @@ async def singup_user(
 @api_pub_user.put("/{id}", response_model=UserPrivate, 
         status_code=status.HTTP_201_CREATED)
 async def update(
-        id: int, data: UserCreate, db_session: Session=Depends(get_db_session)) -> Any:
-    db_obj = await User.get(db_session, id)
-    db_users = await User.update(db_session, filter_param, order_param, paging_param)
-    db_user.hash_password = User.gen_password_hash(data.password)
-    db_user.password_last_ets = func.now_ets()
-    db_user.api_key = db_user.gen_api_key()
-    db_user.api_key_last_ets = func.now_ets()
+        id: int, data: UserPrivateUpdate, db_session: Session=Depends(get_db_session)) -> Any:
+    db_user = await User.get(db_session, id)
+    db_user = await User.update(db_session, db_user, **data.model_dump())
+    if "password" in data and data.password:
+        db_user.hash_password = User.gen_password_hash(data.password)
+        db_user.password_last_ets = func.now_ets()
     db_session.add(db_user)
     try:
         await db_session.commit()
@@ -95,7 +94,7 @@ async def update(
         err_text = traceback.format_exc()
         print(err_text)
     await db_session.refresh(db_user)
-    return db_user.pydantic(UserPublic)
+    return db_user.pydantic(UserPrivate)
 
 @api_user.get("/{id}", response_model=UserPrivate)
 async def get_user(
@@ -107,7 +106,7 @@ async def get_user(
                 status_code=404,
                 err_code=ErrCode.NO_ITEM
             )
-    return UserPrivate.from_orm(db_user)
+    return UserPrivate.model_validate(db_user)
 
 @api_user.get("/")
 async def list_user(
@@ -129,9 +128,9 @@ def parse_users_as(db_users, share_type):
     results = []
     for db_user in db_users:
         if share_type == "pub":
-            item = parse_obj_as(UserPublic, db_user)
+            item = UserPublic.model_validate(db_user)
         elif share_type == "pri":
-            item = parse_obj_as(UserPrivate, db_user)
+            item = UserPrivate.model_validate(db_user)
         else:
             raise
         results.append(item)

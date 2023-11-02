@@ -1,10 +1,9 @@
 <template>
   <div>
-    <h2 v-if="mode == 'new'">
+    <h2 v-if="isNewPage">
       {{ t("page_user.new_title") }}
-      <v-btn class="mx-4" variant="flat" color="primary" @click="add">{{ t('page_common.add')}}</v-btn>
     </h2>
-    <h2 v-if="mode == 'edit'">
+    <h2 v-else>
       {{ t("page_user.edit_title") }}
     </h2>
 
@@ -16,61 +15,62 @@
           <v-btn prepend-icon="mdi-book-open" value="read">{{  t('page_common.read_mode') }}</v-btn>
         </v-btn-toggle>
       </legend>
-      <v-form>
+      <v-form v-model="detail.valid" validate-on="input" ref="detailForm">
         <v-row>
           <v-col cols="12" md="4" v-show="data.id != undefined">
             <b class="mr-4">ID : </b> <span>{{  data.id }}</span>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild :label="t('page_common.email')" type="email" :mode="detail.mode"
-              required v-model="data.email" />
+              required v-model="data.email" :rules="[rule.req, rule.email]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_common.status')" :items="UserStatusItems" :mode="detail.mode"
-            required v-model="data.status" />
+              required v-model="data.status" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" :mode="detail.mode"
-            required v-model="data.user_role" />
+              required v-model="data.user_role" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild :label="t('page_common.last_name')" type="text" :mode="detail.mode"
-              required  v-model="data.last_name"></mode-text-feild>
+              v-model="data.last_name"></mode-text-feild>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild :label="t('page_common.first_name')" type="text" :mode="detail.mode" 
-              required v-model="data.first_name"></mode-text-feild>
+              v-model="data.first_name"></mode-text-feild>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild :label="t('page_user.nickname')" type="text" :mode="detail.mode"
-            required v-model="data.nickname"></mode-text-feild>
+              v-model="data.nickname"></mode-text-feild>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild :label="t('page_uesr.display')" type="text" :mode="detail.mode"
-            required v-model="data.display"></mode-text-feild>
+              v-model="data.display"></mode-text-feild>
           </v-col>
           
           <v-col cols="12" md="4">
             <mode-text-feild label="ref_id0" type="number" :mode="detail.mode"
-              required v-model="data.ref_id0" />
+              v-model="data.ref_id0" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild label="ref_id1" type="number" :mode="detail.mode"
-              required v-model="data.ref_id1" />
+              v-model="data.ref_id1" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild label="ref_id2" type="number" :mode="detail.mode"
-              required v-model="data.ref_id2" />
+              v-model="data.ref_id2" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-feild label="ref_id3" type="number" :mode="detail.mode"
-              required v-model="data.ref_id3" />
+              v-model="data.ref_id3" />
           </v-col>
         </v-row>
 
         <v-row v-show="detail.mode == 'edit'">
           <v-col md="4">
-            <v-btn color="success">{{ t('page_common.apply_modify') }}</v-btn>
+            <v-btn v-if="isNewPage" color="success" @click="submitAdd">{{ t('page_common.add_new') }}</v-btn>
+            <v-btn v-else color="success" @click="submitUpdate">{{ t('page_common.apply_update') }}</v-btn>
           </v-col>
         </v-row>
         <!-- <mode-radio-group label="Name2" :items="[{label: 'label', value: 'value'}]"></mode-radio-group> -->
@@ -80,11 +80,13 @@
 </template>
   
 <script setup>
-import { reactive } from 'vue';
+import { ref, reactive } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
+import {utils} from '@/plugins/utils';
+import {rule} from '@/js/rule';
 
 import {UserStatusItems, UserRoleItems} from '@/commonValue';
 import {users} from '@/api/service/users';
@@ -98,20 +100,38 @@ const $route = useRoute();
 let $router = useRouter();
 let t=i18n.global.t;
 
+const detailForm = ref(null);
 const userId = $route.params.userId;
 
+let isNewPage = $route.path.includes("new")?true:false;
 let mode = $route.path.includes("new")?"edit":"read";
-let detail = reactive({ mode });
+let detail = reactive({ mode, valid: false });
+
 
 let data = reactive({
-  id: undefined, email: "", status: "", user_role: "", 
+  id: null, email: "", status: "A", user_role: null, 
   last_name: "", first_name: "", nickname: "", display: "", 
-  ref_id0: undefined, ref_id1: undefined, 
-  ref_id2: undefined, ref_id3: undefined,
+  ref_id0: null, ref_id1: null, 
+  ref_id2: null, ref_id3: null,
 });
 
-function add(){
+async function submitAdd(){
+  console.log("form valid : " + detail.valid);
+  if(!detail.valid){
+    await detailForm.value.validate();
+    return;
+  }
+    
   users.add(data).then(function(res){
+    $router.push('/user/' + res.data.id);
+    toast.success(t('page_common.add_success'));
+  }).catch(function(error){
+  });
+}
+
+function submitUpdate(){
+  let id = data.id;
+  users.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
@@ -128,12 +148,18 @@ function getAPIDetail(){
     data.first_name = res.data.first_name;
     data.nickname = res.data.nickname;
     data.display = res.data.display;
+
+    data.ref_id0 = res.data.ref_id0;
+    data.ref_id1 = res.data.ref_id1;
+    data.ref_id2 = res.data.ref_id2;
+    data.ref_id3 = res.data.ref_id3;
   }).catch(function(error){
   });
 }
 
 onMounted(() => {
-  getAPIDetail();
+  if(!isNewPage)
+    getAPIDetail();
 })
 
 

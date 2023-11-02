@@ -20,6 +20,7 @@ const store = createStore({
     },
     login: init_login,
     loginDialog: false,
+    serverRequestDict: {},
   },
   mutations: { // 동기작업
     showSnackbar(state, body, timeout){
@@ -42,6 +43,15 @@ const store = createStore({
     changeLogin(state, login){
       state.login = login;
     },
+    addLoadingKey(state, key){
+      state.serverRequestDict[key] = true;
+    },
+    removeLoadingKey(state, key){
+      if(state.serverRequestDict.hasOwnProperty(key)){
+        delete state.serverRequestDict[key];
+      }
+
+    },
   },
   action: { // 비동기 작업
 
@@ -58,6 +68,9 @@ const store = createStore({
     },
     isLogin: (state) => {
       return state.login;
+    },
+    isShowLoadingModal: (state) => {
+      return Object.keys(state.serverRequestDict).length > 0;
     },
   },
 });

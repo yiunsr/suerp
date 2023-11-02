@@ -18,6 +18,14 @@ class Users{
     });
   }
 
+  update(id, data){
+    return $axios({
+      method: 'put',
+      url: '/api/users/' + id,
+      data
+    });
+  }
+
   detail(id){
     return $axios({
       method: 'get',

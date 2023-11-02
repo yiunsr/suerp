@@ -62,6 +62,15 @@
       </v-btn>
     </template>
   </v-snackbar>
+
+  <v-overlay :model-value="isShowLoadingModal" class="text-center" :persistent="true">
+    <div class="text-center" id="loading-wrap">
+      <v-progress-circular  :size="200" :width="15"
+        indeterminate
+        color="purple"
+      ></v-progress-circular>
+    </div>
+  </v-overlay>
 </template>
 
 <script setup>
@@ -83,6 +92,9 @@
   });
   const isShowLoginModal = computed(() => {
     return store.getters.isLoginDialogShow;
+  });
+  const isShowLoadingModal = computed(() => {
+    return store.getters.isShowLoadingModal;
   });
 
 
@@ -151,3 +163,11 @@
     store.commit('hideSnackbar');
   }
 </script>
+
+<style>
+#loading-wrap{
+  position: absolute;
+  left: calc(50vw - 100px);
+  top: calc(50vh - 150px);
+}
+</style>

@@ -27,7 +27,11 @@ page_common.add,Add,추가
 page_common.add_success,Addition was successful.,추가 완료 했습니다.
 page_common.edit_mode,Edit Mode,수정모드
 page_common.read_mode,Read Only,읽기전용
-page_common.apply_modify,Apply modifications,수정사항 적용하기
+page_common.add_new,Add new,새로 추가하기
+page_common.apply_update,Apply modifications,수정사항 적용하기
+rule.required,This input is required.,이 입력은 필수사항입니다.
+rule.email,The email format does not fit.,이메일 형식에 맞지 않습니다.
+error.http_422,Input data is incorrect.,입력 데이터가 올바르지 않습니다. 
 ==== User ====,,
 page_user.list_title,User List,유저 리스트
 page_user.new_title,User New,유저 추가

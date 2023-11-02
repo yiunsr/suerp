@@ -1,7 +1,10 @@
 <template>
   <div>
-    <v-select :label="props.label" :items="i18nItems" v-show="props.mode == 'edit'"
-      :model-value="props.modelValue"  density="compact"
+    <v-select :label="props.label + (props.required?' ★':'')" 
+      :items="i18nItems" v-show="props.mode == 'edit'"
+      :model-value="props.modelValue"  
+      :required="props.required" density="compact"
+      v-bind="$attrs"
     ></v-select>
 
     <span v-show="mode == 'read'">
@@ -19,7 +22,8 @@ import { computed } from 'vue';
 let t=i18n.global.t;
 
 const props = defineProps({
-  modelValue: {},
+  required: { type: Boolean, default: false},
+  modelValue: { type: String, default: ""},
   label: { type: String, default: ""},
   items: { type: Object, default: []},
   mode: { type: String, required: true }
