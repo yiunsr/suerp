@@ -41,12 +41,19 @@
 
           <v-col cols="12" md="4">
             <mode-multi-text-field :label="t('page_common.email')" type="email" :mode="detail.mode"
-              required v-model="data.email_jb" :rules="[rule.req, rule.email]" />
+              v-model="data.email_jb" :rules="[rule.req, rule.email]" />
           </v-col>
-
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.phone')" type="tel" :mode="detail.mode"
-              required v-model="data.phone" :rules="[rule.req, rule.phone]" />
+            <mode-multi-text-field :label="t('page_common.phone')" type="tel" :mode="detail.mode"
+              v-model="data.phone_jb" :rules="[rule.req]" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <mode-multi-text-field :label="t('page_common.address')" type="text" :mode="detail.mode"
+              v-model="data.address_jb" :rules="[rule.req]" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <mode-multi-text-field label="URL" type="text" :mode="detail.mode"
+              v-model="data.url_jb" :rules="[rule.req]" />
           </v-col>
           
           <v-col cols="12" md="4">
@@ -110,9 +117,9 @@ let detail = reactive({ mode, valid: false });
 
 
 let data = reactive({
-  id: null, email_jb: [], status: "A", 
+  id: null, status: "A", 
+  email_jb: [], phone_jb: [], address_jb: [], url_jb: [],
   last_name: "", first_name: "", display: "", 
-  phone: "", address: "",
   ref_id0: null, ref_id1: null, 
   ref_id2: null, ref_id3: null,
 });
@@ -125,7 +132,7 @@ async function submitAdd(){
   }
     
   persons.add(data).then(function(res){
-    $router.push('/user/' + res.data.id);
+    $router.push('/person/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
@@ -147,7 +154,9 @@ function getAPIDetail(){
     data.first_name = res.data.first_name;
 
     data.email_jb = res.data.email_jb;
-    data.phone = res.data.phone;
+    data.phone_jb = res.data.phone_jb;
+    data.address_jb = res.data.address_jb;
+    data.url_jb = res.data.url_jb;
     data.status = res.data.status;
 
     data.ref_id0 = res.data.ref_id0;

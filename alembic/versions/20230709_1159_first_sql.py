@@ -247,6 +247,8 @@ def upgrade():
     sa.Column('ref_id1', sa.Integer(), nullable=True),
     sa.Column('ref_id2', sa.Integer(), nullable=True),
     sa.Column('ref_id3', sa.Integer(), nullable=True),
+    sa.Column('create_ets', sa.Integer(), nullable=False),
+    sa.Column('update_ets', sa.Integer(), nullable=False),
     sa.Column('category', sa.Integer(), nullable=True),
     sa.Column('data_jb', postgresql.JSONB(astext_type=sa.Text()), server_default=sa.text("'{}'::jsonb"), nullable=False),
     sa.Column('tags_jb', postgresql.JSONB(astext_type=sa.Text()), server_default=sa.text("'[]'::jsonb"), nullable=False),

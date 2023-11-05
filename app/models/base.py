@@ -79,12 +79,6 @@ class Base:
         query = query.offset(skip).limit(limit)
         result = await db_session.execute(query)
         return result.scalars().all()
-    
-    @classmethod
-    async def insert(cls, db_session, param):
-        query = select(cls).where(cls.id==int(id))
-        result = await db_session.execute(query)
-        return result.scalars().first()
 
     @classmethod
     async def update(cls, db_session, db_obj, **kwargs):

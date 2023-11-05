@@ -36,6 +36,7 @@ widget.type_home,home,집
 widget.type_else,else,기타
 rule.required,This input is required.,이 입력은 필수사항입니다.
 rule.email,The email format does not fit.,이메일 형식에 맞지 않습니다.
+rule.phone,The phone number format does not fit.,전화번호 형식에 맞지 않습니다.
 error.http_422,Input data is incorrect.,입력 데이터가 올바르지 않습니다. 
 ==== User ====,,
 page_user.list_title,User List,유저 리스트

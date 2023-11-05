@@ -17,8 +17,8 @@ from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.user import User
 from app.schemas.user import UserPublic, UserPublicList
-from app.schemas.user import UserPrivate, UserPrivateList, UserPrivateUpdate
-from app.schemas.user import UserPrivateUpdate
+from app.schemas.user import UserPrivate, UserPrivateList
+from app.schemas.user import UserPrivateUpdate, UserPrivateCreate
 from app.schemas.user import UserSignup
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
@@ -30,7 +30,7 @@ def user_filter_param(id: str = "", email: str = ""):
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
 async def create(
-        data: UserPrivateUpdate, db_session: Session = Depends(get_db_session)) -> Any:
+        data: UserPrivateCreate, db_session: Session = Depends(get_db_session)) -> Any:
     db_user = User(**data.model_dump())
     db_user.password_last_ets = func.now_ets()
     db_user.api_key = db_user.gen_api_key()
@@ -76,12 +76,12 @@ async def singup_user(
         status_code=status.HTTP_201_CREATED)
 async def update(
         id: int, data: UserPrivateUpdate, db_session: Session=Depends(get_db_session)) -> Any:
-    db_user = await User.get(db_session, id)
-    db_user = await User.update(db_session, db_user, **data.model_dump())
+    db_obj = await User.get(db_session, id)
+    db_obj = await User.update(db_session, db_obj, **data.model_dump())
     if "password" in data and data.password:
-        db_user.hash_password = User.gen_password_hash(data.password)
-        db_user.password_last_ets = func.now_ets()
-    db_session.add(db_user)
+        db_obj.hash_password = User.gen_password_hash(data.password)
+        db_obj.password_last_ets = func.now_ets()
+    db_session.add(db_obj)
     try:
         await db_session.commit()
     except IntegrityError as err:
@@ -93,8 +93,8 @@ async def update(
     except Exception as e:
         err_text = traceback.format_exc()
         print(err_text)
-    await db_session.refresh(db_user)
-    return db_user.pydantic(UserPrivate)
+    await db_session.refresh(db_obj)
+    return db_obj.pydantic(UserPrivate)
 
 @api_user.get("/{id}", response_model=UserPrivate)
 async def get_obj(
@@ -117,14 +117,14 @@ async def list_user(
         _ = Depends(get_current_active_user)) -> Any:
     db_count = await User.count(db_session, filter_param)
     db_users = await User.listing(db_session, filter_param, order_param, paging_param)
-    return dict(total=db_count, data=parse_users_as(db_users, "pri"))
+    return dict(total=db_count, data=objs_to_schemas(db_users, "pri"))
 
 
 @api_user.get("/me/", response_model=UserPrivate)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-def parse_users_as(db_users, share_type):
+def objs_to_schemas(db_users, share_type):
     results = []
     for db_user in db_users:
         if share_type == "pub":

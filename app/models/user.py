@@ -37,6 +37,10 @@ class User(Base, BaseInfo, BaseCT):
         String(256), nullable=False, server_default=text("''"))
     password_last_ets = Column(Integer, nullable=False)
     last_join_ets = Column(Integer)
+    create_ets = Column(Integer, default=func.now_ets(), nullable=False)
+    update_ets = Column(
+        Integer, default=func.now_ets(), onupdate=func.now_ets(), nullable=False
+    )
 
     @staticmethod
     def gen_api_key() -> str:

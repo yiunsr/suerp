@@ -16,6 +16,7 @@ from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.person import Person
 from app.schemas.person import PersonPublic, PersonPrivate
+from app.schemas.person import PersonPrivateCreate, PersonPrivateUpdate
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_person
@@ -29,22 +30,6 @@ def person_filter_param(
         "first_name": first_name, "last_name": last_name,
         "phone_jb": phone, "email_jb__in": email}
 
-@api_person.post(
-        "/", response_model=PersonPublic, status_code=status.HTTP_201_CREATED)
-async def create(
-        data: PersonPublic, db_session: Session = Depends(get_db_session)) -> Any:
-    db_person = Person(**data.dict())
-    db_session.add(db_person)
-    # try:
-    #     await db_session.commit()
-    # except IntegrityError as err:
-    #     if "user_email_key" in err.args[0]:
-    #         raise ResError(
-    #             status_code=409,
-    #             err_code=ErrCode.EMAIL_DUPLICATED
-    #         )
-    return db_person.pydantic(PersonPublic)
-
 @api_person.get("/")
 async def list_obj(
         filter_param: Annotated[dict, Depends(person_filter_param)],
@@ -54,7 +39,7 @@ async def list_obj(
         _ = Depends(get_current_active_user)) -> Any:
     db_count = await Person.count(db_session, filter_param)
     db_persons = await Person.listing(db_session, filter_param, order_param, paging_param)
-    return dict(total=db_count, data=parse_person_as(db_persons, "pub"))
+    return dict(total=db_count, data=objs_to_schemas(db_persons, "pub"))
 
 @api_person.get("/{id}", response_model=PersonPrivate)
 async def get_obj(
@@ -68,23 +53,42 @@ async def get_obj(
             )
     return PersonPrivate.model_validate(db_obj)
 
-def parse_person_as(db_persons, share_type):
+
+@api_person.post(
+        "/", response_model=PersonPrivate, status_code=status.HTTP_201_CREATED)
+async def create(
+        data: PersonPrivateCreate, db_session: Session = Depends(get_db_session)) -> Any:
+    db_obj = Person(**data.model_dump())
+    db_session.add(db_obj)
+    await db_session.commit()
+    await db_session.refresh(db_obj)
+    db_data = PersonPrivate.model_validate(db_obj)
+    return db_data
+
+
+@api_person.put("/{id}", response_model=PersonPrivate)
+async def update(
+        id: int, data: PersonPrivateUpdate, db_session: Session=Depends(get_db_session)) -> Any:
+    db_obj = await Person.get(db_session, id)
+    db_obj = await Person.update(db_session, db_obj, **data.model_dump())
+    db_session.add(db_obj)
+    try:
+        await db_session.commit()
+    except Exception as e:
+        err_text = traceback.format_exc()
+        print(err_text)
+    await db_session.refresh(db_obj)
+    return db_obj.pydantic(PersonPrivate)
+
+
+def objs_to_schemas(db_users, share_type):
     results = []
-    for db_person in db_persons:
+    for db_user in db_users:
         if share_type == "pub":
-            item = PersonPublic.model_validate(db_person)
+            item = PersonPublic.model_validate(db_user)
         elif share_type == "pri":
-            item = PersonPrivate.model_validate(db_person)
+            item = PersonPrivate.model_validate(db_user)
         else:
             raise
         results.append(item)
     return results
-
-# @api_person.post("/")
-# async def add_user(
-#         person_add_param: Annotated[dict, Depends(person_add_param)],
-#         db_session: Session = Depends(get_db_session),
-#         _ = Depends(get_current_active_user)) -> Any:
-#     db_person = await Person.insert(db_session, person_add_param)
-#     data = parse_obj_as(PersonPublic, db_person)
-#     return data

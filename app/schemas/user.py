@@ -1,6 +1,6 @@
-from typing import Optional
+from typing import Optional, ClassVar
 from datetime import datetime
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from app.models.user import User as DB_User
 
 class UserBase(BaseModel):
@@ -11,6 +11,7 @@ class UserBase(BaseModel):
     display: str = ""
     user_role: str = ""
     status: str = ""
+    create_ets: Optional[int]
 
 class UserSignup(UserBase):
     email: EmailStr
@@ -47,6 +48,9 @@ class UserPrivate(UserBase):
         arbitrary_types_allowed = True
 
 class UserPrivateCreate(UserBase):
+    id: ClassVar
+    create_ets: ClassVar
+    
     nickname: str = None
     ref_id0: int | None = None
     ref_id1: int | None = None

@@ -18,6 +18,12 @@ const rule = {
     if (valid) return true
     return t('rule.email');
   },
+  phone: (value) => {
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let valid = re.test(value);
+    if (valid) return true
+    return t('rule.email');
+  },
 }
 
 export {rule}
