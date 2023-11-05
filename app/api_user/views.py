@@ -97,7 +97,7 @@ async def update(
     return db_user.pydantic(UserPrivate)
 
 @api_user.get("/{id}", response_model=UserPrivate)
-async def get_user(
+async def get_obj(
         id: int, db_session: Session = Depends(get_db_session),
         _ = Depends(get_current_active_user)) -> Any:
     db_user = await User.get(db_session, id)

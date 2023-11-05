@@ -18,7 +18,7 @@ class ColMetaSchema(BaseModel):
     detail: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ColMetaSCreate(BaseModel):
     table_meta_id: int

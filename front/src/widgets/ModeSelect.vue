@@ -23,7 +23,7 @@ let t=i18n.global.t;
 
 const props = defineProps({
   required: { type: Boolean, default: false},
-  modelValue: { type: String, default: ""},
+  modelValue: { type: String, default: []},
   label: { type: String, default: ""},
   items: { type: Object, default: []},
   mode: { type: String, required: true }

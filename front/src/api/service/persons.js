@@ -9,6 +9,29 @@ class Persons{
       params
     });
   }
+
+  add(data){
+    return $axios({
+      method: 'post',
+      url: '/api/persons/',
+      data
+    });
+  }
+
+  update(id, data){
+    return $axios({
+      method: 'put',
+      url: '/api/persons/' + id,
+      data
+    });
+  }
+
+  get(id){
+    return $axios({
+      method: 'get',
+      url: '/api/persons/' + id,
+    });
+  }
   
 }
 export let persons = new Persons();

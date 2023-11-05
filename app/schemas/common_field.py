@@ -4,21 +4,21 @@ from pydantic import BaseModel, EmailStr
 from app.models.person import Person as DB_Person
 
 class EmailField(BaseModel):
-    email: EmailStr = None
+    value: EmailStr = None
     type: str = None
 
 class AddressField(BaseModel):
-    address: str = None
+    value: str = None
     type: str = None
 
 class PhoneField(BaseModel):
-    phone: str = None
+    value: str = None
     type: str = None
 
 class MessengerField(BaseModel):
-    messenge: str = None
+    value: str = None
     type: str = None
 
 class UrlField(BaseModel):
-    url: str = None
+    value: str = None
     type: str = None

@@ -10,4 +10,4 @@ class TableMetaSchema(BaseModel):
     name_lang_jb: dict
 
     class Config:
-        orm_mode = True
+        from_attributes = True

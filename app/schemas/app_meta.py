@@ -10,7 +10,7 @@ class AppMetaSchema(BaseModel):
     detail: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AppMetaCreate(BaseModel):
     status: str = "A"
@@ -18,7 +18,7 @@ class AppMetaCreate(BaseModel):
     detail: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AppMetaUpdate(BaseModel):
     status: str = "A"
@@ -26,4 +26,4 @@ class AppMetaUpdate(BaseModel):
     detail: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True

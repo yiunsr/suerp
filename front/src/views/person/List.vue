@@ -1,7 +1,10 @@
 <template>
   <div>
     <h2>
-      {{ t("page_person_list.title") }}
+      {{ t("page_person.title") }}
+      <v-btn to="/person/new" density="comfortable" class="ml-4 mb-2" size="large" color="blue-darken-4">
+        {{  t('page_common.add') }}
+      </v-btn>
     </h2>
     <div v-if="isLogin">
       <div class="my-2">
@@ -20,7 +23,7 @@
                         <v-text-field type="number" density="compact" v-model="filters.id" @keyup.enter="submitFilter" hide-details label="ID" />
                       </v-col>
                       <v-col md="2" sm="4">
-                        <v-text-field type="name" density="compact" v-model="filters.name" @keyup.enter="submitFilter" hide-details label="name" />
+                        <v-text-field type="text" density="compact" v-model="filters.display" @keyup.enter="submitFilter" hide-details label="display" />
                       </v-col>
                       <v-col md="3" sm="5">
                         <v-text-field density="compact" v-model="filters.email" hide-details @keyup.enter="submitFilter" label="email" />
@@ -78,6 +81,9 @@
         :items="tableData.data"
         :items-length="tableData.total"
       >
+        <template v-slot:item.id="row">
+          <router-link :to="'/person/' + row.item.id">{{ row.item.id }}</router-link>
+        </template>
         <template v-slot:bottom>
           <v-row class="text-center pt-2">
             <v-col cols="2"></v-col>
@@ -127,14 +133,14 @@ let t=i18n.global.t;
 
 const headers = [
   { title: 'id', key: 'id' },
-  { title: t('page_common.email'), key: 'email_jb[0].email' },
-  { title: t('page_common.phone'), key: 'phone_jb[0].phone' },
-  { title: t('page_common.name'), key: 'name' },
+  { title: t('page_common.display'), key: 'display' },
   { title: t('page_common.last_name'), key: 'last_name' },
   { title: t('page_common.first_name'), key: 'first_name' },
+  { title: t('page_common.email'), key: 'email_jb[0].value' },
+  { title: t('page_common.phone'), key: 'phone_jb[0].value' },
 ];
 let initFilter = utils.initFilters($route.query,
-  {id: "", name: "", email: ""}
+  {id: "", display: "", phone: "", email: ""}
 );
 
 /**** common list code start ****/

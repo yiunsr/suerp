@@ -9,14 +9,13 @@ from sqlalchemy.future import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Integer
 
-from pydantic import parse_obj_as
 
 from config.db import get_db_session
 from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.person import Person
-from app.schemas.person import PersonPublic
+from app.schemas.person import PersonPublic, PersonPrivate
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_person
@@ -47,7 +46,7 @@ async def create(
     return db_person.pydantic(PersonPublic)
 
 @api_person.get("/")
-async def list_user(
+async def list_obj(
         filter_param: Annotated[dict, Depends(person_filter_param)],
         paging_param: Annotated[dict, Depends(common_paging_param)],
         order_param: Annotated[dict, Depends(common_order_param)],
@@ -57,11 +56,25 @@ async def list_user(
     db_persons = await Person.listing(db_session, filter_param, order_param, paging_param)
     return dict(total=db_count, data=parse_person_as(db_persons, "pub"))
 
+@api_person.get("/{id}", response_model=PersonPrivate)
+async def get_obj(
+        id: int, db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
+    db_obj = await Person.get(db_session, id)
+    if db_obj is None:
+        raise ResError(
+                status_code=404,
+                err_code=ErrCode.NO_ITEM
+            )
+    return PersonPrivate.model_validate(db_obj)
+
 def parse_person_as(db_persons, share_type):
     results = []
     for db_person in db_persons:
         if share_type == "pub":
-            item = parse_obj_as(PersonPublic, db_person)
+            item = PersonPublic.model_validate(db_person)
+        elif share_type == "pri":
+            item = PersonPrivate.model_validate(db_person)
         else:
             raise
         results.append(item)

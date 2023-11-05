@@ -5,12 +5,12 @@ from app.models.user import User as DB_User
 
 class UserBase(BaseModel):
     id: Optional[int]
-    email: Optional[EmailStr] = None
-    first_name: str = None
-    last_name: str = None
-    display: str = None
-    user_role: str = None
-    status: str = None
+    email: Optional[EmailStr]
+    first_name: str = ""
+    last_name: str = ""
+    display: str = ""
+    user_role: str = ""
+    status: str = ""
 
 class UserSignup(UserBase):
     email: EmailStr
@@ -22,7 +22,7 @@ class UserChangePassword(UserBase):
 
 class UserPublic(UserBase):
     class Config:
-        orm_mode = True
+        from_attributes = True
         arbitrary_types_allowed = True
 
 class UserPublicList(BaseModel):
@@ -30,7 +30,7 @@ class UserPublicList(BaseModel):
     data: list[UserPublic]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         arbitrary_types_allowed = True
 
 class UserPrivate(UserBase):
@@ -64,5 +64,5 @@ class UserPrivateList(BaseModel):
     data: list[UserPrivate]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         arbitrary_types_allowed = True

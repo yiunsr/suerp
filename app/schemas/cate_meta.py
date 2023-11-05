@@ -14,7 +14,7 @@ class CateMetaSchema(BaseModel):
     api_key: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class CateMetaCreate(BaseModel):
     app_meta_id: int = None

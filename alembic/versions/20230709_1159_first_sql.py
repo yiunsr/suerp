@@ -131,9 +131,9 @@ def upgrade():
     )
     op.create_table('person',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('first_name', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('last_name', sa.String(length=64), server_default=sa.text("''"), nullable=False),
+    sa.Column('display', sa.String(length=64), server_default=sa.text("''"), nullable=False),
     sa.Column('address_jb', postgresql.JSONB(astext_type=sa.Text()), server_default=sa.text("'[]'::jsonb"), nullable=False),
     sa.Column('phone_jb', postgresql.JSONB(astext_type=sa.Text()), server_default=sa.text("'[]'::jsonb"), nullable=False),
     sa.Column('email_jb', postgresql.JSONB(astext_type=sa.Text()), server_default=sa.text("'[]'::jsonb"), nullable=False),

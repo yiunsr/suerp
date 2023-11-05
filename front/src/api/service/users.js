@@ -26,7 +26,7 @@ class Users{
     });
   }
 
-  detail(id){
+  get(id){
     return $axios({
       method: 'get',
       url: '/api/users/' + id,

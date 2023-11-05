@@ -10,15 +10,28 @@ from app.schemas.common_field import MessengerField
 from app.schemas.common_field import UrlField
 
 class PersonBase(BaseModel):
-    first_name: str = None
-    last_name: str = None
+    id: Optional[int]
+    first_name: str = ""
+    last_name: str = ""
+    display: str = ""
     email_jb: List[EmailField] = []
     phone_jb: List[PhoneField] = []
-    address_jb: List[AddressField] = []
     url_jb: List[UrlField] = []
+    status: str = ""
+    create_ets: Optional[int] = None
 
 class PersonPublic(PersonBase):
-    id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
         arbitrary_types_allowed = True
+
+class PersonPrivate(PersonBase):
+    ref_id0: Optional[int] = None
+    ref_id1: Optional[int] = None
+    ref_id2: Optional[int] = None
+    ref_id3: Optional[int] = None
+
+    class Config:
+        from_attributes = True
+        arbitrary_types_allowed = True
+    
