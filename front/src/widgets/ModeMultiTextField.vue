@@ -19,6 +19,41 @@
             </v-card-title>
             <v-card-text>
               <v-container class="v-card-text mx-0 px-0">
+                <draggable tag="div" :list="data.textItems" class="list-group" handle=".handle" item-key="name">
+                  <template #item="{ element, index }">
+                    <v-row :dense="true" :key="index">
+                      <v-col cols="1">
+                        <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-swap-vertical"
+                          class="handle mt-2"></v-btn>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-select density="compact" :label="t('widget.type')" :rules="[rule.req]"
+                          :items="items" 
+                          v-model="data.textItems[index].type"
+                          @update:modelValue="update">
+                        </v-select>
+                      </v-col>
+                      <v-col cols="6">
+                        <v-text-field v-if="mode == 'edit'"
+                          :type="props.type"
+                          density="compact"
+                          :label="props.label + (props.required?' ★':'')" 
+                          :required="props.required"
+                          :rules="props.rules"
+                          v-bind="$attrs"
+                          @update:modelValue="update"
+                          v-model="data.textItems[index].value"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="1">
+                        <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-minus"
+                          @click="removeItem(index)" class="mt-2"></v-btn>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </draggable>
+
+                <!--
                 <v-row :dense="true" v-for="(textItem, textItemIdx) in data.textItems" :key="textItemIdx">
                   <v-col cols="1">
                     <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-minus"
@@ -26,11 +61,7 @@
                   </v-col>
                   <v-col cols="4">
                     <v-select density="compact" :label="t('widget.type')" :rules="[rule.req]"
-                      :items="[
-                        {title: t('widget.type_home'), value: 'home'}, 
-                        {title: t('widget.type_work'), value: 'work'}, 
-                        {title: t('widget.type_else'), value: 'else'}, 
-                      ]" 
+                      :items="items" 
                       v-model="data.textItems[textItemIdx].type"
                       @update:modelValue="update">
                     </v-select>
@@ -48,6 +79,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
+              -->
               </v-container>
             </v-card-text>
 
@@ -66,6 +98,7 @@
   
   <script setup>
   import _ from 'lodash';
+  import draggable from 'vuedraggable'
   import { defineEmits, reactive, ref, computed, watch } from "vue";
   import { useRoute } from 'vue-router';
 
@@ -77,6 +110,8 @@
     required: { type: Boolean, default: false},
     modelValue: { type: Array, default: []},
     label: { type: String, default: ""},
+    // "email", "phone", "address", "url", "messenger"
+    colType: { type: String, default: "email"},
     type: { type: String, default: "text"},
     mode: { type: String, required: true },
     rules: { default: [] },
@@ -94,8 +129,32 @@
     if(props.type == "number"){
       value = (value === '' ? null : value);
     }
-    //$emit('update:modelValue', value);
   }
+
+  function getItem(colType){
+    if(["email", "phone"].includes(colType))
+      return [
+        {title: t('widget.type_home'), value: 'home'},
+        {title: t('widget.type_work'), value: 'work'},
+        {title: t('widget.type_else'), value: 'else'},
+      ];
+    else if(["url"].includes(colType)){
+      return [
+        {title: t('widget.type_home'), value: 'home'},
+        {title: t('widget.type_work'), value: 'work'},
+        {title: t('widget.type_else'), value: 'else'},
+      ];
+    }
+    else{
+      return [
+        {title: t('widget.type_home'), value: 'home'},
+        {title: t('widget.type_work'), value: 'work'},
+        {title: t('widget.type_else'), value: 'else'}, 
+      ];
+    }
+  }
+
+  const items = getItem(props.colType);
 
   function addItem(){
     data.textItems.push({type: "else", value: ""})

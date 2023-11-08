@@ -41,19 +41,19 @@
 
           <v-col cols="12" md="4">
             <mode-multi-text-field :label="t('page_common.email')" type="email" :mode="detail.mode"
-              v-model="data.email_jb" :rules="[rule.req, rule.email]" />
+                colType="email" v-model="data.email_jb" :rules="[rule.req, rule.email]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-multi-text-field :label="t('page_common.phone')" type="tel" :mode="detail.mode"
-              v-model="data.phone_jb" :rules="[rule.req]" />
+              colType="phone" v-model="data.phone_jb" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-multi-text-field :label="t('page_common.address')" type="text" :mode="detail.mode"
-              v-model="data.address_jb" :rules="[rule.req]" />
+              colType="address" v-model="data.address_jb" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-multi-text-field label="URL" type="text" :mode="detail.mode"
-              v-model="data.url_jb" :rules="[rule.req]" />
+              colType="url" v-model="data.url_jb" :rules="[rule.req]" />
           </v-col>
           
           <v-col cols="12" md="4">
