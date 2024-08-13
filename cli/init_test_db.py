@@ -43,7 +43,7 @@ async def add_test_user(db_session):
 
     param = {"email": "manager0002@test.com", "display": "manager0002",
         "first_name": "first0002", "last_name": "last0002", "status": "S",
-        "user_role": "M", "password": "man_0001"}
+        "user_role": "M", "password": "man_0002"}
     await add_user(db_session, param)
 
     param = {"email": "manager0003@test.com", "display": "manager0003",

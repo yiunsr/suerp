@@ -96,7 +96,7 @@ def include_object(object, name, type_, *args, **kwargs):
     return ret_table and ret_col
 
 
-application = create_app(os.getenv("FASTAPI_CONFIG") or "default")
+application = create_app(os.getenv("FASTAPI_CONFIG") or "development")
 target_metadata = Base.metadata
 
 

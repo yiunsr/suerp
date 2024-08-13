@@ -42,7 +42,7 @@ async def script(config):
         await db_session.commit()
 
     async with SessionLocal() as db_session:
-        param = {"name": "system",
+        param = {"display": "system",
             "first_name": "system", "last_name": "system", "status": "S"}
         await add_person(db_session, param)
 

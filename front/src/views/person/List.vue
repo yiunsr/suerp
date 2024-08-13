@@ -123,7 +123,6 @@ import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
-import { VDataTableServer } from 'vuetify/lib/labs/components';
 import {persons} from '@/api/service/persons';
 
 const store = useStore();

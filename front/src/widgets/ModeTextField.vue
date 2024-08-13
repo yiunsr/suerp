@@ -15,7 +15,6 @@
 </template>
 
 <script setup>
-import { defineEmits } from "vue";
 import { useRoute } from 'vue-router';
 
 const props = defineProps({

@@ -81,6 +81,13 @@ wsl -- hostname -I
 ```
 
 
+### 테스트 유저
+* manager0001@test.com    /   man_0001
+* manager0002@test.com    /   man_0001
+* tester0005@test.com   /   test_0005
+* tester0006@test.com   /   test_0006
+
+
 
 ### 참고
 https://github.com/grillazz/fastapi-sqlalchemy-asyncpg/blob/main/app/models/base.py

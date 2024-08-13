@@ -99,7 +99,7 @@
   <script setup>
   import _ from 'lodash';
   import draggable from 'vuedraggable'
-  import { defineEmits, reactive, ref, computed, watch } from "vue";
+  import { reactive, ref, computed, watch } from "vue";
   import { useRoute } from 'vue-router';
 
   import {rule} from '@/js/rule';
