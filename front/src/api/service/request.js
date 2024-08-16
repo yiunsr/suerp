@@ -12,11 +12,14 @@ const getCookie = (name) => {
   }, '')
 }
 
-const headers = {
+const config = {
   'X-Requested-With': 'XMLHttpRequest',
   'Content-Type': 'multipart/form-data;charset=UTF-8',
+  paramsSerializer: {
+    indexes: null,
+  }
 };
-const $axios = axios.create(headers);
+const $axios = axios.create(config);
 $axios.interceptors.request.use((config) => {
   let accessToken = getCookie("access_token");
   if(config.headers && accessToken){

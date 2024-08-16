@@ -95,7 +95,7 @@ import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import {rule} from '@/js/rule';
 
-import {UserStatusItems, UserRoleItems} from '@/commonValue';
+import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {persons} from '@/api/service/persons';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeMultiTextField from "@/widgets/ModeMultiTextField";
@@ -109,7 +109,7 @@ let $router = useRouter();
 let t=i18n.global.t;
 
 const detailForm = ref(null);
-const personId = $route.params.personId;
+const personId = $route.params.id;
 
 let isNewPage = $route.path.includes("new")?true:false;
 let mode = $route.path.includes("new")?"edit":"read";

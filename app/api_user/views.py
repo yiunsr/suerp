@@ -3,6 +3,7 @@ from typing import Annotated
 from typing import Any, List, Optional
 from fastapi import Depends
 from fastapi import status
+from fastapi import Query
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
@@ -24,8 +25,9 @@ from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_user, api_pub_user
 
-def user_filter_param(id: str = "", email: str = ""):
-    return {"id": id, "email": email}
+def user_filter_param(id: str="", email: str="", 
+        status: Optional[List[str]]=Query(None), user_role: Optional[List[str]]=Query(None)):
+    return {"id": id, "email": email, "status": status, "user_role": user_role}
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)

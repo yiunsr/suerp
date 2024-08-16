@@ -14,7 +14,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "home" */ '@/components/First.vue'),
       },
       {
-        path: '/user/list',
+        path: '/user',
         name: 'user_list',
         component: () => import('@/views/user/List.vue'),
       },
@@ -24,12 +24,12 @@ const routes = [
         component: () => import('@/views/user/NewEdit.vue'),
       },
       {
-        path: '/user/:userId',
+        path: '/user/:id',
         name: 'user_edit',
         component: () => import('@/views/user/NewEdit.vue'),
       },
       {
-        path: '/person/list',
+        path: '/person',
         name: 'person_list',
         component: () => import('@/views/person/List.vue'),
       },
@@ -39,8 +39,23 @@ const routes = [
         component: () => import('@/views/person/NewEdit.vue'),
       },
       {
-        path: '/person/:personId',
+        path: '/person/:id',
         name: 'person_edit',
+        component: () => import('@/views/person/NewEdit.vue'),
+      }, 
+      {
+        path: '/col_meta',
+        name: 'col_meta_list',
+        component: () => import('@/views/person/List.vue'),
+      },
+      {
+        path: '/col_meta/new',
+        name: 'col_meta_new',
+        component: () => import('@/views/person/NewEdit.vue'),
+      },
+      {
+        path: '/col_meta/:id',
+        name: 'col_meta_edit',
         component: () => import('@/views/person/NewEdit.vue'),
       },
     ],

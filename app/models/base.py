@@ -26,7 +26,10 @@ def query_filter(cls, query, filter_param):
             value = int(value)
             new_query = new_query.where(column == value)
         elif class_name in ("String", ):
-            new_query = new_query.filter(column.like('%'+value+'%'))
+            if isinstance(value, list):
+                new_query = new_query.where(column.in_(value))
+            else:
+                new_query = new_query.filter(column.like('%'+value+'%'))
         elif class_name in ("JSONB", ):
             if "__in" in key:
                 value = '%' + value +'%'
@@ -35,7 +38,10 @@ def query_filter(cls, query, filter_param):
             else:
                 new_query = new_query.where(column == value)
         else:
-            new_query = new_query.where(column == value)
+            if isinstance(value, list):
+                new_query = new_query.where(column.in_(value))
+            else:
+                new_query = new_query.where(column == value)
     return new_query
 
 

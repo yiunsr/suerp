@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-select :label="props.label + (props.required?' ★':'')" 
-      :items="i18nItems" v-show="props.mode == 'edit'"
+      :items="props.items" v-show="props.mode == 'edit'"
       :model-value="props.modelValue"  
       :required="props.required" density="compact"
       v-bind="$attrs"
@@ -35,14 +35,6 @@ const modelValueLabel = computed(() => {
     return t(item.title) + "(" + item.value + ")";
   }
   return "";
-});
-
-const i18nItems= computed(() => {
-  let items = [];
-  for(const item of props.items){
-    items.push({title: t(item.title) + "(" + item.value + ")", value: item.value})
-  }
-  return items;
 });
 
 

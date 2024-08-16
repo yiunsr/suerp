@@ -7,6 +7,7 @@ menu.person,person,사용자
 menu.deal,deal,거래
 menu.product,product,재화
 menu.accounting,accounting,회계
+menu.col_meta,Custom Columns,사용자 정의 컬럼
 dialog.login,Login,로그인
 dialog.close,Close,닫기
 login_form.email_req,Email is required.,이메일은 필수 입니다
@@ -46,10 +47,14 @@ page_user.nickname,nickname,별칭
 page_uesr.display,Display Name,표시 이름
 page_uesr.user_role,Role,역할
 ==== Person ====,,
-page_person.title,Person List,사용자 리스트
+page_person.list_title,Person List,사용자 리스트
 page_person.new_title,Person New,사용자 추가
 page_person.edit_title,Person Edit,사용자 수정
-==== Common Const ===
+==== Column Meta ====,,
+page_col_meta.title,Custom Columns,사용자 정의 컬럼
+page_col_meta.new_title,Custom Columns New,사용자 정의 컬럼 추가
+page_col_meta.edit_title,Custom Columns Edit,사용자 정의 수정
+==== Common Const ===,,
 common_const.status.available,Available,정상
 common_const.status.system,System,시스템
 common_const.status.deleted,Deleted,삭제됨

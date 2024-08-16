@@ -1,6 +1,6 @@
 import {$axios, param2formdata} from "@/api/service/request"
 
-class Users{
+class UserAPI{
   list(filters, sort, page=1, limit=50){
     let params = {...filters, sort, page, limit,};
     return $axios({
@@ -34,4 +34,4 @@ class Users{
   }
   
 }
-export let users = new Users();
+export let userAPI = new UserAPI();

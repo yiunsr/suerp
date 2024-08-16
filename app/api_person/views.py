@@ -22,11 +22,11 @@ from app.utils.common_param_utils import common_order_param
 from . import api_person
 
 def person_filter_param(
-        id: str = "", name: str = "",
+        id: str = "", display: str = "",
         first_name: str = "", last_name: str = "",
         phone: str = "", email: str = ""
         ):
-    return {"id": id, "name": name,
+    return {"id": id, "display": display,
         "first_name": first_name, "last_name": last_name,
         "phone_jb": phone, "email_jb__in": email}
 

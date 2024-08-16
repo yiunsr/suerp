@@ -88,8 +88,8 @@ import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import {rule} from '@/js/rule';
 
-import {UserStatusItems, UserRoleItems} from '@/commonValue';
-import {users} from '@/api/service/users';
+import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
+import {userAPI} from '@/api/service/users';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
 import ModeSelect from "@/widgets/ModeSelect";
@@ -101,7 +101,7 @@ let $router = useRouter();
 let t=i18n.global.t;
 
 const detailForm = ref(null);
-const userId = $route.params.userId;
+const userId = $route.params.id;
 
 let isNewPage = $route.path.includes("new")?true:false;
 let mode = $route.path.includes("new")?"edit":"read";
@@ -122,7 +122,7 @@ async function submitAdd(){
     return;
   }
     
-  users.add(data).then(function(res){
+  userAPI.add(data).then(function(res){
     $router.push('/user/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
@@ -131,14 +131,14 @@ async function submitAdd(){
 
 function submitUpdate(){
   let id = data.id;
-  users.update(id, data).then(function(res){
+  userAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
 }
 
 function getAPIDetail(){
-  users.get(userId).then(function(res){
+  userAPI.get(userId).then(function(res){
     data.id = res.data.id;
     data.email = res.data.email;
     data.status = res.data.status;

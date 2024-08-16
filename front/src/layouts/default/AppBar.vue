@@ -38,6 +38,9 @@
           <v-list-item  @click="changeLang('ko')">
             <v-list-item-title>한국어</v-list-item-title>
           </v-list-item>
+          <v-list-item  @click="changeLang('key')">
+            <v-list-item-title>key</v-list-item-title>
+          </v-list-item>
           </v-list>
         </v-menu>
     </v-app-bar>
@@ -62,15 +65,19 @@
       <v-list density="compact" nav>
         <v-list-item prepend-icon="mdi-account-key"
           :title="i18n.global.t('menu.user')" 
-          value="user" to="/user/list">
+          value="user" to="/user">
         </v-list-item>
         <v-list-item prepend-icon="mdi-clipboard-account"
           :title="i18n.global.t('menu.person')" 
-          value="person" to="/person/list">
+          value="person" to="/person">
         </v-list-item>
         <v-list-item prepend-icon="mdi-gift" :title="i18n.global.t('menu.product')" value="product"></v-list-item>
         <v-list-item prepend-icon="mdi-handshake-outline" :title="i18n.global.t('menu.deal')" value="deal"></v-list-item>
         <v-list-item prepend-icon="mdi-calculator" :title="i18n.global.t('menu.accounting')" value="accounting"></v-list-item>
+        <v-list-item prepend-icon="mdi-view-column-outline"
+          :title="i18n.global.t('menu.col_meta')" 
+          value="person" to="/col_meta">
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -79,7 +86,7 @@
 <script setup>
   import { i18n } from '@/plugins/i18n';
   import {useStore} from 'vuex';
-  import {defineEmits, computed, reactive} from "vue";
+  import {computed, reactive} from "vue";
   import {auth} from '@/api/service/auth'
 
   let nav = reactive({

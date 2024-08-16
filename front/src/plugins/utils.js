@@ -34,6 +34,19 @@ let utils = {
     }
     return filterDict;
   },
+  getSimpleFilter: function(query, defaultFilters){
+    let filterDict={};
+    for(const key in query){
+      if(query[key] == defaultFilters[key] ) {
+        continue
+      }
+      else{
+        filterDict[key] = query[key];
+      }
+    }
+    return filterDict;
+
+  },
   changeSortUrl: function($route, $router, sortBy){
     let query = {...$route.query};
     if(sortBy && sortBy.length > 0 ){

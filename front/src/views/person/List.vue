@@ -1,78 +1,30 @@
 <template>
   <div>
-    <h2>
-      {{ t("page_person.title") }}
-      <v-btn to="/person/new" density="comfortable" class="ml-4 mb-2" size="large" color="blue-darken-4">
-        {{  t('page_common.add') }}
-      </v-btn>
-    </h2>
-    <div v-if="isLogin">
-      <div class="my-2">
-        <v-form validate-on="submitFilter lazy" @submit.prevent="submitFilter">
-          <table class="search-table">
-            <colgroup>  <col><col><col>   </colgroup>
-            <thead>
-              <tr>
-                <td>
-                  <v-container class="ma-0 pa-0">
-                    <v-row align="center" justify="center">
-                      <v-col md="1" sm="2">
-                        <div class="ms-4">{{ t("ui_table.search") }}</div>
-                      </v-col>
-                      <v-col md="2" sm="4">
-                        <v-text-field type="number" density="compact" v-model="filters.id" @keyup.enter="submitFilter" hide-details label="ID" />
-                      </v-col>
-                      <v-col md="2" sm="4">
-                        <v-text-field type="text" density="compact" v-model="filters.display" @keyup.enter="submitFilter" hide-details label="display" />
-                      </v-col>
-                      <v-col md="3" sm="5">
-                        <v-text-field density="compact" v-model="filters.email" hide-details @keyup.enter="submitFilter" label="email" />
-                      </v-col>
-                      <v-col md="4" sm="1"></v-col>
-                    </v-row>
-                  </v-container>
-                </td>
-                <td>
-                  <v-btn density="compact" class="pa-0" @click="submitFilter">
-                    <v-icon icon="mdi mdi-magnify"  ></v-icon>
-                  </v-btn>
-                </td>
-                <td>
-                  <v-btn density="compact" class="pa-0" 
-                      @click="searchTable.detail = !searchTable.detail">
-                    <v-icon icon="mdi mdi-chevron-down"></v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </thead>
-            <tbody :class="{ show: searchTable.detail }">
-              <tr>
-                <td colspan="3">
-                  <div>
-                    <v-row>
-                      <v-col>
-                        test
-                      </v-col>
-                    </v-row>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </v-form>
-        <!--
-        <v-row>
-          <v-col cols="11">
-            {{ t('ui_table.search') }}
-          </v-col>
-          <v-col cols="1">
-            <v-btn density="compact" class="ma-2" variant="outlined">
-              <v-icon icon="mdi mdi-subdirectory-arrow-left"></v-icon>
+    <table class="header-table">
+      <colgroup><col><col><col></colgroup>
+      <thead>
+        <tr>
+          <td>
+            <div class="text-h5 pa-2">
+              {{ t("page_person.list_title") }}
+            </div>
+          </td>
+          <td>
+            <v-btn to="/person/new" density="comfortable" class="ma-1 " size="large" color="blue-darken-4">
+              {{  t('page_common.add') }}
             </v-btn>
-          </v-col>
-        </v-row>
-        -->
-      </div>
+          </td>
+          <td>
+            <v-btn density="compact" class="ma-1" @click="search">
+              <v-icon icon="mdi mdi-magnify"  ></v-icon>
+            </v-btn>
+          </td>
+        </tr>
+      </thead>
+    </table>
+
+    <div v-if="isLogin">
+        
       <v-data-table-server
         density="compact" class="data-list-table my-2" hide-default-footer
         :no-data-text="t('ui_table.no_data')" :items-per-page-text="t('ui_table.per_page')"	
@@ -81,6 +33,41 @@
         :items="tableData.data"
         :items-length="tableData.total"
       >
+      <template v-slot:body.prepend>
+          <tr class="table-filter">
+            <td class="id">
+              <v-text-field type="number" hide-spin-buttons density="compact" 
+                v-model="filters.id" @keyup.enter="search" hide-details  />
+            </td>
+
+            <td class="display">
+              <v-text-field type="text" density="compact" 
+                v-model="filters.display" @keyup.enter="search" hide-details  />
+            </td>
+
+            <td class="first_name">
+              <v-text-field type="text" density="compact" 
+                v-model="filters.last_name" @keyup.enter="search" hide-details  />
+            </td>
+
+            <td class="email">
+              <v-text-field type="text" density="compact" 
+                v-model="filters.first_name" @keyup.enter="search" hide-details />
+            </td>
+
+            <td class="email">
+              <v-text-field type="text" density="compact" 
+                v-model="filters.email" @keyup.enter="search" hide-details />
+            </td>
+
+            <td class="phone">
+              <v-text-field type="text" density="compact" 
+                v-model="filters.phone" @keyup.enter="search" hide-details />
+            </td>
+
+          </tr>
+        </template>
+        
         <template v-slot:item.id="row">
           <router-link :to="'/person/' + row.item.id">{{ row.item.id }}</router-link>
         </template>
@@ -123,6 +110,9 @@ import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
+import {initCommonList, isLogin, search, 
+  changeItemsPerPage, changePage} from '@/js/commonList';
+
 import {persons} from '@/api/service/persons';
 
 const store = useStore();
@@ -131,16 +121,16 @@ let $router = useRouter();
 let t=i18n.global.t;
 
 const headers = [
-  { title: 'id', key: 'id' },
+{ title: 'id', key: 'id', width: 80, },
   { title: t('page_common.display'), key: 'display' },
   { title: t('page_common.last_name'), key: 'last_name' },
   { title: t('page_common.first_name'), key: 'first_name' },
   { title: t('page_common.email'), key: 'email_jb[0].value' },
   { title: t('page_common.phone'), key: 'phone_jb[0].value' },
 ];
-let initFilter = utils.initFilters($route.query,
-  {id: "", display: "", phone: "", email: ""}
-);
+
+let defaultFilter = {id: "", display: "", last_name: "", first_name: "", phone: "", email: ""}
+let initFilter = utils.initFilters($route.query, defaultFilter);
 
 /**** common list code start ****/
 const page = parseInt($route.query.page || 1);
@@ -148,31 +138,13 @@ const limit = parseInt($route.query.limit || 0) || 50;
 
 let defualtSortBy = utils.getDefaultSortBy($route.query.sort);
 
-let searchTable = reactive(
-  {detail: false}
-);
-
 let filters = reactive(initFilter);
 let tableData = reactive({
   data: [], total: 0, sortBy: defualtSortBy, limit: limit, page: page,
 });
 
-const isLogin = computed(() => {
-  return store.getters.isLogin;
-});
-
-function submitFilter (){
-  let path = $route.path;
-  $router.push({ path, query: filters});
-}
-
-function changeItemsPerPage(limit){
-  utils.changeLimit($route, $router, limit);
-}
-function changePage(page){
-  utils.changePage($route, $router, page);
-}
-/**** common list code start ****/
+initCommonList(defaultFilter, initFilter, filters);
+/**** common list code end ****/
 
 onMounted(() => {
   let sort = utils.query2sortBy($route.query) || "-id";
