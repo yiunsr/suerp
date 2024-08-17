@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 api_col_meta = APIRouter(
-    prefix="/col_meta",
+    prefix="/api/col_metas",
     tags=["col_metas"],
     responses={404: {"description": "Not found"}},
 )

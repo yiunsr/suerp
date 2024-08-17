@@ -25,4 +25,9 @@ const _UserRoleDict = {
 }
 const UserRoleItems = prepare("common_const.user_role.", _UserRoleDict);
 
-export {UserStatusItems, UserRoleItems}
+const _ColMetaTableDict = {
+  1: "1", 2: "2", 3: "3", 4: "4", 5: "5",
+}
+const ColMetaTableItems = prepare("page_col_meta.table_", _ColMetaTableDict);
+
+export {UserStatusItems, UserRoleItems, ColMetaTableItems}

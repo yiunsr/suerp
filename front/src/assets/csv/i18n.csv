@@ -51,10 +51,19 @@ page_person.list_title,Person List,사용자 리스트
 page_person.new_title,Person New,사용자 추가
 page_person.edit_title,Person Edit,사용자 수정
 ==== Column Meta ====,,
-page_col_meta.title,Custom Columns,사용자 정의 컬럼
+page_col_meta.list_title,Custom Columns,사용자 정의 컬럼
 page_col_meta.new_title,Custom Columns New,사용자 정의 컬럼 추가
 page_col_meta.edit_title,Custom Columns Edit,사용자 정의 수정
+page_col_meta.table_1,User,유저
+page_col_meta.table_2,Person,사용자
+page_col_meta.table_3,Product,재화
+page_col_meta.table_4,Deal,거래
+page_col_meta.table_5,Accounting,회계
+page_col_meta.table_meta_id,Table,테이블
+page_col_meta.col_meta,Column,컬럼
+page_col_meta.data_type,Data Type,데이터 타입
 ==== Common Const ===,,
+common_const.status,status,상태
 common_const.status.available,Available,정상
 common_const.status.system,System,시스템
 common_const.status.deleted,Deleted,삭제됨

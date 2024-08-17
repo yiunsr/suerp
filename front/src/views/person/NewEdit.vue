@@ -96,7 +96,7 @@ import {utils} from '@/plugins/utils';
 import {rule} from '@/js/rule';
 
 import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
-import {persons} from '@/api/service/persons';
+import {personAPI} from '@/api/service/persons';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeMultiTextField from "@/widgets/ModeMultiTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
@@ -131,7 +131,7 @@ async function submitAdd(){
     return;
   }
     
-  persons.add(data).then(function(res){
+  personAPI.add(data).then(function(res){
     $router.push('/person/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
@@ -140,14 +140,14 @@ async function submitAdd(){
 
 function submitUpdate(){
   let id = data.id;
-  persons.update(id, data).then(function(res){
+  personAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
 }
 
 function getAPIDetail(){
-  persons.get(personId).then(function(res){
+  personAPI.get(personId).then(function(res){
     data.id = res.data.id;
     data.display = res.data.display;
     data.last_name = res.data.last_name;

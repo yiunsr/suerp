@@ -20,7 +20,7 @@ class ColMetaSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class ColMetaSCreate(BaseModel):
+class ColMetaSCreate(ColMetaSchema):
     table_meta_id: int
     col_meta: str
     data_type: str

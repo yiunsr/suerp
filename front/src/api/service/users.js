@@ -1,11 +1,13 @@
 import {$axios, param2formdata} from "@/api/service/request"
 
+const URL_BASE = '/api/users/'
+
 class UserAPI{
   list(filters, sort, page=1, limit=50){
     let params = {...filters, sort, page, limit,};
     return $axios({
       method: 'get',
-      url: '/api/users/',
+      url: URL_BASE,
       params
     });
   }
@@ -13,7 +15,7 @@ class UserAPI{
   add(data){
     return $axios({
       method: 'post',
-      url: '/api/users/',
+      url: URL_BASE,
       data
     });
   }
@@ -21,7 +23,7 @@ class UserAPI{
   update(id, data){
     return $axios({
       method: 'put',
-      url: '/api/users/' + id,
+      url: URL_BASE + id,
       data
     });
   }
@@ -29,7 +31,7 @@ class UserAPI{
   get(id){
     return $axios({
       method: 'get',
-      url: '/api/users/' + id,
+      url: URL_BASE + id,
     });
   }
   

@@ -46,17 +46,17 @@ const routes = [
       {
         path: '/col_meta',
         name: 'col_meta_list',
-        component: () => import('@/views/person/List.vue'),
+        component: () => import('@/views/col_meta/List.vue'),
       },
       {
         path: '/col_meta/new',
         name: 'col_meta_new',
-        component: () => import('@/views/person/NewEdit.vue'),
+        component: () => import('@/views/col_meta/NewEdit.vue'),
       },
       {
         path: '/col_meta/:id',
         name: 'col_meta_edit',
-        component: () => import('@/views/person/NewEdit.vue'),
+        component: () => import('@/views/col_meta/NewEdit.vue'),
       },
     ],
   },

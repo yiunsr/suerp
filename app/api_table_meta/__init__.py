@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi import Depends
 
 api_table_meta = APIRouter(
-    prefix="/table_meta",
+    prefix="/api/table_metas",
     tags=["table_metas"],
     responses={404: {"description": "Not found"}},
 )

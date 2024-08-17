@@ -9,7 +9,6 @@ from sqlalchemy.future import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Integer
 
-
 from config.db import get_db_session
 from config.http_err import ErrCode
 from config.http_err import ResError

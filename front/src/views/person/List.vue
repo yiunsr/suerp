@@ -113,7 +113,7 @@ import {utils} from '@/plugins/utils';
 import {initCommonList, isLogin, search, 
   changeItemsPerPage, changePage} from '@/js/commonList';
 
-import {persons} from '@/api/service/persons';
+import {personAPI} from '@/api/service/persons';
 
 const store = useStore();
 const $route = useRoute();
@@ -148,7 +148,7 @@ initCommonList(defaultFilter, initFilter, filters);
 
 onMounted(() => {
   let sort = utils.query2sortBy($route.query) || "-id";
-  persons.list(filters, sort, page, limit).then(function(res){
+  personAPI.list(filters, sort, page, limit).then(function(res){
     let resData = res.data;
     tableData.data = resData.data;
     tableData.total = resData.total;
