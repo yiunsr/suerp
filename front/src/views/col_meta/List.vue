@@ -1,93 +1,33 @@
 <template>
   <div>
-    <table class="header-table">
-      <colgroup><col><col><col></colgroup>
-      <thead>
-        <tr>
-          <td>
-            <div class="text-h5 pa-2">
-              {{ t("page_col_meta.list_title") }}
-            </div>
-          </td>
-          <td>
-            <v-btn to="/col_meta/new" density="comfortable" class="ma-1 " size="large" color="blue-darken-4">
-              {{  t('page_common.add') }}
-            </v-btn>
-          </td>
-          <td>
-            <v-btn density="compact" class="ma-1" @click="search">
-              <v-icon icon="mdi mdi-magnify"  ></v-icon>
-            </v-btn>
-          </td>
-        </tr>
-      </thead>
-    </table>
+    <ListHeader :listTitle="t('page_col_meta.list_title')" addUrl="/col_meta/new" 
+      @search="search"/>
     
-    <div v-if="isLogin">
-      <v-data-table-server
-        density="compact" class="data-list-table my-2" hide-default-footer
-        :no-data-text="t('ui_table.no_data')" :items-per-page-text="t('ui_table.per_page')"	
-        :headers="headers"
-        v-model:sort-by="tableData.sortBy" :multi-sort="true" :must-sort="false"
-        :items="tableData.data"
-        :items-length="tableData.total"
-      >
-        <template v-slot:body.prepend>
-          <tr class="table-filter">
-            <td class="id">
-              <v-text-field type="number" hide-spin-buttons density="compact" 
-                v-model="filters.id" @keyup.enter="search" hide-details  />
-            </td>
+    <ListTable :headers="headers" :sortBy="tableData.sortBy" 
+      idUrlPrefix="/col_meta/"
+      :items="tableData.data" 
+      :total="tableData.total" 
+      :page="tableData.page" :limit="tableData.limit"
+      :filters="filters" @search="search"
+    >
 
-            <td class="status">
-              
-            </td>
+      <template v-slot:filter>
+        <td class="id">
+          <v-text-field type="number" hide-spin-buttons density="compact" 
+            v-model="filters.id" @keyup.enter="search" hide-details  />
+        </td>
 
-            <td class="user_role">
-              
-            </td>
+        <td class="status"></td>
 
-            <td class="email">
-              <v-text-field type="text" density="compact" 
-                v-model="filters.email" @keyup.enter="search" hide-details />
-            </td>
-          </tr>
-        </template>
+        <td class="user_role"></td>
 
-        <template v-slot:item.id="row">
-          <router-link :to="'/user/' + row.item.id">{{ row.item.id }}</router-link>
-        </template>
+        <td class="email">
+          <v-text-field type="text" density="compact" 
+            v-model="filters.email" @keyup.enter="search" hide-details />
+        </td>
+      </template>
+    </ListTable>
 
-        <template v-slot:bottom>
-          <v-row class="text-center pt-2">
-            <v-col cols="2"></v-col>
-            <v-col cols="8">
-              <v-pagination class="text-center"
-                v-model="tableData.page" density="compact" 
-                :length="Math.ceil(tableData.total / tableData.limit)"
-                @update:model-value="changePage"
-              ></v-pagination>
-            </v-col>
-            <v-col cols="2">
-              <v-select :hide-details="true" class="ma-0"
-                :model-value="tableData.limit"
-                :items="[{value: 5, title: '5'}, {value: 10, title: '10'}, {value: 25, title: '25'},
-                  {value: 50, title: '50'}, {value: 100, title: '100'},
-                ]"
-                density="compact"
-                label="Item Per Page"
-                @update:model-value="changeItemsPerPage"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </template>
-      </v-data-table-server>
-    </div>
-    <div v-else class="mt-8">
-      <h3>
-        {{ t("common.login_required") }}
-      </h3>
-    </div>
   </div>
 </template>
 
@@ -98,9 +38,10 @@ import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 
-import {ColMetaTableItems} from '@/js/commonValue';
-import {initCommonList, isLogin, search, 
-  changeItemsPerPage, changePage} from '@/js/commonList';
+import ListHeader from "@/components/ListHeader";
+import ListTable from "@/components/ListTable";
+
+import {reverseItem, ColMetaTableItems} from '@/js/commonValue';
 
 import {colMetaAPI} from '@/api/service/col_meta';
 
@@ -131,7 +72,11 @@ let tableData = reactive({
   data: [], total: 0, sortBy: defualtSortBy, limit: limit, page: page,
 });
 
-initCommonList(defaultFilter, initFilter, filters);
+function search(){
+  let path = $route.path;
+  const simpleFilter = utils.getSimpleFilter(filters, defaultFilter);
+  $router.push({ path, query: simpleFilter});
+}
 /**** common list code end ****/
 
 onMounted(() => {

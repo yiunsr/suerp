@@ -19,6 +19,8 @@ class ColMeta(Base, BaseCU):
     status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
     col_meta = Column(CHAR(1), nullable=False, server_default=text("''"))
     data_type = Column(CHAR(1), nullable=False, server_default=text("''"))
+    detail = Column(
+        String(128), nullable=False, server_default=text("''"))
 
     code = Column(CHAR(16), nullable=False, server_default=text("''"))
     name_lang_jb = Column(
@@ -31,5 +33,5 @@ class ColMeta(Base, BaseCU):
         String(128), nullable=False, server_default=text("''"))
     html_pattern = Column(
         String(128), nullable=False, server_default=text("''"))
-    detail = Column(
+    html_detail = Column(
         String(128), nullable=False, server_default=text("''"))

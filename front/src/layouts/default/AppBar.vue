@@ -95,7 +95,7 @@
 
   const store = useStore();
   function changeLang(newLocale){
-    //store.commit('changeLang', newLocale);
+    store.commit('changeLang', newLocale);
     i18n.global.locale.value = newLocale;
   }
   function logout(){

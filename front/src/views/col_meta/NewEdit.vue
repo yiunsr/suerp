@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2 v-if="isNewPage">
-      {{ t("page_user.new_title") }}
+      {{ t("page_col_meta.new_title") }}
     </h2>
     <h2 v-else>
-      {{ t("page_user.edit_title") }}
+      {{ t("page_col_meta.edit_title") }}
     </h2>
 
     <fieldset class="mt-2 py-4 px-4 rounded-lg">
@@ -21,12 +21,14 @@
             <b class="mr-4">ID : </b> <span>{{  data.id }}</span>
           </v-col>
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.email')" type="email" :mode="detail.mode"
-              required v-model="data.email" :rules="[rule.req, rule.email]" />
+            <mode-select :label="t('page_common.status')" :items="ColMetaStateItems" item-title="str" 
+              :mode="detail.mode"
+              required v-model="data.status" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_common.status')" :items="UserStatusItems" :mode="detail.mode"
-              required v-model="data.status" :rules="[rule.req]" />
+            <mode-select :label="t('page_col_meta.table_meta_id')" :items="ColMetaTableItems" item-title="str" 
+              :mode="detail.mode"
+              required v-model="data.table_meta_id" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" :mode="detail.mode"
@@ -88,8 +90,8 @@ import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import {rule} from '@/js/rule';
 
-import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
-import {userAPI} from '@/api/service/users';
+import {reverseItem, ColMetaStateItems, ColMetaTableItems} from '@/js/commonValue';
+import {colMetaAPI} from '@/api/service/col_meta';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
 import ModeSelect from "@/widgets/ModeSelect";
@@ -109,10 +111,11 @@ let detail = reactive({ mode, valid: false });
 
 
 let data = reactive({
-  id: null, email: "", status: "A", user_role: null, 
-  last_name: "", first_name: "", nickname: "", display: "", 
-  ref_id0: null, ref_id1: null, 
-  ref_id2: null, ref_id3: null,
+  id: null, status: "A", table_meta_id: null, 
+  col_meta: "", data_type: "", code: "", 
+  name_lang_jb: {}, 
+  options_jb: [], default_jb: null, 
+  html_type: "", html_pattern: "", detail: "",
 });
 
 async function submitAdd(){
@@ -122,7 +125,7 @@ async function submitAdd(){
     return;
   }
     
-  userAPI.add(data).then(function(res){
+  colMetaAPI.add(data).then(function(res){
     $router.push('/user/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
@@ -131,14 +134,14 @@ async function submitAdd(){
 
 function submitUpdate(){
   let id = data.id;
-  userAPI.update(id, data).then(function(res){
+  colMetaAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
 }
 
 function getAPIDetail(){
-  userAPI.get(userId).then(function(res){
+  colMetaAPI.get(userId).then(function(res){
     data.id = res.data.id;
     data.email = res.data.email;
     data.status = res.data.status;

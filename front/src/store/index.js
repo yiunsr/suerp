@@ -11,6 +11,7 @@ let init_login = false;
 let access_token = getCookie("access_token");
 if(access_token)
   init_login = true;
+let init_lang = getCookie("lang") || "ko";
 
 const store = createStore({
   state : {
@@ -21,6 +22,7 @@ const store = createStore({
     login: init_login,
     loginDialog: false,
     serverRequestDict: {},
+    lang: init_lang
   },
   mutations: { // 동기작업
     showSnackbar(state, body, timeout){
@@ -52,6 +54,9 @@ const store = createStore({
       }
 
     },
+    changeLang(state, lang){
+      state.lang = lang;
+    },
   },
   action: { // 비동기 작업
 
@@ -71,6 +76,9 @@ const store = createStore({
     },
     isShowLoadingModal: (state) => {
       return Object.keys(state.serverRequestDict).length > 0;
+    },
+    getLang: (state) => {
+      return state.lang;
     },
   },
 });

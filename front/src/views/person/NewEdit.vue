@@ -35,7 +35,8 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_common.status')" :items="UserStatusItems" :mode="detail.mode"
+            <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
+              :mode="detail.mode"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
 

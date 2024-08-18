@@ -25,11 +25,13 @@
               required v-model="data.email" :rules="[rule.req, rule.email]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_common.status')" :items="UserStatusItems" :mode="detail.mode"
+            <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
+              :mode="detail.mode"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" :mode="detail.mode"
+            <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" item-title="str" 
+              :mode="detail.mode"
               required v-model="data.user_role" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">

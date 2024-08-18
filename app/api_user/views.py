@@ -26,8 +26,11 @@ from app.utils.common_param_utils import common_order_param
 from . import api_user, api_pub_user
 
 def user_filter_param(id: str="", email: str="", 
-        status: Optional[List[str]]=Query(None), user_role: Optional[List[str]]=Query(None)):
-    return {"id": id, "email": email, "status": status, "user_role": user_role}
+        status: Optional[List[str]]=Query(None), user_role: Optional[List[str]]=Query(None),
+        first_name: str="", last_name: str=""):
+    return {"id": id, "email": email, "status": status, "user_role": user_role,
+        "first_name": first_name, "last_name": last_name,
+    }
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
