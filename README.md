@@ -91,3 +91,9 @@ wsl -- hostname -I
 
 ### 참고
 https://github.com/grillazz/fastapi-sqlalchemy-asyncpg/blob/main/app/models/base.py
+
+
+
+
+alembic revision  --autogenerate -m "base_data sql"
+

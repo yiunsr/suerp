@@ -21,14 +21,33 @@ function prepare(prefix, dict){
   let items = [];
   for(const key in dict){
     let value = dict[key];
-    items.push({
-      title: prefix + value, 
-      str: i18n.global.t(prefix + value),
-      value: key
-    })
+    
+      items.push({
+        title: prefix + value, 
+        str: prefix==""? "":i18n.global.t(prefix + value),
+        value: key
+      })
   }
   return items;
 }
+
+function strSubtitle(item){
+  return {title: item.str, subtitle: item.substr}
+}
+
+function prepareWithSub(prefix_title, prefix_subtitle, dict){
+  let items = [];
+  for(const key in dict){
+    let value = dict[key];
+    const title = prefix_title + value;
+    const str = prefix_title==""? "":i18n.global.t(prefix_title + value);
+    const subtitle = prefix_subtitle + value;
+    const substr = prefix_subtitle==""? "":i18n.global.t(prefix_subtitle + value);
+    items.push({title, str, value, subtitle, substr})
+  }
+  return items;
+}
+
 
 const _UserStatusDict = {
   "A": "available",
@@ -67,7 +86,37 @@ const ColMetaTableItems = computed(() => {
   return prepare("page_col_meta.table_", _ColMetaTableDict);
 });
 
+const _ColMetaColumnMetaDict = {
+  1: "data_jb", 2: "tags_jb", 
+  3: "category_tags_jb",
+  4: "category_tags_jb",
+}
+
+const ColMetaColumnMetaItems = prepare("", _ColMetaColumnMetaDict);
+
+const _ColMetaDataTypeDict = {
+  "n": "n", "m": "m", "d": "d", "f": "f", "c": "c", "s": "s",
+  "b": "b", "D": "D", "t": "t", "T": "T", "e": "e", "M": "M",
+}
+const ColMetaDataTypeItems = computed(() => {
+  return prepareWithSub(
+    "page_col_meta.data_type_", 
+    "page_col_meta.data_type_subtitle_", 
+    _ColMetaDataTypeDict);
+});
 
 
+const _ColMetaHTMLTypeDict = {
+  date: "date", time: "time", datetime: "datetime",
+  number: "number", text: "text", textarea: "textarea", 
+  autocomplete:
+   "autocomplete", radio: "radio", checkbox: "checkbox",
+}
+const ColMetaHTMLTypeItems = prepare("", _ColMetaHTMLTypeDict);
 
-export {reverseItem, UserStatusItems, UserRoleItems, ColMetaStateItems, ColMetaTableItems,}
+
+export {reverseItem, strSubtitle,
+  UserStatusItems, UserRoleItems, 
+  ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, ColMetaDataTypeItems,
+  ColMetaHTMLTypeItems
+}

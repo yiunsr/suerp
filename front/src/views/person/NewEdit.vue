@@ -41,19 +41,19 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <mode-multi-text-field :label="t('page_common.email')" type="email" :mode="detail.mode"
+            <mode-dragable-select-text :label="t('page_common.email')" type="email" :mode="detail.mode"
                 colType="email" v-model="data.email_jb" :rules="[rule.req, rule.email]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-multi-text-field :label="t('page_common.phone')" type="tel" :mode="detail.mode"
+            <mode-dragable-select-text :label="t('page_common.phone')" type="tel" :mode="detail.mode"
               colType="phone" v-model="data.phone_jb" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-multi-text-field :label="t('page_common.address')" type="text" :mode="detail.mode"
+            <mode-dragable-select-text :label="t('page_common.address')" type="text" :mode="detail.mode"
               colType="address" v-model="data.address_jb" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-multi-text-field label="URL" type="text" :mode="detail.mode"
+            <mode-dragable-select-text label="URL" type="text" :mode="detail.mode"
               colType="url" v-model="data.url_jb" :rules="[rule.req]" />
           </v-col>
           
@@ -99,7 +99,7 @@ import {rule} from '@/js/rule';
 import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {personAPI} from '@/api/service/persons';
 import ModeTextField from "@/widgets/ModeTextField";
-import ModeMultiTextField from "@/widgets/ModeMultiTextField";
+import ModeDragableSelectText from "@/widgets/ModeDragableSelectText";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
 import ModeSelect from "@/widgets/ModeSelect";
 import { onMounted } from 'vue';

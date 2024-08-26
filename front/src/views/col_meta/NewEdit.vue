@@ -25,48 +25,77 @@
               :mode="detail.mode"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
+          
           <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.table_meta_id')" :items="ColMetaTableItems" item-title="str" 
               :mode="detail.mode"
               required v-model="data.table_meta_id" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" :mode="detail.mode"
-              required v-model="data.user_role" :rules="[rule.req]" />
+            <mode-select :label="t('page_col_meta.column_meta')" :items="ColMetaColumnMetaItems" 
+              item-title="title"
+              :mode="detail.mode"
+              required v-model="data.column_meta" :rules="[rule.req]" />
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <mode-select :label="t('page_col_meta.data_type')" :items="ColMetaDataTypeItems" 
+              :item-props="strSubtitle"
+              :mode="detail.mode"
+              required v-model="data.data_type" :rules="[rule.req]" />
+          </v-col>
+
+          <v-col cols="12" md="8" v-show="data.data_type == 'e' || data.data_type == 'M'">
+            <mode-dragable-two-text :label="t('page_col_meta.options_jb')"
+              key0="title" key1="value"
+              :sub-label0="t('page_col_meta.options_jb_sub_label0')"
+              :sub-label1="t('page_col_meta.options_jb_sub_label1')"
+              :mode="detail.mode" 
+              required v-model="data.options_jb" 
+              :rules0="[rule.req]"  :rules1="[rule.req]" />
+          </v-col>
+
+          <v-col cols="12" md="4">
+            <mode-text-field label="Code" type="text" :mode="detail.mode"
+              :counter=16
+              required v-model="data.code"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.last_name')" type="text" :mode="detail.mode"
-              v-model="data.last_name"></mode-text-field>
+            <mode-text-field :label="t('page_common.name')" type="text" :mode="detail.mode" 
+              :counter=32
+              required v-model="data.name"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.first_name')" type="text" :mode="detail.mode" 
-              v-model="data.first_name"></mode-text-field>
+            <mode-text-field :label="t('page_common.display')" type="text" :mode="detail.mode"
+              :counter=128
+              required v-model="data.display"></mode-text-field>
           </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_user.nickname')" type="text" :mode="detail.mode"
-              v-model="data.nickname"></mode-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_uesr.display')" type="text" :mode="detail.mode"
-              v-model="data.display"></mode-text-field>
+          <v-col cols="12" md="12">
+            <mode-text-area :label="t('page_col_meta.detail')" type="text" :mode="detail.mode"
+              :counter=128
+              :rows="2"
+              v-model="data.detail"></mode-text-area>
           </v-col>
           
           <v-col cols="12" md="4">
-            <mode-text-field label="ref_id0" type="number" :mode="detail.mode"
-              v-model="data.ref_id0" />
+            <mode-select label="HTML type" :items="ColMetaHTMLTypeItems" item-title="title" 
+              :mode="detail.mode"
+              required v-model="data.html_type" :rules="[rule.req]" />
           </v-col>
+
           <v-col cols="12" md="4">
-            <mode-text-field label="ref_id1" type="number" :mode="detail.mode"
-              v-model="data.ref_id1" />
+            <mode-text-field label="HTML pattern" type="text" :mode="detail.mode"
+              :counter=128
+              required v-model="data.html_pattern" :max-length></mode-text-field>
           </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field label="ref_id2" type="number" :mode="detail.mode"
-              v-model="data.ref_id2" />
+
+          <v-col cols="12" md="12">
+            <mode-text-area label="HTML detail" type="text" :mode="detail.mode"
+              :counter=128
+              :rows="2"
+              v-model="data.html_detail"></mode-text-area>
           </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field label="ref_id3" type="number" :mode="detail.mode"
-              v-model="data.ref_id3" />
-          </v-col>
+        
         </v-row>
 
         <v-row v-show="detail.mode == 'edit'">
@@ -90,11 +119,15 @@ import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
 import {rule} from '@/js/rule';
 
-import {reverseItem, ColMetaStateItems, ColMetaTableItems} from '@/js/commonValue';
+import {reverseItem, strSubtitle,
+  ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, 
+  ColMetaDataTypeItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
 import {colMetaAPI} from '@/api/service/col_meta';
 import ModeTextField from "@/widgets/ModeTextField";
-import ModeRadioGroup from "@/widgets/ModeRadioGroup";
+import ModeTextArea from "@/widgets/ModeTextArea";
+import ModeDragableTwoText from "@/widgets/ModeDragableTwoText";
 import ModeSelect from "@/widgets/ModeSelect";
+
 import { onMounted } from 'vue';
 
 const store = useStore();
@@ -112,9 +145,10 @@ let detail = reactive({ mode, valid: false });
 
 let data = reactive({
   id: null, status: "A", table_meta_id: null, 
-  col_meta: "", data_type: "", code: "", 
-  name_lang_jb: {}, 
-  options_jb: [], default_jb: null, 
+  column_meta: "", data_type: "", code: "", 
+  name: "", display: "", 
+  options_jb: [], 
+  default_jb: null, 
   html_type: "", html_pattern: "", detail: "",
 });
 
@@ -159,6 +193,7 @@ function getAPIDetail(){
   }).catch(function(error){
   });
 }
+
 
 onMounted(() => {
   if(!isNewPage)

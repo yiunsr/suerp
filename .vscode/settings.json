@@ -1,5 +1,4 @@
 {
-  "python.pythonPath": "C:/tools/python3_10_64/py_envs/suerp/Scripts/python.exe",
   "workbench.editor.pinnedTabsOnSeparateRow":true,
   "editor.rulers": [79, 99],
   "workbench.colorCustomizations": {
@@ -9,7 +8,7 @@
   },
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
-  "python.languageServer": "Pylance",
+  "python.languageServer": "Jedi",
   "python.linting.pylintPath": "C:/tools/python3_10_64/py_envs/suerp/Scripts/pylint.exe",
   "python.linting.pylintArgs": [
     "--load-plugins", "pylint_flask_sqlalchemy", "pylint_flask",

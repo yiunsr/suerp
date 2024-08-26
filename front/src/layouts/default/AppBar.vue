@@ -76,7 +76,7 @@
         <v-list-item prepend-icon="mdi-calculator" :title="i18n.global.t('menu.accounting')" value="accounting"></v-list-item>
         <v-list-item prepend-icon="mdi-view-column-outline"
           :title="i18n.global.t('menu.col_meta')" 
-          value="person" to="/col_meta">
+          value="col_meta" to="/col_meta">
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

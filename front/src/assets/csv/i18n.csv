@@ -23,6 +23,8 @@ page_common.status,status,상태
 page_common.display,Display Name,표시이름
 page_common.last_name,last name,성
 page_common.first_name,frist name,이름
+page_common.name,name,이름
+page_common.display,display name,표시이름
 page_common.phone,phone,전화
 page_common.address,address,주소
 page_common.add,Add,추가
@@ -39,18 +41,19 @@ rule.required,This input is required.,이 입력은 필수사항입니다.
 rule.email,The email format does not fit.,이메일 형식에 맞지 않습니다.
 rule.phone,The phone number format does not fit.,전화번호 형식에 맞지 않습니다.
 error.http_422,Input data is incorrect.,입력 데이터가 올바르지 않습니다. 
-==== User ====,,
+
+==== User ====
 page_user.list_title,User List,유저 리스트
 page_user.new_title,User New,유저 추가
 page_user.edit_title,User Edit,유저 수정
 page_user.nickname,nickname,별칭
 page_uesr.display,Display Name,표시 이름
 page_uesr.user_role,Role,역할
-==== Person ====,,
+==== Person ====
 page_person.list_title,Person List,사용자 리스트
 page_person.new_title,Person New,사용자 추가
 page_person.edit_title,Person Edit,사용자 수정
-==== Column Meta ====,,
+==== Column Meta ====
 page_col_meta.list_title,Custom Columns,사용자 정의 컬럼
 page_col_meta.new_title,Custom Columns New,사용자 정의 컬럼 추가
 page_col_meta.edit_title,Custom Columns Edit,사용자 정의 수정
@@ -60,8 +63,41 @@ page_col_meta.table_3,Product,재화
 page_col_meta.table_4,Deal,거래
 page_col_meta.table_5,Accounting,회계
 page_col_meta.table_meta_id,Table,테이블
-page_col_meta.col_meta,Column,컬럼
+page_col_meta.column_meta,Column,컬럼
+
 page_col_meta.data_type,Data Type,데이터 타입
+page_col_meta.data_type_n,number(integer),number(정수형)
+page_col_meta.data_type_m,money(currency),money(통화)
+page_col_meta.data_type_d,decimal(Decimal including decimals),decimal(소수포함 10진수)
+page_col_meta.data_type_f,Float,부동소수점(float)
+page_col_meta.data_type_c,Character (one character),char(문자하나)
+page_col_meta.data_type_s,String,String(문자열)
+page_col_meta.data_type_b,bool,참/거짓
+page_col_meta.data_type_D,Date (iso format),날짜(iso 형식날짜)
+page_col_meta.data_type_T,Date Time(iso format),Date Time(iso 형식날짜와 시간)
+page_col_meta.data_type_t,Time(iso format),Time(iso 형식의 시간)
+page_col_meta.data_type_e,Enum(Single choice),열거형(단일선택형)
+page_col_meta.data_type_M,Multiple choice,다중선택형
+
+page_col_meta.data_type_subtitle_n,Negative / zero / positive,음수 / 영 / 양수
+page_col_meta.data_type_subtitle_m,Integer with 4 decimal places,소수점 4자리를 포함한 정수
+page_col_meta.data_type_subtitle_d,Numbers with decimal points,소수점이 있는 숫자
+page_col_meta.data_type_subtitle_f,,
+page_col_meta.data_type_subtitle_c,,
+page_col_meta.data_type_subtitle_s,,
+page_col_meta.data_type_subtitle_b,,
+page_col_meta.data_type_subtitle_D,,
+page_col_meta.data_type_subtitle_T,,
+page_col_meta.data_type_subtitle_t,,
+page_col_meta.data_type_subtitle_e,Select one of several,여러 개중 하나를 선택함
+page_col_meta.data_type_subtitle_M,,
+
+page_col_meta.options_jb,Selection list,선택 리스트
+page_col_meta.options_jb_sub_label0,Display,표시이름
+page_col_meta.options_jb_sub_label1,Saved code,저장코드
+
+page_col_meta.detail,Detail,상세한 설명
+
 ==== Common Const ===,,
 common_const.status,status,상태
 common_const.status.available,Available,정상

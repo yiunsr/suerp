@@ -4,7 +4,7 @@
   </span>
   <span v-show="mode == 'edit'">
     <b class="mr-4">{{ props.label + (props.required?' ★':'') }} :</b> {{  summary }}
-    <v-dialog width="600">
+    <v-dialog width="800">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props" text="..." density="comfortable"></v-btn>
       </template>
@@ -26,14 +26,14 @@
                         <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-swap-vertical"
                           class="handle mt-2"></v-btn>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="3">
                         <v-select density="compact" :label="t('widget.type')" :rules="[rule.req]"
                           :items="items" 
                           v-model="data.textItems[index].type"
                           @update:modelValue="update">
                         </v-select>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col cols="7">
                         <v-text-field v-if="mode == 'edit'"
                           :type="props.type"
                           density="compact"
@@ -52,34 +52,6 @@
                     </v-row>
                   </template>
                 </draggable>
-
-                <!--
-                <v-row :dense="true" v-for="(textItem, textItemIdx) in data.textItems" :key="textItemIdx">
-                  <v-col cols="1">
-                    <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-minus"
-                      @click="removeItem(textItemIdx)"></v-btn>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-select density="compact" :label="t('widget.type')" :rules="[rule.req]"
-                      :items="items" 
-                      v-model="data.textItems[textItemIdx].type"
-                      @update:modelValue="update">
-                    </v-select>
-                  </v-col>
-                  <v-col cols="7">
-                    <v-text-field v-if="mode == 'edit'"
-                      :type="props.type"
-                       density="compact"
-                      :label="props.label + (props.required?' ★':'')" 
-                      :required="props.required"
-                      :rules="props.rules"
-                      v-bind="$attrs"
-                      @update:modelValue="update"
-                      v-model="data.textItems[textItemIdx].value"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              -->
               </v-container>
             </v-card-text>
 

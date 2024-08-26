@@ -22,6 +22,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_common.email')" type="email" :mode="detail.mode"
+              :counter="256"
               required v-model="data.email" :rules="[rule.req, rule.email]" />
           </v-col>
           <v-col cols="12" md="4">
@@ -36,18 +37,22 @@
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_common.last_name')" type="text" :mode="detail.mode"
+              :counter="64"
               v-model="data.last_name"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.first_name')" type="text" :mode="detail.mode" 
+            <mode-text-field :label="t('page_common.first_name')" type="text" :mode="detail.mode"
+              :counter="64"
               v-model="data.first_name"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_user.nickname')" type="text" :mode="detail.mode"
+              :counter="64"
               v-model="data.nickname"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_uesr.display')" type="text" :mode="detail.mode"
+              :counter="64"
               v-model="data.display"></mode-text-field>
           </v-col>
           

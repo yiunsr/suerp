@@ -7,6 +7,9 @@ function parseCsv(csv){
   let header = lines[0].split(",");
   lines = lines.slice(1);
   for(const line of lines){
+    if(line.charAt(",") == -1){
+      continue
+    }
     let cols = line.split(",");
     let item = {};
     for(let colidx in cols){

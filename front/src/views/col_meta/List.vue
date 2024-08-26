@@ -54,7 +54,7 @@ const headers = [
   { title: 'id', key: 'id', width: 80, },
   { title: t('common_const.status'), key: 'status' },
   { title: t('page_col_meta.table_meta_id'), key: 'table_meta_id' },
-  { title: t('page_col_meta.col_meta'), key: 'col_meta' },
+  { title: t('page_col_meta.column_meta'), key: 'column_meta' },
   { title: t('page_col_meta.data_type'), key: 'data_type' },
 ];
 let defaultFilter = {id: "", status: [], table_meta_id: "", col_meta: "", data_type: ""};
