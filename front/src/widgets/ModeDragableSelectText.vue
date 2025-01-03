@@ -22,18 +22,18 @@
                 <draggable tag="div" :list="data.textItems" class="list-group" handle=".handle" item-key="name">
                   <template #item="{ element, index }">
                     <v-row :dense="true" :key="index">
-                      <v-col cols="1">
-                        <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-swap-vertical"
-                          class="handle mt-2"></v-btn>
-                      </v-col>
                       <v-col cols="3">
                         <v-select density="compact" :label="t('widget.type')" :rules="[rule.req]"
                           :items="items" 
                           v-model="data.textItems[index].type"
                           @update:modelValue="update">
+                          <template v-slot:prepend>
+                            <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-swap-vertical"
+                          class="handle mt-2"></v-btn>
+                          </template>
                         </v-select>
                       </v-col>
-                      <v-col cols="7">
+                      <v-col cols="9">
                         <v-text-field v-if="mode == 'edit'"
                           :type="props.type"
                           density="compact"
@@ -43,12 +43,14 @@
                           v-bind="$attrs"
                           @update:modelValue="update"
                           v-model="data.textItems[index].value"
-                        ></v-text-field>
+                        >
+                          <template v-slot:append>
+                            <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-minus"
+                          @click="removeItem(index)"></v-btn>
+                          </template>
+                        </v-text-field>
                       </v-col>
-                      <v-col cols="1">
-                        <v-btn variant="tonal" color="primary"  density="compact" icon="mdi-minus"
-                          @click="removeItem(index)" class="mt-2"></v-btn>
-                      </v-col>
+                      
                     </v-row>
                   </template>
                 </draggable>

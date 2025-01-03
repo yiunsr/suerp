@@ -84,15 +84,15 @@
           </v-col>
 
           <v-col cols="12" md="4">
-            <mode-text-field label="HTML pattern" type="text" :mode="detail.mode"
-              :counter=128
-              required v-model="data.html_pattern" :max-length></mode-text-field>
+            <mode-text-area label="HTML pattern" type="text" :mode="detail.mode"
+              :counter=128 :rows="3"
+              v-model="data.html_pattern"></mode-text-area>
           </v-col>
 
-          <v-col cols="12" md="12">
+          <v-col cols="12" md="4">
             <mode-text-area label="HTML detail" type="text" :mode="detail.mode"
               :counter=128
-              :rows="2"
+              :rows="3"
               v-model="data.html_detail"></mode-text-area>
           </v-col>
         
@@ -146,10 +146,10 @@ let detail = reactive({ mode, valid: false });
 let data = reactive({
   id: null, status: "A", table_meta_id: null, 
   column_meta: "", data_type: "", code: "", 
-  name: "", display: "", 
+  name: "", display: "", detail: "",
   options_jb: [], 
-  default_jb: null, 
-  html_type: "", html_pattern: "", detail: "",
+  default_jb: "null", 
+  html_type: "", html_pattern: "", html_detail: "",
 });
 
 async function submitAdd(){
@@ -160,7 +160,7 @@ async function submitAdd(){
   }
     
   colMetaAPI.add(data).then(function(res){
-    $router.push('/user/' + res.data.id);
+    $router.push('/col_meta/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });

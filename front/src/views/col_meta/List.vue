@@ -3,7 +3,8 @@
     <ListHeader :listTitle="t('page_col_meta.list_title')" addUrl="/col_meta/new" 
       @search="search"/>
     
-    <ListTable :headers="headers" :sortBy="tableData.sortBy" 
+    <ListTable
+      :headers="headers" :sortBy="tableData.sortBy" 
       idUrlPrefix="/col_meta/"
       :items="tableData.data" 
       :total="tableData.total" 
@@ -17,14 +18,10 @@
             v-model="filters.id" @keyup.enter="search" hide-details  />
         </td>
 
-        <td class="status"></td>
-
-        <td class="user_role"></td>
-
-        <td class="email">
-          <v-text-field type="text" density="compact" 
-            v-model="filters.email" @keyup.enter="search" hide-details />
-        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
       </template>
     </ListTable>
 
@@ -41,7 +38,7 @@ import {utils} from '@/plugins/utils';
 import ListHeader from "@/components/ListHeader";
 import ListTable from "@/components/ListTable";
 
-import {reverseItem, ColMetaTableItems} from '@/js/commonValue';
+import {reverseItem, ColMetaTableItems, ColMetaColumnMetaItems, ColMetaDataTypeItems} from '@/js/commonValue';
 
 import {colMetaAPI} from '@/api/service/col_meta';
 
@@ -52,10 +49,16 @@ let t=i18n.global.t;
 
 const headers = [
   { title: 'id', key: 'id', width: 80, },
-  { title: t('common_const.status'), key: 'status' },
-  { title: t('page_col_meta.table_meta_id'), key: 'table_meta_id' },
-  { title: t('page_col_meta.column_meta'), key: 'column_meta' },
-  { title: t('page_col_meta.data_type'), key: 'data_type' },
+  { code: 'common_const.status', key: 'status' },
+  { code: 'page_col_meta.table_meta_id', key: 'table_meta_id',
+    value: function(_, value){ return reverseItem(ColMetaTableItems.value, value);},
+  },
+  { code: 'page_col_meta.column_meta', key: 'column_meta',
+    value: function(_, value){ return reverseItem(ColMetaColumnMetaItems.value, value);},
+   },
+  { code: 'page_col_meta.data_type', key: 'data_type',
+    value: function(_, value){ return reverseItem(ColMetaDataTypeItems.value, value);},
+  }
 ];
 let defaultFilter = {id: "", status: [], table_meta_id: "", col_meta: "", data_type: ""};
 let initFilter = utils.initFilters($route.query, defaultFilter);

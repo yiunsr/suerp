@@ -47,7 +47,6 @@
 
     <v-navigation-drawer v-model="nav.drawer" :rail="nav.rail"
       permanent @click="nav.rail = false"
-
     >
       <v-list-item
         prepend-icon="mdi-menu" 

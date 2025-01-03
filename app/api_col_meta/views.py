@@ -7,13 +7,15 @@ from fastapi import Depends
 from fastapi import status
 from sqlalchemy.orm import Session
 from pydantic import parse_obj_as
+from pydantic import TypeAdapter
+
 
 from config.db import get_db_session
 from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.col_meta import ColMeta
-from app.schemas.col_meta import ColMetaSchema
+from app.schemas.col_meta import ColMetaSchema, ColMetaCreate, ColMetaSchemaListBase
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_col_meta
@@ -33,10 +35,16 @@ async def list_obj(
         paging_param: Annotated[dict, Depends(common_paging_param)],
         order_param: Annotated[dict, Depends(common_order_param)],
         db_session: Session = Depends(get_db_session),
-        _ = Depends(get_current_active_user)) -> Any:
+        _ = Depends(get_current_active_user),
+        ) -> Any:
     db_count = await ColMeta.count(db_session, filter_param)
     db_col_metas = await ColMeta.listing(db_session, filter_param, order_param, paging_param)
-    return dict(total=db_count, data=db_col_metas)
+    #col_metas = [ColMetaSchemaList.from_orm(db_obj) for db_obj in db_col_metas]
+
+    # https://stackoverflow.com/a/61021183/6652082
+    ta = TypeAdapter(List[ColMetaSchemaListBase])
+    col_metas = ta.validate_python(db_col_metas)
+    return dict(total=db_count, data=col_metas)
 
 @api_col_meta.get("/{id}")
 async def get_obj(
@@ -50,23 +58,26 @@ async def get_obj(
             )
     return parse_obj_as(ColMeta, db_obj)
 
-@api_col_meta.post("/")
-async def get_obj(
-        db_session: Session = Depends(get_db_session),
-        _ = Depends(get_current_active_user)) -> Any:
+@api_col_meta.put("/{id}", response_model=ColMetaSchema)
+async def update(
+        id: int, data: ColMetaCreate, db_session: Session=Depends(get_db_session)) -> Any:
     db_obj = await ColMeta.get(db_session, id)
-    if db_obj is None:
-        raise ResError(
-                status_code=404,
-                err_code=ErrCode.NO_ITEM
-            )
-    return parse_obj_as(ColMeta, db_obj)
+    db_obj = await ColMeta.update(db_session, db_obj, **data.model_dump())
+    db_session.add(db_obj)
+    try:
+        await db_session.commit()
+    except Exception as e:
+        err_text = traceback.format_exc()
+        print(err_text)
+    await db_session.refresh(db_obj)
+    return db_obj.pydantic(ColMetaSchema)
+
 
 @api_col_meta.post(
         "/", response_model=ColMetaSchema, status_code=status.HTTP_201_CREATED)
 async def create(
         data: ColMetaSchema, db_session: Session = Depends(get_db_session)) -> Any:
-    db_obj = Person(**data.model_dump())
+    db_obj = ColMeta(**data.model_dump())
     db_session.add(db_obj)
     await db_session.commit()
     await db_session.refresh(db_obj)

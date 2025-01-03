@@ -38,5 +38,18 @@
     "**/__pycache__": true
   },
   "python.analysis.typeCheckingMode": "off",
-  "files.autoSave": "off"
+  "files.autoSave": "off",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "127.0.0.1",
+      "port": 5433,
+      "driver": "PostgreSQL",
+      "database": "suerp",
+      "name": "suerp",
+      "username": "db_user",
+      "password": "aBcd123456",
+      "group": "local"
+    }
+  ]
 }

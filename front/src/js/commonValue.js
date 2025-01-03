@@ -92,7 +92,9 @@ const _ColMetaColumnMetaDict = {
   4: "category_tags_jb",
 }
 
-const ColMetaColumnMetaItems = prepare("", _ColMetaColumnMetaDict);
+const ColMetaColumnMetaItems = computed(() => {
+  return prepare("", _ColMetaColumnMetaDict);
+});
 
 const _ColMetaDataTypeDict = {
   "n": "n", "m": "m", "d": "d", "f": "f", "c": "c", "s": "s",
