@@ -7,3 +7,7 @@
   * [{title: "title", value: "value"}] 형태의 리스트 형을 저장해야 한다.
   * 입력이 한 행에 title, value 를 입력할 수 있는 input 이 2개이고 순서 변경이 가능해야 한다. 
   * ModeMultiTextField 가 기본적으로 순서 변경 가능함.
+
+
+* parse_obj_as  이거 deprecated 됨
+  * pydantic.TypeAdapter.json_schema 을 사용해야 한다. 

@@ -52,7 +52,7 @@
         prepend-icon="mdi-menu" 
         icon 
       >
-        <v-list-item-subtitle>Logined User Email</v-list-item-subtitle>
+        <v-list-item-subtitle v-show="isLogin">{{ loginEmail }}</v-list-item-subtitle>
         <template v-slot:append>
           <v-btn
             variant="text"
@@ -98,6 +98,7 @@
     i18n.global.locale.value = newLocale;
   }
   function logout(){
+    store.commit('setLoginEmail', '');
     store.commit('changeLogin', false);
     // sessionStorage.removeItem("access_token");
     auth.removeLoginToken();
@@ -109,5 +110,8 @@
 
   const isLogin = computed(() => {
     return store.getters.isLogin;
+  });
+  const loginEmail = computed(() => {
+    return store.getters.getLoginEmail;
   });
 </script>

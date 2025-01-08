@@ -12,11 +12,13 @@ class ColMetaSchema(BaseModel):
     column_meta: str
     data_type: str
     name: str
+    display: str
     code: str
     detail: str
 
     options_jb: list
     default_jb: dict
+    visible: int
     html_type: str
     html_pattern: str
     html_detail: str
@@ -39,3 +41,9 @@ class ColMetaUpdate(ColMetaSchema):
     col_meta: str
     data_type: str
     name: str
+
+class ColMetaPrivateDetail(ColMetaSchema):
+    id: int
+    
+    class Config:
+        from_attributes = True

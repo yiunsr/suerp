@@ -74,7 +74,7 @@
 
 <script setup>
 import _ from 'lodash';
-import { computed, watch, reactive, defineExpose } from 'vue';
+import { computed, watch, reactive} from 'vue';
 import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
 import {i18n} from '@/plugins/i18n';

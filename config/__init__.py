@@ -18,7 +18,7 @@ class Config:
     DATABASE_URI = os.environ.get('DATABASE_URL') or \
         ("postgresql+asyncpg://db_user:aBcd123456@" + SERVER_DOMAIN +\
         ":5433/suerp")
-    REDIS_URL = os.getenv('REDIS_URL') or (SERVER_DOMAIN + ':6379')
+    REDIS_URL = os.getenv('REDIS_URL') or ("redis://" + SERVER_DOMAIN + ':6379/0')
     SUPER_SECRET_TOKEN = "50d92252-1175-42e7-9b5b-3ff805e1743f"
 
     SECRET_KEY = \

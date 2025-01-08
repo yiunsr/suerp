@@ -1,17 +1,19 @@
 import { createStore } from 'vuex';
+import { cookie } from '@/plugins/cookie'
 
-const getCookie = (name) => {
-  return document.cookie.split('; ').reduce((r, v) => {
-    const parts = v.split('=')
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r
-  }, '')
-}
+// const getCookie = (name) => {
+//   return document.cookie.split('; ').reduce((r, v) => {
+//     const parts = v.split('=')
+//     return parts[0] === name ? decodeURIComponent(parts[1]) : r
+//   }, '')
+// }
 
 let init_login = false;
-let access_token = getCookie("access_token");
+let access_token = cookie.getCookie("access_token");
 if(access_token)
   init_login = true;
-let init_lang = getCookie("lang") || "ko";
+let init_lang = cookie.getCookie("lang") || "ko";
+let init_email = cookie.getCookie("email");
 
 const store = createStore({
   state : {
@@ -20,6 +22,7 @@ const store = createStore({
       body: "", timeout:5000,
     },
     login: init_login,
+    email: init_email,
     loginDialog: false,
     serverRequestDict: {},
     lang: init_lang
@@ -44,6 +47,10 @@ const store = createStore({
     },
     changeLogin(state, login){
       state.login = login;
+    },
+    setLoginEmail(state, email){
+      state.email = email;
+      cookie.setCookie("email", email);
     },
     addLoadingKey(state, key){
       state.serverRequestDict[key] = true;
@@ -73,6 +80,9 @@ const store = createStore({
     },
     isLogin: (state) => {
       return state.login;
+    },
+    getLoginEmail(state, email){
+      return state.email;
     },
     isShowLoadingModal: (state) => {
       return Object.keys(state.serverRequestDict).length > 0;

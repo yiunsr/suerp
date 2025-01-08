@@ -22,12 +22,15 @@ class ColMeta(Base, BaseCU):
     detail = Column(
         String(128), nullable=False, server_default=text("''"))
 
-    code = Column(CHAR(16), nullable=False, server_default=text("''"))
+    code = Column(String(16), nullable=False, server_default=text("''"))
     name = Column(String(32), nullable=False, server_default=text("''"))
+    display = Column(String(32), nullable=False, server_default=text("''"))
     options_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
     default_jb = Column(
         JSONB, nullable=False, server_default=text("'null'::jsonb"))
+    visible = Column(
+        SmallInteger, nullable=False, server_default=text("'null'::jsonb"))
     html_type = Column(
         String(128), nullable=False, server_default=text("''"))
     html_pattern = Column(

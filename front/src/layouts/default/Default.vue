@@ -140,6 +140,7 @@
       function(response){
         closeLoginDialog();
         let msg = i18n.global.t("login_form.success");
+        store.commit('setLoginEmail', login_data.email);
         store.commit('changeLogin', true);
         store.commit('showSnackbar', msg, 3000);
         let access_token = response.data.access_token;

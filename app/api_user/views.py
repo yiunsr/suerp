@@ -1,6 +1,8 @@
 import traceback
+import json
 from typing import Annotated
 from typing import Any, List, Optional
+from fastapi import Request
 from fastapi import Depends
 from fastapi import status
 from fastapi import Query
@@ -115,28 +117,33 @@ async def get_obj(
 
 @api_user.get("/")
 async def list_user(
+        request: Request,
         filter_param: Annotated[dict, Depends(user_filter_param)],
         paging_param: Annotated[dict, Depends(common_paging_param)],
         order_param: Annotated[dict, Depends(common_order_param)],
         db_session: Session = Depends(get_db_session),
+        
         _ = Depends(get_current_active_user)) -> Any:
     db_count = await User.count(db_session, filter_param)
     db_users = await User.listing(db_session, filter_param, order_param, paging_param)
-    return dict(total=db_count, data=objs_to_schemas(db_users, "pri"))
+
+    extra_field_str = request.app.cache.get("user_define.user")
+    extra_field_info = json.loads(extra_field_str)
+    extra_fields = extra_field_info["code"].keys()
+    return dict(total=db_count, data=objs_to_schemas(db_users, "pri", extra_fields))
 
 
 @api_user.get("/me/", response_model=UserPrivate)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-def objs_to_schemas(db_users, share_type):
-    results = []
-    for db_user in db_users:
-        if share_type == "pub":
-            item = UserPublic.model_validate(db_user)
-        elif share_type == "pri":
-            item = UserPrivate.model_validate(db_user)
-        else:
-            raise
-        results.append(item)
-    return results
+
+def objs_to_schemas(db_users, share_type, extra_fields):
+    ta = None
+    if share_type == "pub":
+        ta = TypeAdapter(List[UserPublic])
+    elif share_type == "pri":
+        ta = TypeAdapter(List[UserPrivate])
+    else:
+        raise
+    return ta.validate_python(db_users)

@@ -15,7 +15,8 @@ from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
 from app.models.col_meta import ColMeta
-from app.schemas.col_meta import ColMetaSchema, ColMetaCreate, ColMetaSchemaListBase
+from app.schemas.col_meta import ColMetaSchema, ColMetaCreate, \
+    ColMetaSchemaListBase, ColMetaPrivateDetail
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_col_meta
@@ -56,7 +57,9 @@ async def get_obj(
                 status_code=404,
                 err_code=ErrCode.NO_ITEM
             )
-    return parse_obj_as(ColMeta, db_obj)
+    ta = TypeAdapter(ColMetaPrivateDetail)
+    col_metas = ta.validate_python(db_obj)
+    return col_metas
 
 @api_col_meta.put("/{id}", response_model=ColMetaSchema)
 async def update(

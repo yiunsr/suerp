@@ -64,6 +64,11 @@ page_col_meta.table_4,Deal,거래
 page_col_meta.table_5,Accounting,회계
 page_col_meta.table_meta_id,Table,테이블
 page_col_meta.column_meta,Column,컬럼
+page_col_meta.visible,Show/Hide,보임/숨김
+page_col_meta.visible.hide_all,Hide on all pages,모두 페이지에서 숨기기
+page_col_meta.visible.show_list,Show in List Page Only,리스트페이지에서 만 보이기
+page_col_meta.visible.show_detail,Show in Detail Page Only,상세페이지에서만 보이기
+page_col_meta.visible.show_all,Show on all pages,모두 페이지에서 보이기
 
 page_col_meta.data_type,Data Type,데이터 타입
 page_col_meta.data_type_n,number(integer),number(정수형)

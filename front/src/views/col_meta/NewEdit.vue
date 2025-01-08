@@ -27,13 +27,14 @@
           </v-col>
           
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_col_meta.table_meta_id')" :items="ColMetaTableItems" item-title="str" 
+            <mode-select :label="t('page_col_meta.table_meta_id')" 
+              :items="ColMetaTableItems" item-title="str" item-value="value_int"
               :mode="detail.mode"
               required v-model="data.table_meta_id" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_col_meta.column_meta')" :items="ColMetaColumnMetaItems" 
-              item-title="title"
+            <mode-select :label="t('page_col_meta.column_meta')" 
+              :items="ColMetaColumnMetaItems" item-title="title"
               :mode="detail.mode"
               required v-model="data.column_meta" :rules="[rule.req]" />
           </v-col>
@@ -61,9 +62,20 @@
               required v-model="data.code"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
+            <mode-text-field label="default_jb" type="text" :mode="detail.mode"
+              :counter=16
+              required v-model="data.default_jb"></mode-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
             <mode-text-field :label="t('page_common.name')" type="text" :mode="detail.mode" 
               :counter=32
               required v-model="data.name"></mode-text-field>
+          </v-col>
+          <v-col cols="12" md="4">
+            <mode-select :label="t('page_col_meta.visible')" :items="ColMetaVisibleItems" 
+              item-title="str" item-value="value_int"
+              :mode="detail.mode"
+              required v-model="data.visible" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_common.display')" type="text" :mode="detail.mode"
@@ -121,7 +133,7 @@ import {rule} from '@/js/rule';
 
 import {reverseItem, strSubtitle,
   ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, 
-  ColMetaDataTypeItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
+  ColMetaDataTypeItems, ColMetaVisibleItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
 import {colMetaAPI} from '@/api/service/col_meta';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeTextArea from "@/widgets/ModeTextArea";
@@ -146,9 +158,9 @@ let detail = reactive({ mode, valid: false });
 let data = reactive({
   id: null, status: "A", table_meta_id: null, 
   column_meta: "", data_type: "", code: "", 
-  name: "", display: "", detail: "",
+  name: "", display: "", detail: "", visible: null,
   options_jb: [], 
-  default_jb: "null", 
+  default_jb: null, 
   html_type: "", html_pattern: "", html_detail: "",
 });
 
@@ -158,8 +170,10 @@ async function submitAdd(){
     await detailForm.value.validate();
     return;
   }
-    
-  colMetaAPI.add(data).then(function(res){
+  
+  let paramDict = JSON.parse(JSON.stringify(data));
+  paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
+  colMetaAPI.add(paramDict).then(function(res){
     $router.push('/col_meta/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
@@ -168,7 +182,9 @@ async function submitAdd(){
 
 function submitUpdate(){
   let id = data.id;
-  colMetaAPI.update(id, data).then(function(res){
+  let paramDict = JSON.parse(JSON.stringify(data));
+  paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
+  colMetaAPI.update(id, paramDict).then(function(res){
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
@@ -177,19 +193,23 @@ function submitUpdate(){
 function getAPIDetail(){
   colMetaAPI.get(userId).then(function(res){
     data.id = res.data.id;
-    data.email = res.data.email;
     data.status = res.data.status;
-    data.user_role = res.data.user_role;
-
-    data.last_name = res.data.last_name;
-    data.first_name = res.data.first_name;
-    data.nickname = res.data.nickname;
+    data.name = res.data.name;
     data.display = res.data.display;
+    data.table_meta_id = res.data.table_meta_id;
 
-    data.ref_id0 = res.data.ref_id0;
-    data.ref_id1 = res.data.ref_id1;
-    data.ref_id2 = res.data.ref_id2;
-    data.ref_id3 = res.data.ref_id3;
+    data.data_type = res.data.data_type;
+    data.code = res.data.code;
+    data.column_meta = res.data.column_meta;
+    data.visible = res.data.visible;
+    data.default_jb = JSON.stringify(res.data.default_jb);
+    data.detail = res.data.detail;
+
+    data.html_detail = res.data.html_detail;
+    data.html_pattern = res.data.html_pattern;
+    data.html_type = res.data.html_type;
+    
+
   }).catch(function(error){
   });
 }
