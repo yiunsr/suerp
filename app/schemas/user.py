@@ -1,9 +1,17 @@
 from typing import Optional, ClassVar
+from typing import Any
+from typing_extensions import Self
+
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ModelWrapValidatorHandler, ConfigDict, ValidationError,\
+    EmailStr, Field, ValidationInfo, FieldValidationInfo, model_validator
+
 from app.models.user import User as DB_User
+from app.models.base import Base
 
 class UserBase(BaseModel):
+    model_config  = ConfigDict(extra="allow")
+
     id: Optional[int]
     email: Optional[EmailStr]
     first_name: str = ""
@@ -12,6 +20,39 @@ class UserBase(BaseModel):
     user_role: str = ""
     status: str = ""
     create_ets: Optional[int]
+    data_jb: dict = Field(exclude=True, default={})
+
+    # @model_validator(mode='before')
+    # @classmethod
+    # def set_extra_columns(cls, data: Any, info: ValidationInfo) -> Any:
+    #     extra_fields = info.context["extra_fields"]
+    #     data_jb = data.data_jb
+    #     for field in extra_fields:
+    #         data_value = data.data_jb.get(field)
+    #     return data
+
+    @model_validator(mode='wrap')
+    @classmethod
+    def set_extra_columns(cls, data: Any, 
+            handler: ModelWrapValidatorHandler[Self],
+            info: FieldValidationInfo) -> Self:
+        try:
+            is_db_data = isinstance(data, Base)
+            is_pydantic_model = isinstance(data, BaseModel)
+            validated_self = handler(data)
+            if is_db_data is False:
+                return validated_self
+            context = info.context or {}
+            extra_fields = context.get("extra_fields") or []
+            data_jb = data.data_jb
+            for field in extra_fields:
+                value = data_jb.get(field)
+                setattr(validated_self, "user_" + field, value)
+            return validated_self
+        except ValidationError:
+            logging.error('Model %s failed to validate with data %s', cls, data)
+            raise
+
 
 class UserSignup(UserBase):
     email: EmailStr

@@ -22,6 +22,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </template>
     </ListTable>
 
@@ -55,7 +56,9 @@ const headers = [
   },
   { code: 'page_col_meta.column_meta', key: 'column_meta',
     value: function(_, value){ return reverseItem(ColMetaColumnMetaItems.value, value);},
-   },
+  },
+  { code: 'page_common.display', key: 'display'},
+  
   { code: 'page_col_meta.data_type', key: 'data_type',
     value: function(_, value){ return reverseItem(ColMetaDataTypeItems.value, value);},
   }

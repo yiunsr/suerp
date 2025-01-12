@@ -1,6 +1,7 @@
 import redis
 import json
 from fastapi import Depends
+from fastapi import Request
 from sqlalchemy.orm import Session
 from sqlalchemy.future import select
 
@@ -60,3 +61,10 @@ async def init_cache(app, db_session: Session = Depends(get_db_session)):
     app.cache.set("accouting.accouting",
         json.dumps(dict_items["accouting"], ensure_ascii=True))
     print("cahce parpared")
+
+
+async def get_extra_fields(request: Request):
+    extra_field_str = request.app.cache.get("user_define.user")
+    extra_field_info = json.loads(extra_field_str)
+    extra_fields = extra_field_info["code"].keys()
+    return extra_fields

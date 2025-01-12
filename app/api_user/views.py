@@ -3,6 +3,7 @@ import json
 from typing import Annotated
 from typing import Any, List, Optional
 from fastapi import Request
+from fastapi.responses import JSONResponse
 from fastapi import Depends
 from fastapi import status
 from fastapi import Query
@@ -15,6 +16,7 @@ from sqlalchemy import Integer
 from pydantic import TypeAdapter
 
 from config.db import get_db_session
+from config.cache import get_extra_fields
 from config.http_err import ErrCode
 from config.http_err import ResError
 from config.auth import get_current_active_user
@@ -103,17 +105,24 @@ async def update(
     await db_session.refresh(db_obj)
     return db_obj.pydantic(UserPrivate)
 
+
 @api_user.get("/{id}", response_model=UserPrivate)
 async def get_obj(
         id: int, db_session: Session = Depends(get_db_session),
-        _ = Depends(get_current_active_user)) -> Any:
+        extra_fields: [] = Depends(get_extra_fields),
+        _ = Depends(get_current_active_user)
+        ) -> Any:
     db_user = await User.get(db_session, id)
     if db_user is None:
         raise ResError(
                 status_code=404,
                 err_code=ErrCode.NO_ITEM
             )
-    return UserPrivate.model_validate(db_user)
+    context = {"extra_fields": extra_fields}
+    ret_model = UserPrivate.model_validate(db_user, context=context)
+    ret_json = ret_model.model_dump()
+    ret = JSONResponse(content=ret_json)
+    return ret
 
 @api_user.get("/")
 async def list_user(
@@ -138,12 +147,29 @@ async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
 
+# def objs_to_schemas(db_users, share_type, extra_fields):
+#     results = []
+
+#     context = {"extra_fields": extra_fields}
+#     for db_user in db_users:
+#         if share_type == "pub":
+#             item = UserPublic.model_validate(db_user, context=context)
+#         elif share_type == "pri":
+#             item = UserPrivate.model_validate(db_user, context=context)
+#         else:
+#             raise
+#         results.append(item)
+#     return results
+
+UserPubList = TypeAdapter(List[UserPublic]) 
+UserPriList = TypeAdapter(List[UserPrivate]) 
 def objs_to_schemas(db_users, share_type, extra_fields):
+    context = {"extra_fields": extra_fields}
     ta = None
     if share_type == "pub":
-        ta = TypeAdapter(List[UserPublic])
+        ta = UserPubList
     elif share_type == "pri":
-        ta = TypeAdapter(List[UserPrivate])
+        ta = UserPriList
     else:
         raise
-    return ta.validate_python(db_users)
+    return ta.validate_python(db_users, context=context)

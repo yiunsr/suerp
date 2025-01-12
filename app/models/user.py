@@ -69,6 +69,7 @@ class User(Base, BaseInfo, BaseCT):
         elif self.user_role == "N":
             return "Normal"
         return ""
+    
 
 class UGroup(Base, BaseInfo, BaseCU):
     __tablename__ = "ugroup"
