@@ -72,6 +72,13 @@
             <mode-text-field label="ref_id3" type="number" :mode="detail.mode"
               v-model="data.ref_id3" />
           </v-col>
+
+          
+          <v-col cols="12" md="4" v-for="cf_item in custom_field.infos">
+            <mode-custom-field :label="cf_item.display" :type="cf_item.html_type" 
+              :mode="detail.mode"
+              v-model="custom_field.data['user_' + cf_item['code']]" />
+          </v-col>
         </v-row>
 
         <v-row v-show="detail.mode == 'edit'">
@@ -87,7 +94,7 @@
 </template>
   
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
@@ -97,6 +104,8 @@ import {rule} from '@/js/rule';
 
 import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {userAPI} from '@/api/service/users';
+import {colMetaAPI} from '@/api/service/col_meta';
+import ModeCustomField from "@/widgets/ModeTextField";
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
 import ModeSelect from "@/widgets/ModeSelect";
@@ -121,6 +130,9 @@ let data = reactive({
   ref_id0: null, ref_id1: null, 
   ref_id2: null, ref_id3: null,
 });
+let custom_field = reactive({
+  infos: [], data: {},
+});
 
 async function submitAdd(){
   console.log("form valid : " + detail.valid);
@@ -138,8 +150,16 @@ async function submitAdd(){
 
 function submitUpdate(){
   let id = data.id;
+  
   userAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
+  }).catch(function(error){
+  });
+}
+
+function getUserField(){
+  colMetaAPI.getUserField().then(function(res){
+    custom_field.infos = res.data.data;
   }).catch(function(error){
   });
 }
@@ -160,14 +180,28 @@ function getAPIDetail(){
     data.ref_id1 = res.data.ref_id1;
     data.ref_id2 = res.data.ref_id2;
     data.ref_id3 = res.data.ref_id3;
+
+    for (const [key, value] of Object.entries(res.data)) {
+      if (!key.startsWith('user__')) continue;
+        custom_field.data[key] = value;
+    }
   }).catch(function(error){
   });
 }
 
+
+
 onMounted(() => {
-  if(!isNewPage)
+  getUserField();
+   if(!isNewPage){
     getAPIDetail();
+  }
 })
 
 
+watch(() => custom_field.data, (newValue, oldValue) => {
+  for (const [key, value] of Object.entries(newValue)) {
+    data[key] = value;
+  }
+},{deep: true, immediate: false})
 </script>

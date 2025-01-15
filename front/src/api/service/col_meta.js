@@ -34,6 +34,13 @@ class ColMetaAPI{
       url: URL_BASE + id,
     });
   }
+
+  getUserField(){
+    return $axios({
+      method: 'get',
+      url: URL_BASE + "user",
+    });
+  }
   
 }
 export let colMetaAPI = new ColMetaAPI();

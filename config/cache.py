@@ -8,11 +8,14 @@ from sqlalchemy.future import select
 from app.models.col_meta import ColMeta
 from config.db import get_db_session
 
+global_cache = None
 def init_app(app):
+    global global_cache
     config = app.config
     redis_url = app.config["REDIS_URL"]
     cache = redis.from_url(redis_url)
     app.cache = cache
+    global_cache = cache
 
 async def init_cache(app, db_session: Session = Depends(get_db_session)):
     print("cahce parpare")
@@ -65,6 +68,16 @@ async def init_cache(app, db_session: Session = Depends(get_db_session)):
 
 async def get_extra_fields(request: Request):
     extra_field_str = request.app.cache.get("user_define.user")
+    extra_field_info = json.loads(extra_field_str)
+    extra_fields = extra_field_info["code"].keys()
+    return extra_fields
+
+def get_cache():
+    return global_cache
+
+def get_extra_fields_sync():
+    global global_cache
+    extra_field_str = global_cache.get("user_define.user")
     extra_field_info = json.loads(extra_field_str)
     extra_fields = extra_field_info["code"].keys()
     return extra_fields

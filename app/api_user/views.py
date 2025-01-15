@@ -1,5 +1,6 @@
-import traceback
+import copy
 import json
+import traceback
 from typing import Annotated
 from typing import Any, List, Optional
 from fastapi import Request
@@ -25,6 +26,7 @@ from app.schemas.user import UserPublic, UserPublicList
 from app.schemas.user import UserPrivate, UserPrivateList
 from app.schemas.user import UserPrivateUpdate, UserPrivateCreate
 from app.schemas.user import UserSignup
+from app.utils import util
 from app.utils.common_param_utils import common_paging_param
 from app.utils.common_param_utils import common_order_param
 from . import api_user, api_pub_user
@@ -35,6 +37,9 @@ def user_filter_param(id: str="", email: str="",
     return {"id": id, "email": email, "status": status, "user_role": user_role,
         "first_name": first_name, "last_name": last_name,
     }
+
+async def user_extra(item_id: int):
+    return {"item_id": item_id}
 
 @api_pub_user.post(
         "/", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
@@ -84,11 +89,17 @@ async def singup_user(
 @api_pub_user.put("/{id}", response_model=UserPrivate, 
         status_code=status.HTTP_201_CREATED)
 async def update(
-        id: int, data: UserPrivateUpdate, db_session: Session=Depends(get_db_session)) -> Any:
+        id: int, req_scheme: UserPrivateUpdate, request: Request,
+        extra_fields: [] = Depends(get_extra_fields),
+        db_session: Session=Depends(get_db_session)) -> Any:
     db_obj = await User.get(db_session, id)
-    db_obj = await User.update(db_session, db_obj, **data.model_dump())
-    if "password" in data and data.password:
-        db_obj.hash_password = User.gen_password_hash(data.password)
+    req_json = req_scheme.model_dump()
+    data_jb = util.merge_selective_dict(
+        db_obj.data_jb, req_scheme.data_jb, "user_", extra_fields)
+    req_json["data_jb"] = data_jb
+    db_obj = await User.update(db_session, db_obj, **req_json)
+    if "password" in req_scheme and req_scheme.password:
+        db_obj.hash_password = User.gen_password_hash(req_scheme.password)
         db_obj.password_last_ets = func.now_ets()
     db_session.add(db_obj)
     try:
@@ -146,20 +157,6 @@ async def list_user(
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-
-# def objs_to_schemas(db_users, share_type, extra_fields):
-#     results = []
-
-#     context = {"extra_fields": extra_fields}
-#     for db_user in db_users:
-#         if share_type == "pub":
-#             item = UserPublic.model_validate(db_user, context=context)
-#         elif share_type == "pri":
-#             item = UserPrivate.model_validate(db_user, context=context)
-#         else:
-#             raise
-#         results.append(item)
-#     return results
 
 UserPubList = TypeAdapter(List[UserPublic]) 
 UserPriList = TypeAdapter(List[UserPrivate]) 

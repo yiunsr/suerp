@@ -13,7 +13,7 @@
 
 * parse_obj_as  이거 deprecated 됨
   * pydantic.TypeAdapter.json_schema 을 사용해야 한다. 
-
+퍄
 * AliasPath and AliasChoices 에 대해 찾아 볼것
   * https://docs.pydantic.dev/latest/concepts/alias/#aliaspath-and-aliaschoices
 

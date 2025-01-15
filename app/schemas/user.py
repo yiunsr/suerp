@@ -6,8 +6,11 @@ from datetime import datetime
 from pydantic import BaseModel, ModelWrapValidatorHandler, ConfigDict, ValidationError,\
     EmailStr, Field, ValidationInfo, FieldValidationInfo, model_validator
 
+from config.cache import get_extra_fields_sync
+
 from app.models.user import User as DB_User
 from app.models.base import Base
+
 
 class UserBase(BaseModel):
     model_config  = ConfigDict(extra="allow")
@@ -22,15 +25,6 @@ class UserBase(BaseModel):
     create_ets: Optional[int]
     data_jb: dict = Field(exclude=True, default={})
 
-    # @model_validator(mode='before')
-    # @classmethod
-    # def set_extra_columns(cls, data: Any, info: ValidationInfo) -> Any:
-    #     extra_fields = info.context["extra_fields"]
-    #     data_jb = data.data_jb
-    #     for field in extra_fields:
-    #         data_value = data.data_jb.get(field)
-    #     return data
-
     @model_validator(mode='wrap')
     @classmethod
     def set_extra_columns(cls, data: Any, 
@@ -40,18 +34,23 @@ class UserBase(BaseModel):
             is_db_data = isinstance(data, Base)
             is_pydantic_model = isinstance(data, BaseModel)
             validated_self = handler(data)
-            if is_db_data is False:
-                return validated_self
+
             context = info.context or {}
             extra_fields = context.get("extra_fields") or []
-            data_jb = data.data_jb
-            for field in extra_fields:
-                value = data_jb.get(field)
-                setattr(validated_self, "user_" + field, value)
+
+            if is_db_data is False:
+                return validated_self
+            validated_self._set_extra_columns(data, extra_fields)
             return validated_self
         except ValidationError:
             logging.error('Model %s failed to validate with data %s', cls, data)
             raise
+    
+    def _set_extra_columns(self, data: Any, extra_fields: []):
+        data_jb = data.data_jb
+        for field in extra_fields:
+            value = data_jb.get(field)
+            setattr(self, "user_" + field, value)
 
 
 class UserSignup(UserBase):
@@ -76,6 +75,7 @@ class UserPublicList(BaseModel):
         arbitrary_types_allowed = True
 
 class UserPrivate(UserBase):
+
     nickname: str = None
     last_join_ets: Optional[int] = None
     password_last_ets: Optional[int] = None
@@ -87,6 +87,7 @@ class UserPrivate(UserBase):
     class Config:
         from_attributes = True
         arbitrary_types_allowed = True
+        extra="allow"
 
 class UserPrivateCreate(UserBase):
     id: ClassVar
@@ -102,7 +103,16 @@ class UserPrivateCreate(UserBase):
         exclude = {"id"}
 
 class UserPrivateUpdate(UserPrivateCreate):
-    pass
+    def __init__(self, **req_data):
+        data = {}
+        data_jb = {}
+        for key, value in req_data.items():
+            if key.startswith("user__"):
+                data_jb[key] = value
+            else:
+                data[key] = value
+        data["data_jb"] = data_jb
+        super().__init__(**data)
 
 class UserPrivateList(BaseModel):
     total: int
