@@ -47,16 +47,6 @@ async def list_obj(
     col_metas = ta.validate_python(db_col_metas)
     return dict(total=db_count, data=col_metas)
 
-@api_col_meta.get("/user")
-async def get_obj(
-        db_session: Session = Depends(get_db_session),
-        _ = Depends(get_current_active_user)) -> Any:
-    filter_param = {"table_meta_id": 1}
-    db_count = await ColMeta.count(db_session, filter_param)
-    db_col_metas = await ColMeta.listing(db_session, filter_param, {}, {})
-    ta = TypeAdapter(List[ColMetaSchemaListBase])
-    col_metas = ta.validate_python(db_col_metas)
-    return dict(total=db_count, data=col_metas)
 
 @api_col_meta.get("/{id}")
 async def get_obj(

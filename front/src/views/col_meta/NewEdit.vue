@@ -186,6 +186,7 @@ function submitUpdate(){
   paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
   colMetaAPI.update(id, paramDict).then(function(res){
     toast.success(t('page_common.add_success'));
+    detail.mode = 'read';
   }).catch(function(error){
   });
 }

@@ -77,6 +77,10 @@
           :title="i18n.global.t('menu.col_meta')" 
           value="col_meta" to="/col_meta">
         </v-list-item>
+        <v-list-item prepend-icon="mdi-shape"
+          :title="i18n.global.t('menu.cate_meta')" 
+          value="cate_meta" to="/cate_meta">
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </div>

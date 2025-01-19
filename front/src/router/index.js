@@ -58,6 +58,24 @@ const routes = [
         name: 'col_meta_edit',
         component: () => import('@/views/col_meta/NewEdit.vue'),
       },
+
+      {
+        path: '/cate_meta',
+        name: 'cate_meta_list',
+        component: () => import('@/views/cate_meta/List.vue'),
+      },
+      {
+        path: '/cate_meta/new',
+        name: 'cate_meta_new',
+        component: () => import('@/views/cate_meta/NewEdit.vue'),
+      },
+      {
+        path: '/cate_meta/:id',
+        name: 'cate_meta_edit',
+        component: () => import('@/views/cate_meta/NewEdit.vue'),
+      },
+
+      
     ],
   },
 ];

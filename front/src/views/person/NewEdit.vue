@@ -143,6 +143,7 @@ function submitUpdate(){
   let id = data.id;
   personAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
+    detail.mode = 'read';
   }).catch(function(error){
   });
 }

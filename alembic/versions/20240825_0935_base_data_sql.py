@@ -27,7 +27,7 @@ def upgrade():
     )
     op.create_table('cate_meta',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('app_meta_id', sa.SmallInteger(), nullable=False),
+    sa.Column('app_meta_id', sa.SmallInteger(), nullable=True),
     sa.Column('table_meta_id', sa.SmallInteger(), nullable=False),
     sa.Column('testmode', sa.CHAR(length=1), server_default=sa.text("''"), nullable=False),
     sa.Column('status', sa.CHAR(length=1), server_default=sa.text("'A'"), nullable=False),

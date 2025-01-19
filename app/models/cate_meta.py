@@ -13,8 +13,8 @@ class CateMeta(Base):
     __tablename__ = "cate_meta"
 
     id = Column(Integer, primary_key=True)
-    app_meta_id = Column(SmallInteger, nullable=False)
     table_meta_id = Column(SmallInteger, nullable=False)
+    name = Column(String(128), nullable=False, server_default=text("''"))
     testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
     status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
     db_key = Column(CHAR(3), nullable=False, server_default=text("''"))

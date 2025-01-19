@@ -8,6 +8,7 @@ menu.deal,deal,거래
 menu.product,product,재화
 menu.accounting,accounting,회계
 menu.col_meta,Custom Columns,사용자 정의 컬럼
+menu.cate_meta,Custom Category,사용자 카테고리
 dialog.login,Login,로그인
 dialog.close,Close,닫기
 login_form.email_req,Email is required.,이메일은 필수 입니다
@@ -102,6 +103,12 @@ page_col_meta.options_jb_sub_label0,Display,표시이름
 page_col_meta.options_jb_sub_label1,Saved code,저장코드
 
 page_col_meta.detail,Detail,상세한 설명
+
+==== Category Meta ====
+page_cate_meta.list_title,Custom Category,사용자 카테고리
+page_cate_meta.new_title,Custom Category New,사용자 카테고리 추가
+page_cate_meta.edit_title,Custom Category Edit,사용자 카테고리 수정
+page_cate_meta.table_meta_id,Table,테이블
 
 ==== Common Const ===,,
 common_const.status,status,상태
