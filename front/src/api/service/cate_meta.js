@@ -35,7 +35,7 @@ class CateMetaAPI{
     });
   }
 
-  getUserField(){
+  getUserCategory(){
     return $axios({
       method: 'get',
       url: URL_BASE + "user",

@@ -87,7 +87,7 @@ const ColMetaTableItems = computed(() => {
 
 const _ColMetaColumnMetaDict = {
   1: "data_jb", 2: "tags_jb", 
-  3: "category_tags_jb",
+  3: "category_data_jb",
   4: "category_tags_jb",
 }
 

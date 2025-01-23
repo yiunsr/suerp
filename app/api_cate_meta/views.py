@@ -41,6 +41,17 @@ async def list_obj(
     cate_metas = ta.validate_python(db_cate_metas)
     return dict(total=db_count, data=cate_metas)
 
+@api_cate_meta.get("/user")
+async def get_user_categorys(
+        db_session: Session = Depends(get_db_session),
+        _ = Depends(get_current_active_user)) -> Any:
+    filter_param = {"table_meta_id": 1}
+    db_count = await CateMeta.count(db_session, filter_param)
+    db_cate_metas = await CateMeta.listing(db_session, filter_param, {}, {})
+    ta = TypeAdapter(List[CateMetaSchemaListBase])
+    cate_metas = ta.validate_python(db_cate_metas)
+    return dict(total=db_count, data=cate_metas)
+
 @api_cate_meta.get("/{id}")
 async def get_obj(
         id: int, db_session: Session = Depends(get_db_session),

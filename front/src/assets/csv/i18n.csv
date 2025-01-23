@@ -98,11 +98,14 @@ page_col_meta.data_type_subtitle_t,,
 page_col_meta.data_type_subtitle_e,Select one of several,여러 개중 하나를 선택함
 page_col_meta.data_type_subtitle_M,,
 
+page_col_meta.category,category,카테고리
+
 page_col_meta.options_jb,Selection list,선택 리스트
 page_col_meta.options_jb_sub_label0,Display,표시이름
 page_col_meta.options_jb_sub_label1,Saved code,저장코드
 
 page_col_meta.detail,Detail,상세한 설명
+page_col_meta.all_category,== ALL ==,== 전체 ==
 
 ==== Category Meta ====
 page_cate_meta.list_title,Custom Category,사용자 카테고리

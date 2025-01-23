@@ -81,13 +81,30 @@
           </v-col>
         </v-row>
 
+        <v-row class="mt-4 mb-n2  py-0">
+          <v-col>
+            <hr class="float-left" size="1" width="45%">
+            <span class="text-center mt-n3 float-left" style="width:10%;">category</span>
+            <hr class="float-right" size="1" width="45%">
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12" md="4">
+            <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
+              :mode="detail.mode"
+              required v-model="data.status" :rules="[rule.req]" />
+          </v-col>
+        </v-row>
+        
+
         <v-row v-show="detail.mode == 'edit'">
           <v-col md="4">
             <v-btn v-if="isNewPage" color="success" @click="submitAdd">{{ t('page_common.add_new') }}</v-btn>
             <v-btn v-else color="success" @click="submitUpdate">{{ t('page_common.apply_update') }}</v-btn>
           </v-col>
         </v-row>
-        <!-- <mode-radio-group label="Name2" :items="[{label: 'label', value: 'value'}]"></mode-radio-group> -->
+        
       </v-form>
     </fieldset>
   </div>
@@ -105,6 +122,7 @@ import {rule} from '@/js/rule';
 import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {userAPI} from '@/api/service/users';
 import {colMetaAPI} from '@/api/service/col_meta';
+import {cateMetaAPI} from '@/api/service/cate_meta';
 import ModeCustomField from "@/widgets/ModeTextField";
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
@@ -131,6 +149,9 @@ let data = reactive({
   ref_id2: null, ref_id3: null,
 });
 let custom_field = reactive({
+  infos: [], data: {},
+});
+let custom_category = reactive({
   infos: [], data: {},
 });
 
@@ -165,6 +186,13 @@ function getUserField(){
   });
 }
 
+function getUserCategory(){
+  cateMetaAPI.getUserCategory().then(function(res){
+    custom_category.infos = res.data.data;
+  }).catch(function(error){
+  });
+}
+
 function getAPIDetail(){
   userAPI.get(userId).then(function(res){
     data.id = res.data.id;
@@ -191,9 +219,9 @@ function getAPIDetail(){
 }
 
 
-
 onMounted(() => {
   getUserField();
+  getUserCategory();
    if(!isNewPage){
     getAPIDetail();
   }

@@ -16,23 +16,32 @@
 <script setup>
 import {i18n} from '@/plugins/i18n';
 import {utils} from '@/plugins/utils';
+import { computed, useAttrs } from 'vue';
 
+const t=i18n.global.t;
+const $attrs = useAttrs()
 
-import { computed } from 'vue';
-let t=i18n.global.t;
 
 const props = defineProps({
   required: { type: Boolean, default: false},
-  modelValue: { type: String, default: []},
+  modelValue: { type: [String, Number], default: ""},
   label: { type: String, default: ""},
   items: { type: Object, default: []},
-  mode: { type: String, required: true }
+  mode: { type: String, required: true },
+  i18nValue: { type: Boolean, default: true }
 });
   
 const modelValueLabel = computed(() => {
   let item = utils.getItemByValue(props.items, props.modelValue)
+  let prop_title = $attrs["item-title"] || "title";
+  let prop_value = $attrs["item-value"] || "value";
+
   if(item){
-    return t(item.title) + "(" + item.value + ")";
+    let title = item[prop_title];
+    if(props.i18nValue){
+      title = t(title);
+    }
+    return title + "(" + item[prop_value] + ")";
   }
   return "";
 });

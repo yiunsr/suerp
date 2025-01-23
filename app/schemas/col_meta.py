@@ -9,7 +9,7 @@ class ColMetaSchema(BaseModel):
     # id: int
     table_meta_id: int
     status: str
-    column_meta: str
+    column_meta: int
     data_type: str
     name: str
     display: str

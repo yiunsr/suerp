@@ -22,28 +22,22 @@
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_common.status')" :items="ColMetaStateItems" item-title="str" 
-              :mode="detail.mode"
+              :mode="detail.mode" :i18nValue="false"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
           
           <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.table_meta_id')" 
               :items="ColMetaTableItems" item-title="str" item-value="value_int"
-              :mode="detail.mode"
-              required v-model="data.table_meta_id" :rules="[rule.req]" />
+              :mode="detail.mode" :i18nValue="false"
+              v-model="data.table_meta_id"
+              required :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.column_meta')" 
               :items="ColMetaColumnMetaItems" item-title="title"
-              :mode="detail.mode"
+              :mode="detail.mode" :i18nValue="false"
               required v-model="data.column_meta" :rules="[rule.req]" />
-          </v-col>
-
-          <v-col cols="12" md="4">
-            <mode-select :label="t('page_col_meta.data_type')" :items="ColMetaDataTypeItems" 
-              :item-props="strSubtitle"
-              :mode="detail.mode"
-              required v-model="data.data_type" :rules="[rule.req]" />
           </v-col>
 
           <v-col cols="12" md="8" v-show="data.data_type == 'e' || data.data_type == 'M'">
@@ -62,6 +56,19 @@
               required v-model="data.code"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
+            <mode-select :label="t('page_col_meta.data_type')" :items="ColMetaDataTypeItems" 
+              :item-props="strSubtitle"
+              :mode="detail.mode"
+              required v-model="data.data_type" :rules="[rule.req]" />
+          </v-col>
+          <v-col cols="12" md="4">
+            <mode-select :label="t('page_col_meta.category')" :items="categoryDict[data.table_meta_id]"
+              item-value="id" item-title="name"  :i18nValue="false"
+              :mode="detail.mode"
+              required v-model="data.category_id" />
+          </v-col>
+          
+          <v-col cols="12" md="4">
             <mode-text-field label="default_jb" type="text" :mode="detail.mode"
               :counter=16
               required v-model="data.default_jb"></mode-text-field>
@@ -73,7 +80,7 @@
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.visible')" :items="ColMetaVisibleItems" 
-              item-title="str" item-value="value_int"
+              item-title="str" item-value="value_int" :i18nValue="false"
               :mode="detail.mode"
               required v-model="data.visible" :rules="[rule.req]" />
           </v-col>
@@ -91,7 +98,7 @@
           
           <v-col cols="12" md="4">
             <mode-select label="HTML type" :items="ColMetaHTMLTypeItems" item-title="title" 
-              :mode="detail.mode"
+              :mode="detail.mode" :i18nValue="false"
               required v-model="data.html_type" :rules="[rule.req]" />
           </v-col>
 
@@ -123,6 +130,7 @@
 </template>
   
 <script setup>
+import _ from 'lodash';
 import { ref, reactive } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
@@ -135,6 +143,8 @@ import {reverseItem, strSubtitle,
   ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, 
   ColMetaDataTypeItems, ColMetaVisibleItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
 import {colMetaAPI} from '@/api/service/col_meta';
+import {cateMetaAPI} from '@/api/service/cate_meta';
+
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeTextArea from "@/widgets/ModeTextArea";
 import ModeDragableTwoText from "@/widgets/ModeDragableTwoText";
@@ -148,7 +158,7 @@ let $router = useRouter();
 let t=i18n.global.t;
 
 const detailForm = ref(null);
-const userId = $route.params.id;
+const objectID = $route.params.id;
 
 let isNewPage = $route.path.includes("new")?true:false;
 let mode = $route.path.includes("new")?"edit":"read";
@@ -158,11 +168,16 @@ let detail = reactive({ mode, valid: false });
 let data = reactive({
   id: null, status: "A", table_meta_id: null, 
   column_meta: "", data_type: "", code: "", 
+  category_id: null,
   name: "", display: "", detail: "", visible: null,
   options_jb: [], 
   default_jb: null, 
   html_type: "", html_pattern: "", html_detail: "",
 });
+
+let categoryDict = reactive({
+  "1": [], "2": [], "3": [], "4": [], "5": [],
+})
 
 async function submitAdd(){
   console.log("form valid : " + detail.valid);
@@ -192,7 +207,7 @@ function submitUpdate(){
 }
 
 function getAPIDetail(){
-  colMetaAPI.get(userId).then(function(res){
+  colMetaAPI.get(objectID).then(function(res){
     data.id = res.data.id;
     data.status = res.data.status;
     data.name = res.data.name;
@@ -216,7 +231,24 @@ function getAPIDetail(){
 }
 
 
+function getCateMetaList(){
+  const filter = [];
+  const sort = [];
+  const limit= 1000;
+  cateMetaAPI.list(filter, sort, 1, limit).then(function(res){
+    categoryDict = _.groupBy(res.data.data, "table_meta_id");
+    const defaultItem = {id: -1, name: t("page_col_meta.all_category")};
+    for(let index=1; index <= 5; index++){
+      categoryDict[index].unshift(defaultItem);
+    }
+  }).catch(function(error){
+  });
+}
+
+
+
 onMounted(() => {
+  getCateMetaList();
   if(!isNewPage)
     getAPIDetail();
 })
