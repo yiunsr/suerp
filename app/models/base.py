@@ -101,8 +101,6 @@ class Base:
         return result
 
 class BaseInfo():  # Base Of All Table
-    app_meta_id = Column(SmallInteger, nullable=True)
-    testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
     status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
 
     ref_id0 = Column(Integer, nullable=True)
@@ -120,10 +118,7 @@ class BaseCU():  # BaseCreateUpdate
     )
 
 class BaseCT():  # BaseCategory
-    category = Column(Integer)
+    category = Column(SmallInteger, nullable=True,)
+    cg_status = Column(SmallInteger)
     data_jb = Column(JSONB, nullable=False, server_default=text("'{}'::jsonb"))
     tags_jb = Column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
-    category_data_jb = Column(
-        JSONB, nullable=False, server_default=text("'{}'::jsonb"))
-    category_tags_jb = Column(
-        JSONB, nullable=False, server_default=text("'[]'::jsonb"))

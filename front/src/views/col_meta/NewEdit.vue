@@ -143,7 +143,7 @@ import {reverseItem, strSubtitle,
   ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, 
   ColMetaDataTypeItems, ColMetaVisibleItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
 import {colMetaAPI} from '@/api/service/col_meta';
-import {cateMetaAPI} from '@/api/service/cate_meta';
+import {categoryMetaAPI} from '@/api/service/category_meta';
 
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeTextArea from "@/widgets/ModeTextArea";
@@ -231,11 +231,11 @@ function getAPIDetail(){
 }
 
 
-function getCateMetaList(){
+function getCategoryMetaList(){
   const filter = [];
   const sort = [];
   const limit= 1000;
-  cateMetaAPI.list(filter, sort, 1, limit).then(function(res){
+  categoryMetaAPI.list(filter, sort, 1, limit).then(function(res){
     categoryDict = _.groupBy(res.data.data, "table_meta_id");
     const defaultItem = {id: -1, name: t("page_col_meta.all_category")};
     for(let index=1; index <= 5; index++){
@@ -248,7 +248,7 @@ function getCateMetaList(){
 
 
 onMounted(() => {
-  getCateMetaList();
+  getCategoryMetaList();
   if(!isNewPage)
     getAPIDetail();
 })

@@ -12,7 +12,7 @@ from config import get_config
 from app.models.user import User
 from app.models.table_meta import TableMeta
 
-from cli.init_db import script as init_db_script
+from cli.init_system_db import script as init_system_db_script
 from cli.init_test_db import script as init_test_db_script
 
 config = get_config()
@@ -30,12 +30,12 @@ def get_db_session():
     return SessionLocal
 
 @click.command()
-def init_db():
-    click.echo('==== start initdb ====')
+def init_system_db():
+    click.echo('==== start init_system_db ====')
     py_ver = int(f"{sys.version_info.major}{sys.version_info.minor}")
     if py_ver > 37 and sys.platform.startswith('win'):
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-    asyncio.run(init_db_script(config))
+    asyncio.run(init_system_db_script(config))
     click.echo('==== end initdb ====')
 
 @click.command()
@@ -47,7 +47,7 @@ def init_test_db():
     asyncio.run(init_test_db_script(config))
     click.echo('==== end init-test-db ====')
 
-cli.add_command(init_db)
+cli.add_command(init_system_db)
 cli.add_command(init_test_db)
 
 if __name__ == '__main__':

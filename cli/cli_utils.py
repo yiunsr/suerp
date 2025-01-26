@@ -7,7 +7,7 @@ from sqlalchemy.future import select
 
 from app.models.user import User
 from app.models.person import Person
-from app.models.app_meta import AppMeta
+from app.models.category_meta import CategoryMeta
 from app.models.table_meta import TableMeta
 
 def get_db_session(config):
@@ -39,23 +39,16 @@ async def add_person(db_session, data):
     db_person = Person(**data)
     db_session.add(db_person)
 
-async def add_ugroup(db_session, data):
-    db_person = Person(**data)
-    db_session.add(db_person)
-
-async def add_app_meta(db_session, data):
-    query = select(AppMeta).where(AppMeta.name==data["name"])
+async def add_category_meta(db_session, data):
+    query = select(CategoryMeta).where(CategoryMeta.name==data["name"])
     result = await db_session.execute(query)
-    db_app_meta = result.scalars().first()
-    if db_app_meta:
+    db_category_meta = result.scalars().first()
+    if db_category_meta:
         return
-    db_app_meta = AppMeta(**data)
-    db_session.add(db_app_meta)
 
-async def get_app_meta(db_session, name):
-    query = select(AppMeta).where(AppMeta.name==name)
-    result = await db_session.execute(query)
-    return result.scalars().first()
+    db_category_meta = CategoryMeta(**data)
+    db_session.add(db_category_meta)
+
 
 async def add_table_meta(db_session, data):
     query = select(TableMeta).where(TableMeta.code==data["code"])

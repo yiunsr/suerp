@@ -122,7 +122,7 @@ import {rule} from '@/js/rule';
 import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {userAPI} from '@/api/service/users';
 import {colMetaAPI} from '@/api/service/col_meta';
-import {cateMetaAPI} from '@/api/service/cate_meta';
+import {categoryMetaAPI} from '@/api/service/category_meta';
 import ModeCustomField from "@/widgets/ModeTextField";
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
@@ -187,7 +187,7 @@ function getUserField(){
 }
 
 function getUserCategory(){
-  cateMetaAPI.getUserCategory().then(function(res){
+  categoryMetaAPI.getUserCategory().then(function(res){
     custom_category.infos = res.data.data;
   }).catch(function(error){
   });

@@ -1,8 +1,8 @@
 import {$axios, param2formdata} from "@/api/service/request"
 
-const URL_BASE = '/api/cate_metas/'
+const URL_BASE = '/api/category_metas/'
 
-class CateMetaAPI{
+class CategoryMetaAPI{
   list(filters, sort, page=1, limit=50){
     let params = {...filters, sort, page, limit,};
     return $axios({
@@ -43,4 +43,4 @@ class CateMetaAPI{
   }
   
 }
-export let cateMetaAPI = new CateMetaAPI();
+export let categoryMetaAPI = new CategoryMetaAPI();

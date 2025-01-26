@@ -3,6 +3,7 @@ import secrets
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import Column
 from sqlalchemy import Integer
+from sqlalchemy import SmallInteger
 from sqlalchemy import String
 from sqlalchemy import DateTime
 from sqlalchemy import text
@@ -22,12 +23,13 @@ class User(Base, BaseInfo, BaseCT):
 
     id = Column(Integer, primary_key=True)
     user_role = Column(String(1), nullable=False, server_default=text("'N'"))
-
     email = Column(String(256), nullable=False, unique=True)
-    first_name = Column(String(64), nullable=False, server_default=text("''"))
-    last_name = Column(String(64), nullable=False, server_default=text("''"))
-    display = Column(String(64), nullable=False, server_default=text("''"))
-    nickname = Column(String(64), nullable=False, server_default=text("''"))
+
+    first_name = Column(String(128), nullable=False, server_default=text("''"))
+    last_name = Column(String(128), nullable=False, server_default=text("''"))
+    middle_name = Column(String(128), nullable=False, server_default=text("''"))
+    nickname = Column(String(128), nullable=False, server_default=text("''"))
+
     avatar = Column(String(256), nullable=False, server_default=text("''"))
 
     api_key = Column(String(256), nullable=False, server_default=text("''"))
@@ -71,18 +73,18 @@ class User(Base, BaseInfo, BaseCT):
         return ""
     
 
-class UGroup(Base, BaseInfo, BaseCU):
-    __tablename__ = "ugroup"
+class UserGrp(Base, BaseInfo, BaseCU):
+    __tablename__ = "user_grp"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
-    detail = Column(String(64), nullable=False, server_default=text("''"))
+    detail = Column(String(256), nullable=False, server_default=text("''"))
 
     data_jb = Column(JSONB, server_default=text("'{}'::jsonb"))
 
-class UserUGroup(Base):
-    __tablename__ = "user_ugroup"
+class UserGrpRelation(Base):
+    __tablename__ = "user_grp_relation"
 
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer)
-    ugroup_id = Column(Integer)
+    user_id = Column(Integer, nullable=False, )
+    user_group_id = Column(Integer, nullable=False, )

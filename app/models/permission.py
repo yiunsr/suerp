@@ -26,8 +26,8 @@ class UserPermission(Base):
     permission_id = Column(Integer)
     created_ets = Column(Integer, default=func.now_ets(), nullable=False)
 
-class UgroupPermission(Base):
-    __tablename__ = "ugroup_permission"
+class UserGrpPermission(Base):
+    __tablename__ = "user_grp_permission"
 
     id = Column(Integer, primary_key=True)
     ugroup_id = Column(Integer)

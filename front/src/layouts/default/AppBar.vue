@@ -78,8 +78,8 @@
           value="col_meta" to="/col_meta">
         </v-list-item>
         <v-list-item prepend-icon="mdi-shape"
-          :title="i18n.global.t('menu.cate_meta')" 
-          value="cate_meta" to="/cate_meta">
+          :title="i18n.global.t('menu.category_meta')" 
+          value="category_meta" to="/category_meta">
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

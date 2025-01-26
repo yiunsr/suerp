@@ -39,6 +39,7 @@ cd front/super
 
 ```
 alembic revision  --autogenerate -m "first sql"
+alembic revision  --autogenerate -m "base_db"
 ```
 
 
@@ -61,7 +62,7 @@ alembic downgrade -1
 
 ### 기본 DB 추가(DB 스키마 생성 후)
 ```
-python main_cli.py init-db
+python main_cli.py init-system-db
 ```
 
 ### admin 및 테스트 사용자 추가

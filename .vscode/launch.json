@@ -6,7 +6,7 @@
   "configurations": [
     {
       "name": "Python: Current File",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
@@ -20,7 +20,7 @@
     },
     {
       "name": "dev server",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "main_server.py",
       "console": "integratedTerminal",
@@ -31,7 +31,7 @@
     },
     {
       "name": "dev cli init-db",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "main_cli.py",
       "console": "integratedTerminal",
@@ -43,11 +43,11 @@
     },
     {
       "name": "dev cli init-test-db",
-      "type": "python",
+      "type": "debugpy",
       "request": "launch",
       "program": "main_cli.py",
       "console": "integratedTerminal",
-      "args": ["init-test-db"],
+      "args": ["init-system-db"],
       "env": {
         "FASTAPI_CONFIG": "development"
       },

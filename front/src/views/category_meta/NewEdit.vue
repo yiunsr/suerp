@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2 v-if="isNewPage">
-      {{ t("page_cate_meta.new_title") }}
+      {{ t("page_category_meta.new_title") }}
     </h2>
     <h2 v-else>
-      {{ t("page_cate_meta.edit_title") }}
+      {{ t("page_category_meta.edit_title") }}
     </h2>
 
     <fieldset class="mt-2 py-4 px-4 rounded-lg">
@@ -27,7 +27,7 @@
           </v-col>
           
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_cate_meta.table_meta_id')" 
+            <mode-select :label="t('page_category_meta.table_meta_id')" 
               :items="ColMetaTableItems" item-title="str" item-value="value_int"
               :mode="detail.mode"
               required v-model="data.table_meta_id" :rules="[rule.req]" />
@@ -65,7 +65,7 @@ import {rule} from '@/js/rule';
 import {reverseItem, strSubtitle,
   ColMetaStateItems, ColMetaTableItems, ColMetaColumnMetaItems, 
   ColMetaDataTypeItems, ColMetaVisibleItems, ColMetaHTMLTypeItems} from '@/js/commonValue';
-import {cateMetaAPI} from '@/api/service/cate_meta';
+import {categoryMetaAPI} from '@/api/service/category_meta';
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeTextArea from "@/widgets/ModeTextArea";
 import ModeDragableTwoText from "@/widgets/ModeDragableTwoText";
@@ -98,8 +98,8 @@ async function submitAdd(){
     return;
   }
 
-  cateMetaAPI.add(data).then(function(res){
-    $router.push('/cate_meta/' + res.data.id);
+  categoryMetaAPI.add(data).then(function(res){
+    $router.push('/category_meta/' + res.data.id);
     toast.success(t('page_common.add_success'));
   }).catch(function(error){
   });
@@ -109,7 +109,7 @@ async function submitAdd(){
 function submitUpdate(){
   let id = data.id;
 
-  cateMetaAPI.update(id, data).then(function(res){
+  categoryMetaAPI.update(id, data).then(function(res){
     toast.success(t('page_common.add_success'));
     detail.mode = 'read';
   }).catch(function(error){
@@ -119,7 +119,7 @@ function submitUpdate(){
 }
 
 function getAPIDetail(){
-  cateMetaAPI.get(userId).then(function(res){
+  categoryMetaAPI.get(userId).then(function(res){
     data.id = res.data.id;
     data.status = res.data.status;
     data.name = res.data.name;

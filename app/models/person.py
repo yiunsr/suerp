@@ -16,9 +16,10 @@ class Person(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "person"
     id = Column(Integer, primary_key=True)
 
-    first_name = Column(String(64), nullable=False, server_default=text("''"))
-    last_name = Column(String(64), nullable=False, server_default=text("''"))
-    display = Column(String(64), nullable=False, server_default=text("''"))
+    name = Column(String(128), nullable=False, server_default=text("''"))
+    first_name = Column(String(128), nullable=False, server_default=text("''"))
+    last_name = Column(String(128), nullable=False, server_default=text("''"))
+    middle_name = Column(String(128), nullable=False, server_default=text("''"))
 
     address_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
@@ -30,10 +31,12 @@ class Person(Base, BaseInfo, BaseCU, BaseCT):
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
     url_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    sns_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
 
 
-class Organization(Base, BaseInfo, BaseCU, BaseCT):
-    __tablename__ = "organization"
+class PersonGrp(Base, BaseInfo, BaseCU, BaseCT):
+    __tablename__ = "person_grp	"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(64), nullable=False, server_default=text("''"))
@@ -48,16 +51,16 @@ class Organization(Base, BaseInfo, BaseCU, BaseCT):
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
     url_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    sns_jb = Column(
+        JSONB, nullable=False, server_default=text("'[]'::jsonb"))
 
-class PersonOrganization(Base):
-    __tablename__ = "person_organization"
+class PersonGrpRelation(Base, BaseCU):
+    __tablename__ = "person_grp_relation"
 
     id = Column(Integer, primary_key=True)
-    person_id = Column(Integer)
-    org_id = Column(Integer)
+    person_id = Column(Integer, nullable=False)
+    person_grp_id = Column(Integer, nullable=False)
 
-    created_ets = Column(Integer, default=func.now_ets(), nullable=False)
     status = Column(String(1), nullable=False, server_default=text("'A'"))
-    testmode = Column(String(1), nullable=False, server_default=text("''"))
     role_jsonb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))

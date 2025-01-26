@@ -15,22 +15,20 @@ class ColMeta(Base, BaseCU):
     id = Column(Integer, primary_key=True)
     
     table_meta_id = Column(SmallInteger, nullable=False)
-    testmode = Column(CHAR(1), nullable=False, server_default=text("''"))
+    category_meta_id = Column(SmallInteger, nullable=False)
     status = Column(CHAR(1), nullable=False, server_default=text("'A'"))
     column_meta = Column(CHAR(1), nullable=False, server_default=text("''"))
     data_type = Column(CHAR(1), nullable=False, server_default=text("''"))
+    name = Column(String(32), nullable=False, server_default=text("''"))
     detail = Column(
         String(128), nullable=False, server_default=text("''"))
 
-    code = Column(String(16), nullable=False, server_default=text("''"))
-    name = Column(String(32), nullable=False, server_default=text("''"))
-    display = Column(String(32), nullable=False, server_default=text("''"))
     options_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
     default_jb = Column(
         JSONB, nullable=False, server_default=text("'null'::jsonb"))
     visible = Column(
-        SmallInteger, nullable=False, server_default=text("'null'::jsonb"))
+        SmallInteger, nullable=False, server_default=text("3"))
     html_type = Column(
         String(128), nullable=False, server_default=text("''"))
     html_pattern = Column(

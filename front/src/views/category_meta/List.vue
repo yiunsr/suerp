@@ -1,11 +1,11 @@
 <template>
   <div>
-    <ListHeader :listTitle="t('page_cate_meta.list_title')" addUrl="/cate_meta/new" 
+    <ListHeader :listTitle="t('page_category_meta.list_title')" addUrl="/category_meta/new" 
       @search="search"/>
     
     <ListTable
       :headers="headers" :sortBy="tableData.sortBy" 
-      idUrlPrefix="/cate_meta/"
+      idUrlPrefix="/category_meta/"
       :items="tableData.data" 
       :total="tableData.total" 
       :page="tableData.page" :limit="tableData.limit"
@@ -39,7 +39,7 @@ import ListTable from "@/components/ListTable";
 
 import {reverseItem, ColMetaTableItems, ColMetaColumnMetaItems, ColMetaDataTypeItems} from '@/js/commonValue';
 
-import {cateMetaAPI} from '@/api/service/cate_meta';
+import {categoryMetaAPI} from '@/api/service/category_meta';
 
 const $store = useStore();
 const $route = useRoute();
@@ -49,12 +49,12 @@ let t=i18n.global.t;
 const headers = [
   { title: 'id', key: 'id', width: 80, },
   { code: 'common_const.status', key: 'status' },
-  { code: 'page_cate_meta.table_meta_id', key: 'table_meta_id',
+  { code: 'page_category_meta.table_meta_id', key: 'table_meta_id',
     value: function(_, value){ return reverseItem(ColMetaTableItems.value, value);},
   },
   { code: 'page_common.name', key: 'name'},
 ];
-let defaultFilter = {id: "", status: [], table_meta_id: "", cate_meta: "", data_type: ""};
+let defaultFilter = {id: "", status: [], table_meta_id: "", category_meta: "", data_type: ""};
 let initFilter = utils.initFilters($route.query, defaultFilter);
 
 
@@ -78,7 +78,7 @@ function search(){
 
 onMounted(() => {
   let sort = utils.query2sortBy($route.query) || "-id";
-  cateMetaAPI.list(filters, sort, page, limit).then(function(res){
+  categoryMetaAPI.list(filters, sort, page, limit).then(function(res){
     let resData = res.data;
     tableData.data = resData.data;
     tableData.total = resData.total;

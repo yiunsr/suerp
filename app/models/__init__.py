@@ -3,7 +3,6 @@ from . import permission
 from . import person
 from . import product
 from . import user
-from . import app_meta
 from . import table_meta
 from . import col_meta
-from . import cate_meta
+from . import category_meta

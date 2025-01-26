@@ -6,21 +6,7 @@
     "titleBar.activeBackground": "#444124",
     "titleBar.activeForeground": "#FBFBF8"
   },
-  "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
   "python.languageServer": "Jedi",
-  "python.linting.pylintArgs": [
-    "--load-plugins", "pylint_flask_sqlalchemy", "pylint_flask",
-    "--disable=C0111,C0115",
-    "--disable=wrong-import-order, missing-function-docstring",
-    "--disable=too-few-public-methods,consider-using-f-string,unnecessary-pass",
-    "--argument-naming-style=snake_case",
-    "--attr-naming-style=snake_case",
-    "--class-attribute-naming-style=any",
-    "--class-naming-style=PascalCase",
-    "--const-naming-style=UPPER_CASE",
-    "--function-naming-style=snake_case",
-  ],
   "python.testing.pytestArgs": [
     "-c", "D:/workspace/vscode/suerp/tests/pytest.ini",
     "tests"
@@ -36,7 +22,6 @@
     "**/Thumbs.db": true,
     "**/__pycache__": true
   },
-  "python.analysis.typeCheckingMode": "off",
   "files.autoSave": "off",
   "sqltools.connections": [
     {
@@ -50,5 +35,8 @@
       "password": "aBcd123456",
       "group": "local"
     }
+  ],
+  "pylint.args": [
+    "[\"--disable=C0111\", \"--max-line-length=120\"]"
   ]
 }

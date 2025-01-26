@@ -2,13 +2,12 @@ from typing import Optional
 from typing import Any
 from pydantic import BaseModel
 from pydantic import Json
-from app.models.cate_meta import CateMeta
+from app.models.category_meta import CategoryMeta
 
-class CateMetaSchema(BaseModel):
+class CategoryMetaSchema(BaseModel):
     id: int
     table_meta_id: int
     status: str
-    testmode: str
     name: str
     db_key: str
     api_key: str
@@ -16,10 +15,10 @@ class CateMetaSchema(BaseModel):
     class Config:
         from_attributes = True
 
-class CateMetaSchemaListBase(CateMetaSchema):
+class CategoryMetaSchemaListBase(CategoryMetaSchema):
     id: int
 
-class CateMetaSchemaCreate(BaseModel):
+class CategoryMetaSchemaCreate(BaseModel):
     class Config:
         exclude = {"id"}
         from_attributes = True
@@ -28,13 +27,13 @@ class CateMetaSchemaCreate(BaseModel):
     status: str
     name: str
 
-class CateMetaSchemaUpdate(BaseModel):
+class CategoryMetaSchemaUpdate(BaseModel):
     id: int
     table_meta_id: int
     status: str
     name: str
 
-class CateMetaPrivateDetail(CateMetaSchema):
+class CategoryMetaPrivateDetail(CategoryMetaSchema):
     id: int
     
     class Config:
