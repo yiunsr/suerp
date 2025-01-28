@@ -83,42 +83,42 @@ async def add_test_user(db_session):
 async def add_test_person(db_session):
     email_jb = [{"type": "work", "value":"test0001@test.work"},
         {"value":"test0001@test.kr", "type": "home"}]
-    param = {"name": "person0001", "first_name": "first0001",
+    param = {"nickname": "person0001", "first_name": "first0001",
         "last_name": "last0001", "status": "A", "email_jb": email_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)
 
     email_jb = [{"type": "work", "value":"test0002@test.work"},
         {"value":"test0002@test.kr", "type": "home"}]
-    param = {"name": "person0002", "first_name": "first0002",
+    param = {"nickname": "person0002", "first_name": "first0002",
         "last_name": "last0002", "status": "A", "email_jb": email_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)
 
     email_jb = [{"type": "work", "value":"test0003@test.work"},
         {"value":"test0003@test.kr", "type": "home"}]
-    param = {"name": "person0003", "first_name": "first0003",
+    param = {"nickname": "person0003", "first_name": "first0003",
         "last_name": "last0003", "status": "A", "email_jb": email_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)
 
     phone_jb = [{"type":"work", "value":"010-0000-0004",},
         {"type":"home", "value":"010-0001-0004"}]
-    param = {"name": "person0004", "first_name": "first0004",
+    param = {"nickname": "person0004", "first_name": "first0004",
         "last_name": "last0004", "status": "A", "phone_jb": phone_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)
 
     phone_jb = [{"type":"work", "value":"010-0000-0005",},
         {"type":"home", "value":"010-0001-0005"}]
-    param = {"name": "person0005", "first_name": "first0005",
+    param = {"nickname": "person0005", "first_name": "first0005",
         "last_name": "last0005", "status": "A", "phone_jb": phone_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)
 
     phone_jb = [{"type":"work", "value":"010-0000-0006"},
         {"type":"home", "value":"010-0001-0006"}]
-    param = {"name": "person0006", "first_name": "first0006",
+    param = {"nickname": "person0006", "first_name": "first0006",
         "last_name": "last0006", "status": "A", "phone_jb": phone_jb,
         "created_user_id":1, "updated_user_id":1}
     await add_person(db_session, param)

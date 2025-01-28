@@ -50,10 +50,10 @@
               :rules0="[rule.req]"  :rules1="[rule.req]" />
           </v-col>
 
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="4" v-if="detail.mode == 'read'">
             <mode-text-field label="Code" type="text" :mode="detail.mode"
-              :counter=16
-              required v-model="data.code"></mode-text-field>
+              :counter=16 :readonly="true"
+              v-model="data.code"></mode-text-field>
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.data_type')" :items="ColMetaDataTypeItems" 
@@ -65,13 +65,18 @@
             <mode-select :label="t('page_col_meta.category')" :items="categoryDict[data.table_meta_id]"
               item-value="id" item-title="name"  :i18nValue="false"
               :mode="detail.mode"
-              required v-model="data.category_id" />
+              required v-model="data.category_meta_id" />
           </v-col>
           
           <v-col cols="12" md="4">
+            <!--
             <mode-text-field label="default_jb" type="text" :mode="detail.mode"
               :counter=16
-              required v-model="data.default_jb"></mode-text-field>
+              v-model="data.default_jb"></mode-text-field>
+          -->
+            <mode-jsonb-field :label="t('page_col_meta.default_value')" type="text" :mode="detail.mode"
+              :counter=16
+              v-model="data.default_jb" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-text-field :label="t('page_common.name')" type="text" :mode="detail.mode" 
@@ -83,11 +88,6 @@
               item-title="str" item-value="value_int" :i18nValue="false"
               :mode="detail.mode"
               required v-model="data.visible" :rules="[rule.req]" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.display')" type="text" :mode="detail.mode"
-              :counter=128
-              required v-model="data.display"></mode-text-field>
           </v-col>
           <v-col cols="12" md="12">
             <mode-text-area :label="t('page_col_meta.detail')" type="text" :mode="detail.mode"
@@ -149,6 +149,7 @@ import ModeTextField from "@/widgets/ModeTextField";
 import ModeTextArea from "@/widgets/ModeTextArea";
 import ModeDragableTwoText from "@/widgets/ModeDragableTwoText";
 import ModeSelect from "@/widgets/ModeSelect";
+import ModeJsonbField from "@/widgets/ModeJsonbField";
 
 import { onMounted } from 'vue';
 
@@ -168,8 +169,8 @@ let detail = reactive({ mode, valid: false });
 let data = reactive({
   id: null, status: "A", table_meta_id: null, 
   column_meta: "", data_type: "", code: "", 
-  category_id: null,
-  name: "", display: "", detail: "", visible: null,
+  category_meta_id: null,
+  name: "", detail: "", visible: null,
   options_jb: [], 
   default_jb: null, 
   html_type: "", html_pattern: "", html_detail: "",
@@ -187,7 +188,7 @@ async function submitAdd(){
   }
   
   let paramDict = JSON.parse(JSON.stringify(data));
-  paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
+  //paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
   colMetaAPI.add(paramDict).then(function(res){
     $router.push('/col_meta/' + res.data.id);
     toast.success(t('page_common.add_success'));
@@ -198,7 +199,7 @@ async function submitAdd(){
 function submitUpdate(){
   let id = data.id;
   let paramDict = JSON.parse(JSON.stringify(data));
-  paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
+  //paramDict["default_jb"] = JSON.parse(paramDict["default_jb"])
   colMetaAPI.update(id, paramDict).then(function(res){
     toast.success(t('page_common.add_success'));
     detail.mode = 'read';
@@ -211,7 +212,6 @@ function getAPIDetail(){
     data.id = res.data.id;
     data.status = res.data.status;
     data.name = res.data.name;
-    data.display = res.data.display;
     data.table_meta_id = res.data.table_meta_id;
 
     data.data_type = res.data.data_type;
@@ -237,10 +237,6 @@ function getCategoryMetaList(){
   const limit= 1000;
   categoryMetaAPI.list(filter, sort, 1, limit).then(function(res){
     categoryDict = _.groupBy(res.data.data, "table_meta_id");
-    const defaultItem = {id: -1, name: t("page_col_meta.all_category")};
-    for(let index=1; index <= 5; index++){
-      categoryDict[index].unshift(defaultItem);
-    }
   }).catch(function(error){
   });
 }

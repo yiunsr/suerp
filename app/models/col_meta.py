@@ -35,3 +35,8 @@ class ColMeta(Base, BaseCU):
         String(128), nullable=False, server_default=text("''"))
     html_detail = Column(
         String(128), nullable=False, server_default=text("''"))
+
+
+    @property
+    def code(self):
+        return "_" + str(self.id).zfill(7)

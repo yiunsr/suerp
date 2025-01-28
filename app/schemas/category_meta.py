@@ -9,8 +9,6 @@ class CategoryMetaSchema(BaseModel):
     table_meta_id: int
     status: str
     name: str
-    db_key: str
-    api_key: str
 
     class Config:
         from_attributes = True

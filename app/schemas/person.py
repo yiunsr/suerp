@@ -13,7 +13,7 @@ class PersonBase(BaseModel):
     id: Optional[int]
     first_name: str = ""
     last_name: str = ""
-    display: str = ""
+    nickname: str = ""
     email_jb: List[EmailField] = []
     address_jb: List[PhoneField] = []
     phone_jb: List[PhoneField] = []

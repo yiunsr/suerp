@@ -118,7 +118,7 @@ class BaseCU():  # BaseCreateUpdate
     )
 
 class BaseCT():  # BaseCategory
-    category = Column(SmallInteger, nullable=True,)
+    category_meta_id = Column(SmallInteger, nullable=True,)
     cg_status = Column(SmallInteger)
     data_jb = Column(JSONB, nullable=False, server_default=text("'{}'::jsonb"))
     tags_jb = Column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))

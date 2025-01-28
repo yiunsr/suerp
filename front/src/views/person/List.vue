@@ -17,9 +17,9 @@
             v-model="filters.id" @keyup.enter="search" hide-details  />
         </td>
 
-        <td class="display">
+        <td class="name">
           <v-text-field type="text" density="compact" 
-            v-model="filters.display" @keyup.enter="search" hide-details  />
+            v-model="filters.name" @keyup.enter="search" hide-details  />
         </td>
 
         <td class="first_name">
@@ -65,14 +65,14 @@ let t=i18n.global.t;
 
 const headers = [
   { title: 'id', key: 'id', width: 80, },
-  { code: 'page_common.display', key: 'display' },
+  { code: 'page_common.nickname', key: 'nickname' },
   { code: 'page_common.last_name', key: 'last_name' },
   { code: 'page_common.first_name', key: 'first_name' },
   { code: 'page_common.email', key: 'email_jb[0].value' },
   { code: 'page_common.phone', key: 'phone_jb[0].value' },
 ];
 
-let defaultFilter = {id: "", display: "", last_name: "", first_name: "", phone: "", email: ""}
+let defaultFilter = {id: "", nickname: "", last_name: "", first_name: "", phone: "", email: ""}
 let initFilter = utils.initFilters($route.query, defaultFilter);
 
 /**** common list code start ****/

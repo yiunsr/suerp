@@ -19,10 +19,11 @@ class UserBase(BaseModel):
     email: Optional[EmailStr]
     first_name: str = ""
     last_name: str = ""
-    display: str = ""
+    nickname: str = ""
     user_role: str = ""
     status: str = ""
     create_ets: Optional[int]
+    category_meta_id: int
     data_jb: dict = Field(exclude=True, default={})
 
     @model_validator(mode='wrap')

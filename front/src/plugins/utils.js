@@ -81,9 +81,11 @@ let utils = {
     let path = $route.path;
     $router.push({path, query}).catch(()=>{});
   },
-  getItemByValue(items, value){
+  getItemByValue(items, value, value_key){
+    if(value_key == undefined)
+      value_key = "value";
     for(const item of items){
-      if(item.value == value){
+      if(item[value_key] == value){
         return item;
       }
     }

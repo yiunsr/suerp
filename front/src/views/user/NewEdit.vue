@@ -27,12 +27,12 @@
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
-              :mode="detail.mode"
+              :mode="detail.mode" :i18nValue="false"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
             <mode-select :label="t('page_uesr.user_role')" :items="UserRoleItems" item-title="str" 
-              :mode="detail.mode"
+              :mode="detail.mode"  :i18nValue="false"
               required v-model="data.user_role" :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
@@ -49,11 +49,6 @@
             <mode-text-field :label="t('page_user.nickname')" type="text" :mode="detail.mode"
               :counter="64"
               v-model="data.nickname"></mode-text-field>
-          </v-col>
-          <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_uesr.display')" type="text" :mode="detail.mode"
-              :counter="64"
-              v-model="data.display"></mode-text-field>
           </v-col>
           
           <v-col cols="12" md="4">
@@ -74,11 +69,6 @@
           </v-col>
 
           
-          <v-col cols="12" md="4" v-for="cf_item in custom_field.infos">
-            <mode-custom-field :label="cf_item.display" :type="cf_item.html_type" 
-              :mode="detail.mode"
-              v-model="custom_field.data['user_' + cf_item['code']]" />
-          </v-col>
         </v-row>
 
         <v-row class="mt-4 mb-n2  py-0">
@@ -91,9 +81,10 @@
 
         <v-row>
           <v-col cols="12" md="4">
-            <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
-              :mode="detail.mode"
-              required v-model="data.status" :rules="[rule.req]" />
+            <mode-select label="category"
+              :mode="detail.mode" :i18nValue="false" :items="custom_category.infos"
+              item-title="name" item-value="id"
+              required v-model="data.category_meta_id" :rules="[rule.req]" />
           </v-col>
         </v-row>
         
@@ -111,6 +102,8 @@
 </template>
   
 <script setup>
+import _ from 'lodash';
+
 import { ref, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
@@ -144,7 +137,7 @@ let detail = reactive({ mode, valid: false });
 
 let data = reactive({
   id: null, email: "", status: "A", user_role: null, 
-  last_name: "", first_name: "", nickname: "", display: "", 
+  last_name: "", first_name: "", nickname: "", category_meta_id: null,
   ref_id0: null, ref_id1: null, 
   ref_id2: null, ref_id3: null,
 });
@@ -188,7 +181,8 @@ function getUserField(){
 
 function getUserCategory(){
   categoryMetaAPI.getUserCategory().then(function(res){
-    custom_category.infos = res.data.data;
+    const categoryDict = _.groupBy(res.data.data, "table_meta_id");
+    custom_category.infos = categoryDict[1];
   }).catch(function(error){
   });
 }
@@ -203,7 +197,8 @@ function getAPIDetail(){
     data.last_name = res.data.last_name;
     data.first_name = res.data.first_name;
     data.nickname = res.data.nickname;
-    data.display = res.data.display;
+
+    data.category_meta_id = res.data.category_meta_id;
 
     data.ref_id0 = res.data.ref_id0;
     data.ref_id1 = res.data.ref_id1;
@@ -226,7 +221,6 @@ onMounted(() => {
     getAPIDetail();
   }
 })
-
 
 watch(() => custom_field.data, (newValue, oldValue) => {
   for (const [key, value] of Object.entries(newValue)) {

@@ -5,7 +5,7 @@ from app.models.table_meta import TableMeta
 
 from .cli_utils import get_db_session
 from .cli_utils import add_user, add_person
-from .cli_utils import add_table_meta
+from .cli_utils import add_table_meta, add_category_meta
 
 
 async def script(config):
@@ -16,28 +16,28 @@ async def script(config):
     async with SessionLocal() as db_session:
         param = {"email": "system@system.system", "nickname": "system",
             "first_name": "system", "last_name": "system", "status": "S",
-            "user_role": "M"}
+            "user_role": "M", "category_meta_id": 1,}
         await add_user(db_session, param)
 
         param = {"email": "readonly@system.system", "nickname": "readonly",
             "first_name": "systemreadonly", "last_name": "systemreadonly",
-            "status": "S", "user_role": "M"}
+            "status": "S", "user_role": "M",}
         await add_user(db_session, param)
 
         param = {"email": "api@system.system", "nickname": "api",
             "first_name": "api", "last_name": "api",
-            "status": "S", "user_role": "M"}
+            "status": "S", "user_role": "M",}
         await add_user(db_session, param)
         await db_session.commit()
 
     async with SessionLocal() as db_session:
-        param = {"name": "system",
+        param = {"nickname": "system",
             "first_name": "system", "last_name": "system", "status": "S"}
         await add_person(db_session, param)
 
     async with SessionLocal() as db_session:
         param = {"code": "user", "name_lang_jb": 
-            {"ko": "사용자", "en" :"user"}, "detail": "로그인 가능한 관리 유저"}
+            {"ko": "사용자", "en" :"user"}, "detail": "로그인 가능한 관리 유저",}
         await add_table_meta(db_session, param)
 
         param = {"code": "user_grp", "name_lang_jb": {
@@ -84,9 +84,14 @@ async def script(config):
         await db_session.commit()
     
     async with SessionLocal() as db_session:
-        param = {"code": "user", "name_lang_jb": 
-            {"ko": "사용자", "en" :"user"}, "detail": "로그인 가능한 관리 유저"}
-        await add_table_meta(db_session, param)
+        param = {"name": "default_user", "table_meta_id": 1, "status": "A",}
+        await add_category_meta(db_session, param)
+
+        param = {"name": "default_person", "table_meta_id": 2, "status": "A",}
+        await add_category_meta(db_session, param)
+
+        param = {"name": "default_product", "table_meta_id": 3, "status": "A",}
+        await add_category_meta(db_session, param)
 
         await db_session.commit()
 

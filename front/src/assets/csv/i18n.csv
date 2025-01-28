@@ -21,11 +21,11 @@ ui_table.no_data,No data available,데이터 없음
 ui_table.per_page,Items per page,페이지당 아이템수
 page_common.email,email,이메일
 page_common.status,status,상태
-page_common.display,Display Name,표시이름
 page_common.last_name,last name,성
 page_common.first_name,frist name,이름
+page_common.nickname,nickname,별칭
 page_common.name,name,이름
-page_common.display,display name,표시이름
+page_common.display,display name,표시명
 page_common.phone,phone,전화
 page_common.address,address,주소
 page_common.add,Add,추가
@@ -41,7 +41,9 @@ widget.type_else,else,기타
 rule.required,This input is required.,이 입력은 필수사항입니다.
 rule.email,The email format does not fit.,이메일 형식에 맞지 않습니다.
 rule.phone,The phone number format does not fit.,전화번호 형식에 맞지 않습니다.
+rule.number,Only numbers are allowed.,숫자 형식에 맞지 않습니다.
 error.http_422,Input data is incorrect.,입력 데이터가 올바르지 않습니다. 
+error.http_500,Internal Server Error,Internal Server Error
 
 ==== User ====
 page_user.list_title,User List,유저 리스트
@@ -70,6 +72,8 @@ page_col_meta.visible.hide_all,Hide on all pages,모두 페이지에서 숨기�
 page_col_meta.visible.show_list,Show in List Page Only,리스트페이지에서 만 보이기
 page_col_meta.visible.show_detail,Show in Detail Page Only,상세페이지에서만 보이기
 page_col_meta.visible.show_all,Show on all pages,모두 페이지에서 보이기
+
+page_col_meta.default_value,Default Value,디폴트값
 
 page_col_meta.data_type,Data Type,데이터 타입
 page_col_meta.data_type_n,number(integer),number(정수형)
@@ -105,7 +109,6 @@ page_col_meta.options_jb_sub_label0,Display,표시이름
 page_col_meta.options_jb_sub_label1,Saved code,저장코드
 
 page_col_meta.detail,Detail,상세한 설명
-page_col_meta.all_category,== ALL ==,== 전체 ==
 
 ==== Category Meta ====
 page_category_meta.list_title,Custom Category,사용자 카테고리

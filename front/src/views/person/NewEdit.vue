@@ -21,8 +21,8 @@
             <b class="mr-4">ID : </b> <span>{{  data.id }}</span>
           </v-col>
           <v-col cols="12" md="4">
-            <mode-text-field :label="t('page_common.display')" type="text" :mode="detail.mode"
-              required v-model="data.display" :rules="[rule.req]" />
+            <mode-text-field :label="t('page_common.nickname')" type="text" :mode="detail.mode"
+              required v-model="data.nickname" :rules="[rule.req]" />
           </v-col>
           
           <v-col cols="12" md="4">
@@ -36,7 +36,7 @@
 
           <v-col cols="12" md="4">
             <mode-select :label="t('page_common.status')" :items="UserStatusItems" item-title="str" 
-              :mode="detail.mode"
+              :mode="detail.mode" :i18nValue="false"
               required v-model="data.status" :rules="[rule.req]" />
           </v-col>
 
@@ -120,7 +120,7 @@ let detail = reactive({ mode, valid: false });
 let data = reactive({
   id: null, status: "A", 
   email_jb: [], phone_jb: [], address_jb: [], url_jb: [],
-  last_name: "", first_name: "", display: "", 
+  last_name: "", first_name: "", nickname: "", 
   ref_id0: null, ref_id1: null, 
   ref_id2: null, ref_id3: null,
 });

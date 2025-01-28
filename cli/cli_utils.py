@@ -27,6 +27,8 @@ async def add_user(db_session, data):
     password = data.get("password")
     if password:
         del data["password"]
+    if "category_meta_id" not in data:
+        data["category_meta_id"] = 1
     db_user = User(**data)
     if password:
         db_user.hash_password = User.gen_password_hash(password)
@@ -36,6 +38,13 @@ async def add_user(db_session, data):
     db_session.add(db_user)
 
 async def add_person(db_session, data):
+    query = select(Person).where(Person.nickname==data["nickname"])
+    result = await db_session.execute(query)
+    db_person = result.scalars().first()
+    if db_person:
+        return
+    if "category_meta_id" not in data:
+        data["category_meta_id"] = 2
     db_person = Person(**data)
     db_session.add(db_person)
 
@@ -45,7 +54,6 @@ async def add_category_meta(db_session, data):
     db_category_meta = result.scalars().first()
     if db_category_meta:
         return
-
     db_category_meta = CategoryMeta(**data)
     db_session.add(db_category_meta)
 

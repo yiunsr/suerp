@@ -30,7 +30,7 @@
       "justMyCode": false
     },
     {
-      "name": "dev cli init-db",
+      "name": "dev cli init-system-db",
       "type": "debugpy",
       "request": "launch",
       "program": "main_cli.py",
@@ -39,7 +39,7 @@
         "FASTAPI_CONFIG": "development"
       },
       "justMyCode": false,
-      "args":["init-db"],
+      "args":["init-system-db"],
     },
     {
       "name": "dev cli init-test-db",

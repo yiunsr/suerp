@@ -9,15 +9,13 @@ class ColMetaSchema(BaseModel):
     # id: int
     table_meta_id: int
     status: str
-    column_meta: int
+    category_meta_id: int
     data_type: str
     name: str
-    display: str
-    code: str
     detail: str
 
     options_jb: list
-    default_jb: dict
+    default_jb: int|bool|None|str
     visible: int
     html_type: str
     html_pattern: str

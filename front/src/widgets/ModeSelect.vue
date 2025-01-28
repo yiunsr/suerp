@@ -30,11 +30,14 @@ const props = defineProps({
   mode: { type: String, required: true },
   i18nValue: { type: Boolean, default: true }
 });
-  
+
 const modelValueLabel = computed(() => {
-  let item = utils.getItemByValue(props.items, props.modelValue)
+  let debug = $attrs["debug"] || false;
+  if(debug)
+    debugger;
   let prop_title = $attrs["item-title"] || "title";
   let prop_value = $attrs["item-value"] || "value";
+  let item = utils.getItemByValue(props.items, props.modelValue, prop_value)
 
   if(item){
     let title = item[prop_title];

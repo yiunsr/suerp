@@ -54,10 +54,10 @@ const headers = [
   { code: 'page_col_meta.table_meta_id', key: 'table_meta_id',
     value: function(_, value){ return reverseItem(ColMetaTableItems.value, value);},
   },
+  { code: 'page_common.name', key: 'name'},
   { code: 'page_col_meta.column_meta', key: 'column_meta',
     value: function(_, value){ return reverseItem(ColMetaColumnMetaItems.value, value);},
   },
-  { code: 'page_common.display', key: 'display'},
   
   { code: 'page_col_meta.data_type', key: 'data_type',
     value: function(_, value){ return reverseItem(ColMetaDataTypeItems.value, value);},

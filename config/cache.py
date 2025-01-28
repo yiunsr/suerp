@@ -44,13 +44,12 @@ async def init_cache(app, db_session: Session = Depends(get_db_session)):
         item["detail"] = row.detail
         code = item["code"] = row.code
         name = item["name"] = row.name
-        display = item["display"] = row.display
         item["options_jb"] = row.options_jb
         item["default_jb"] = row.default_jb
         item["html_type"] = row.html_type
         item["html_pattern"] = row.html_pattern
         item["html_detail"] = row.html_detail
-        dict_item["code"][code] = {"name": name, "display": display}
+        dict_item["code"][code] = {"name": name}
         dict_item["all"].append(item)
 
     app.cache.set("user_define.user", 

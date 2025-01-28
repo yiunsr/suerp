@@ -53,6 +53,10 @@ $axios.interceptors.response.use(
       toast.error(t('error.http_422'));
       return Promise.reject(error);
     }
+    if(error.response.status == 500){
+      toast.error(t('error.http_500'));
+      return Promise.reject(error);
+    }
     console.log(error.response.data);
     return Promise.reject(error);
   }

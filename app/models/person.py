@@ -16,10 +16,10 @@ class Person(Base, BaseInfo, BaseCU, BaseCT):
     __tablename__ = "person"
     id = Column(Integer, primary_key=True)
 
-    name = Column(String(128), nullable=False, server_default=text("''"))
     first_name = Column(String(128), nullable=False, server_default=text("''"))
     last_name = Column(String(128), nullable=False, server_default=text("''"))
     middle_name = Column(String(128), nullable=False, server_default=text("''"))
+    nickname = Column(String(128), nullable=False, server_default=text("''"))
 
     address_jb = Column(
         JSONB, nullable=False, server_default=text("'[]'::jsonb"))
