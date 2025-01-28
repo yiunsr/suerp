@@ -34,6 +34,12 @@
               required :rules="[rule.req]" />
           </v-col>
           <v-col cols="12" md="4">
+            <mode-select :label="t('page_col_meta.category')" :items="categoryDict[data.table_meta_id]"
+              item-value="id" item-title="name"  :i18nValue="false"
+              :mode="detail.mode"
+              required :rules="[rule.req]" v-model="data.category_meta_id" />
+          </v-col>
+          <v-col cols="12" md="4">
             <mode-select :label="t('page_col_meta.column_meta')" 
               :items="ColMetaColumnMetaItems" item-title="title"
               :mode="detail.mode" :i18nValue="false"
@@ -60,12 +66,6 @@
               :item-props="strSubtitle"
               :mode="detail.mode"
               required v-model="data.data_type" :rules="[rule.req]" />
-          </v-col>
-          <v-col cols="12" md="4">
-            <mode-select :label="t('page_col_meta.category')" :items="categoryDict[data.table_meta_id]"
-              item-value="id" item-title="name"  :i18nValue="false"
-              :mode="detail.mode"
-              required v-model="data.category_meta_id" />
           </v-col>
           
           <v-col cols="12" md="4">
@@ -131,7 +131,7 @@
   
 <script setup>
 import _ from 'lodash';
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
@@ -151,7 +151,7 @@ import ModeDragableTwoText from "@/widgets/ModeDragableTwoText";
 import ModeSelect from "@/widgets/ModeSelect";
 import ModeJsonbField from "@/widgets/ModeJsonbField";
 
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 
 const store = useStore();
 const $route = useRoute();
@@ -213,6 +213,8 @@ function getAPIDetail(){
     data.status = res.data.status;
     data.name = res.data.name;
     data.table_meta_id = res.data.table_meta_id;
+    data.category_meta_id = res.data.category_meta_id;
+    
 
     data.data_type = res.data.data_type;
     data.code = res.data.code;
@@ -236,18 +238,20 @@ function getCategoryMetaList(){
   const sort = [];
   const limit= 1000;
   categoryMetaAPI.list(filter, sort, 1, limit).then(function(res){
-    categoryDict = _.groupBy(res.data.data, "table_meta_id");
+    let groupDict = _.groupBy(res.data.data, "table_meta_id");
+    // keep reactive
+    for(let key in groupDict){
+      categoryDict[key] = groupDict[key];
+    }
+    
   }).catch(function(error){
   });
 }
 
-
-
+getCategoryMetaList();
 onMounted(() => {
-  getCategoryMetaList();
   if(!isNewPage)
     getAPIDetail();
 })
-
 
 </script>

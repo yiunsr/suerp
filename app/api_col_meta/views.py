@@ -76,7 +76,7 @@ async def get_obj(
 async def update(
         id: int, data: ColMetaCreate, db_session: Session=Depends(get_db_session)) -> Any:
     db_obj = await ColMeta.get(db_session, id)
-    db_obj = await ColMeta.update(db_session, db_obj, **data.model_dump())
+    db_obj = await ColMeta.update(db_session, db_obj, **data.model_dump(exclude=["code"]))
     db_session.add(db_obj)
     try:
         await db_session.commit()
@@ -88,12 +88,12 @@ async def update(
 
 
 @api_col_meta.post(
-        "/", response_model=ColMetaSchema, status_code=status.HTTP_201_CREATED)
+        "/", response_model=ColMetaPrivateDetail, status_code=status.HTTP_201_CREATED)
 async def create(
         data: ColMetaSchema, db_session: Session = Depends(get_db_session)) -> Any:
-    db_obj = ColMeta(**data.model_dump())
+    db_obj = ColMeta(**data.model_dump(exclude=["code"]))
     db_session.add(db_obj)
     await db_session.commit()
     await db_session.refresh(db_obj)
-    db_data = ColMetaSchema.model_validate(db_obj)
+    db_data = ColMetaPrivateDetail.model_validate(db_obj)
     return db_data

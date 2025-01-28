@@ -88,7 +88,7 @@
           </v-col>
 
 
-          <v-col cols="12" md="4" v-for="cf_item in custom_field.infos">
+          <v-col cols="12" md="4" v-for="cf_item in cur_custom_field">
             <mode-custom-field :label="cf_item.name" :type="cf_item.html_type" 
               :mode="detail.mode"
               v-model="custom_field.data['user_' + cf_item['code']]" />
@@ -112,7 +112,7 @@
 <script setup>
 import _ from 'lodash';
 
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive, watch, computed } from 'vue';
 import { toast } from 'vue3-toastify';
 import { useStore } from 'vuex';
 import { useRoute,  useRouter } from 'vue-router';
@@ -182,7 +182,7 @@ function submitUpdate(){
 
 function getUserField(){
   colMetaAPI.getUserField().then(function(res){
-    custom_field.infos = res.data.data;
+    custom_field.infos = _.groupBy(res.data.data, "category_meta_id");
   }).catch(function(error){
   });
 }
@@ -190,7 +190,7 @@ function getUserField(){
 function getUserCategory(){
   categoryMetaAPI.getUserCategory().then(function(res){
     const categoryDict = _.groupBy(res.data.data, "table_meta_id");
-    custom_category.infos = categoryDict[1];
+    custom_category.infos = categoryDict[1] || [];
   }).catch(function(error){
   });
 }
@@ -229,6 +229,10 @@ onMounted(() => {
     getAPIDetail();
   }
 })
+
+const cur_custom_field = computed(() => {
+  return custom_field.infos[data.category_meta_id];
+});
 
 watch(() => custom_field.data, (newValue, oldValue) => {
   for (const [key, value] of Object.entries(newValue)) {

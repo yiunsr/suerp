@@ -3,6 +3,7 @@ from typing import Any
 from typing import List
 from pydantic import BaseModel
 from pydantic import Json
+from pydantic import Field
 from app.models.col_meta import ColMeta as ColMeta
 
 class ColMetaSchema(BaseModel):
@@ -13,7 +14,6 @@ class ColMetaSchema(BaseModel):
     data_type: str
     name: str
     detail: str
-    code: str
 
     options_jb: list
     default_jb: int|bool|None|str
@@ -27,6 +27,7 @@ class ColMetaSchema(BaseModel):
 
 class ColMetaSchemaListBase(ColMetaSchema):
     id: int
+    code: str=""
 
     class Config:
         from_attributes = True
@@ -43,6 +44,7 @@ class ColMetaUpdate(ColMetaSchema):
 
 class ColMetaPrivateDetail(ColMetaSchema):
     id: int
+    code: str=""
     
     class Config:
         from_attributes = True

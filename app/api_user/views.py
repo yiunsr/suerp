@@ -95,7 +95,7 @@ async def update(
     db_obj = await User.get(db_session, id)
     req_json = req_scheme.model_dump()
     data_jb = util.merge_selective_dict(
-        db_obj.data_jb, req_scheme.data_jb, "user_", extra_fields)
+        db_obj.data_jb, req_json, "user_", extra_fields)
     req_json["data_jb"] = data_jb
     db_obj = await User.update(db_session, db_obj, **req_json)
     if "password" in req_scheme and req_scheme.password:

@@ -104,21 +104,7 @@ class UserPrivateCreate(UserBase):
         exclude = {"id"}
 
 class UserPrivateUpdate(UserPrivateCreate):
-    def __init__(self, **req_data):
-        data = {}
-        data_jb = {}
-        category_jb = {}
-        for key, value in req_data.items():
-            if key.startswith("u_"):
-                data_jb[key] = value
-            elif key.startswith("c_"):
-                category_jb[key] = value
-            else:
-                data[key] = value
-        data["data_jb"] = data_jb
-        data["category_jb"] = category_jb
-        
-        super().__init__(**data)
+    pass
 
 class UserPrivateList(BaseModel):
     total: int
