@@ -1,7 +1,8 @@
 <template>
   <span>
     <template v-if="widgetType == 'text'">
-      <mode-text-field :mode="props.mode" :label="props.label"></mode-text-field>
+      <mode-text-field v-model="modelValue" :mode="props.mode" 
+        :label="props.label" :type="props.type"></mode-text-field>
     </template>
   </span>
 </template>
@@ -9,13 +10,12 @@
 <script setup>
 import { computed} from 'vue';
 
-import { ModeTextField } from './ModeTextField';
-import { ModeTextArea } from './ModeTextArea';
-import { ModeSelect } from './ModeSelect';
+import ModeTextField from "@/widgets/ModeTextField";
+import ModeRadioGroup from "@/widgets/ModeRadioGroup";
+import ModeSelect from "@/widgets/ModeSelect";
 
 const props = defineProps({
   required: { type: Boolean, default: false},
-  modelValue: { default: ""},
   dataType: "",
   label: { type: String, default: ""},
   type: { type: String, default: "text"},
@@ -23,15 +23,7 @@ const props = defineProps({
 });
 
 
-const $emit = defineEmits(['update:modelValue']);
-  
-  
-const update = (value) => {
-  if(props.type == "number"){
-    value = (value === '' ? null : value);
-  }
-  $emit('update:modelValue', value);
-}
+const modelValue = defineModel({ type: String })
 
 const widgetType = computed(() => {
   switch(props.type){

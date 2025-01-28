@@ -13,6 +13,7 @@ class ColMetaSchema(BaseModel):
     data_type: str
     name: str
     detail: str
+    code: str
 
     options_jb: list
     default_jb: int|bool|None|str

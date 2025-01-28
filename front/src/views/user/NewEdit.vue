@@ -86,7 +86,15 @@
               item-title="name" item-value="id"
               required v-model="data.category_meta_id" :rules="[rule.req]" />
           </v-col>
+
+
+          <v-col cols="12" md="4" v-for="cf_item in custom_field.infos">
+            <mode-custom-field :label="cf_item.name" :type="cf_item.html_type" 
+              :mode="detail.mode"
+              v-model="custom_field.data['user_' + cf_item['code']]" />
+          </v-col>
         </v-row>
+        
         
 
         <v-row v-show="detail.mode == 'edit'">
@@ -116,7 +124,7 @@ import {UserStatusItems, UserRoleItems} from '@/js/commonValue';
 import {userAPI} from '@/api/service/users';
 import {colMetaAPI} from '@/api/service/col_meta';
 import {categoryMetaAPI} from '@/api/service/category_meta';
-import ModeCustomField from "@/widgets/ModeTextField";
+import ModeCustomField from "@/widgets/ModeCustomField";
 import ModeTextField from "@/widgets/ModeTextField";
 import ModeRadioGroup from "@/widgets/ModeRadioGroup";
 import ModeSelect from "@/widgets/ModeSelect";
