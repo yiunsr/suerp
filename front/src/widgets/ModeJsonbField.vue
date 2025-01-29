@@ -17,11 +17,11 @@
                 <v-row>
                   <v-col cols="4">
                     <v-select densityp="compact" label="type"
-                      v-model="data.modelDataType"
+                      v-model="data.dataType"
                       :items="['string', 'number', 'true', 'false', 'null']"></v-select>
                   </v-col>
                   <v-col cols="8" v-show="valueShow">
-                    <v-text-field v-model="data.modelValue" densityp="compact" :rules="[rule_jsonb_value]"></v-text-field>
+                    <v-text-field v-model="data.dataValue" densityp="compact" :rules="[rule_jsonb_value]"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -53,7 +53,7 @@ function isNumeric(num){
 }
 
 function rule_jsonb_value(value){
-  switch(data.modelDataType){
+  switch(data.dataType){
     case "true":
     case "false":
     case "null":
@@ -69,47 +69,50 @@ function rule_jsonb_value(value){
 
 const props = defineProps({
   required: { type: Boolean, default: false},
-  modelValue: { type: Object, default: ""},
   label: { type: String, default: ""},
   mode: { type: String, required: true },
 });
 
-let defaultJsonbType = "null";
-switch (typeof props.modelValue) {
-  case "number":
-    defaultJsonbType = "number";
-    break;
-  case "string":
-    defaultJsonbType = "string";
-    break;
-  case "boolean":
-    if(props.modelValue === true)
-      defaultJsonbType = "true";
-    else
-      defaultJsonbType = "false";
-    break;
-  default:
-    break;
+const modelValue = defineModel();
+
+function calJsonTypeAndValue(){
+  let defaultJsonbType = "null";
+  let defaultJsonbValue = "";
+  switch (typeof modelValue.value) {
+    case "number":
+      defaultJsonbType = "number";
+      defaultJsonbValue = modelValue.value.toString();
+      break;
+    case "string":
+      defaultJsonbType = "string";
+      defaultJsonbValue = modelValue.value.toString();
+      break;
+    case "boolean":
+      if(modelValue.value === true){
+        defaultJsonbType = "true";
+        defaultJsonbValue = "";
+      }
+      else{
+        defaultJsonbType = "false";
+        defaultJsonbValue = "";
+      }
+      break;
+    case "null":
+    default:
+      defaultJsonbValue = "";
+      break;
+  }
+  return {type: defaultJsonbType, value: defaultJsonbValue};
 }
 
-
+let defaultTypeAndValue = calJsonTypeAndValue();
 const data = reactive({
-  modelValue: props.modelValue,
-  modelDataType: defaultJsonbType,
+  dataValue: defaultTypeAndValue["value"],
+  dataType: defaultTypeAndValue["type"],
   formValid: false,
 });
+
 const itemForm = ref(null);
-
-const $route = useRoute();
-const $emit = defineEmits(['update:modelValue']);
-
-const update = (value) => {
-  if(props.type == "number"){
-    value = (value === '' ? null : value);
-  }
-}
-
-
 async function updateIData(isActive){
   await itemForm.value.validate();
   if(!data.valid)
@@ -117,16 +120,16 @@ async function updateIData(isActive){
   isActive.value = false;
 
   const jsonb = getJsonb();
-  $emit('update:modelValue', jsonb);
+  modelValue.value = jsonb;
 }
 
 
 const summary = computed(() => {
-  switch(data.modelDataType){
+  switch(data.dataType){
     case "string":
-      return "string : " + (data.modelValue || "").toString();
+      return 'string : "' + (data.dataValue || "").toString() + '"';
     case "number":
-      return "number : " + (data.modelValue || 0);
+      return "number : " + (data.dataValue || 0);
     case "true":
       return "true";
     case "false":
@@ -136,7 +139,7 @@ const summary = computed(() => {
 });
 
 const valueShow = computed(() => {
-  switch(data.modelDataType){
+  switch(data.dataType){
     case "string":
     case "number":
       return true;
@@ -145,11 +148,11 @@ const valueShow = computed(() => {
 });
 
 function getJsonb(){
-  switch(data.modelDataType){
+  switch(data.dataType){
     case "string":
-      return (props.modelValue || "").toString();
+      return (data.dataValue || "").toString();
     case "number":
-      return Number(props.modelValue || 0);
+      return Number(data.dataValue || 0);
     case "true":
       return true;
     case "false":
@@ -158,15 +161,13 @@ function getJsonb(){
   return null;
 };
 
-watch(() => props.modelValue,
-  (newValue, oldValue) => {
+watch(() => modelValue, (newValue, oldValue) => {
+    let typeAndValue = calJsonTypeAndValue();
+    data.dataType = typeAndValue["type"];
+    data.dataValue = typeAndValue["value"];
   },
   {deep: true, immediate: true}
 )
 
-watch(() => data,
-  (newValue, oldValue) => {
-  },
-  {deep: true, immediate: true}
-)
+
 </script>

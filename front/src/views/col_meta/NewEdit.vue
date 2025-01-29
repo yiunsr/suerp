@@ -220,7 +220,7 @@ function getAPIDetail(){
     data.code = res.data.code;
     data.column_meta = res.data.column_meta;
     data.visible = res.data.visible;
-    data.default_jb = JSON.stringify(res.data.default_jb);
+    data.default_jb = res.data.default_jb;
     data.detail = res.data.detail;
 
     data.html_detail = res.data.html_detail;
