@@ -121,8 +121,9 @@ const ColMetaVisibleItems = computed(() => {
 const _ColMetaHTMLTypeDict = {
   date: "date", time: "time", datetime: "datetime",
   number: "number", text: "text", textarea: "textarea", 
-  autocomplete:
-   "autocomplete", radio: "radio", checkbox: "checkbox",
+  autocomplete:"autocomplete", radio: "radio", 
+  select: "select",
+  checkbox: "checkbox",
 }
 const ColMetaHTMLTypeItems = prepare("", _ColMetaHTMLTypeDict);
 

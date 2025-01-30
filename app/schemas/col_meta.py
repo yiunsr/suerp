@@ -10,10 +10,11 @@ class ColMetaSchema(BaseModel):
     # id: int
     table_meta_id: int
     status: str
-    category_meta_id: int
+    column_meta: str
     data_type: str
     name: str
     detail: str
+    category_meta_id: int
 
     options_jb: list
     default_jb: int|bool|None|str

@@ -30,7 +30,7 @@ const props = defineProps({
   i18nValue: { type: Boolean, default: true }
 });
 
-const modelValue = defineModel()
+const modelValue = defineModel();
 
 const modelValueLabel = computed(() => {
   let debug = $attrs["debug"] || false;

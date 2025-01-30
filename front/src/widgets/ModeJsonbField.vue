@@ -1,42 +1,44 @@
 <template>
-  <span v-show="mode == 'read'">
-    <b class="mr-4">{{ props.label+ (props.required?' ★':'') }} :</b> {{  summary }}
-  </span>
-  <span v-show="mode == 'edit'">
-    <b class="mr-4">{{ props.label+ (props.required?' ★':'') }} :</b> {{  summary }}
-    <v-dialog width="800">
-      <template v-slot:activator="{ props }">
-        <v-btn v-bind="props" text="..." density="comfortable"></v-btn>
-      </template>
+  <div>
+    <span v-show="mode == 'read'">
+      <b class="mr-4">{{ props.label+ (props.required?' ★':'') }} :</b> {{  summary }}
+    </span>
+    <span v-show="mode == 'edit'">
+      <b class="mr-4">{{ props.label+ (props.required?' ★':'') }} :</b> {{  summary }}
+      <v-dialog width="800">
+        <template v-slot:activator="{ props }">
+          <v-btn v-bind="props" text="..." density="comfortable"></v-btn>
+        </template>
 
-      <template v-slot:default="{ isActive }">
-        <v-form ref="itemForm" validate-on="input" v-model="data.valid">
-          <v-card>
-            <v-card-text>
-              <v-container class="v-card-text mx-0 px-0">
-                <v-row>
-                  <v-col cols="4">
-                    <v-select densityp="compact" label="type"
-                      v-model="data.dataType"
-                      :items="['string', 'number', 'true', 'false', 'null']"></v-select>
-                  </v-col>
-                  <v-col cols="8" v-show="valueShow">
-                    <v-text-field v-model="data.dataValue" densityp="compact" :rules="[rule_jsonb_value]"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+        <template v-slot:default="{ isActive }">
+          <v-form ref="itemForm" validate-on="input" v-model="data.valid">
+            <v-card>
+              <v-card-text>
+                <v-container class="v-card-text mx-0 px-0">
+                  <v-row>
+                    <v-col cols="4">
+                      <v-select densityp="compact" label="type"
+                        v-model="data.dataType"
+                        :items="['string', 'number', 'true', 'false', 'null']"></v-select>
+                    </v-col>
+                    <v-col cols="8" v-show="valueShow">
+                      <v-text-field v-model="data.dataValue" densityp="compact" :rules="[rule_jsonb_value]"></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions class="float-rightd-flex flex-row-reverse">
-              <v-btn variant="tonal" text="close" @click="isActive.value = false"></v-btn>
-              <v-btn class="mr-4" variant="tonal" color="primary" text="apply" 
-                @click="updateIData(isActive)"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </template>
-    </v-dialog>
-  </span>
+              <v-card-actions class="float-rightd-flex flex-row-reverse">
+                <v-btn variant="tonal" text="close" @click="isActive.value = false"></v-btn>
+                <v-btn class="mr-4" variant="tonal" color="primary" text="apply" 
+                  @click="updateIData(isActive)"></v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-form>
+        </template>
+      </v-dialog>
+    </span>
+  </div>
 </template>
   
 <script setup>

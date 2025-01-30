@@ -46,17 +46,17 @@
               required v-model="data.column_meta" :rules="[rule.req]" />
           </v-col>
 
-          <v-col cols="12" md="8" v-show="data.data_type == 'e' || data.data_type == 'M'">
+          <v-col cols="12" md="4" v-show="data.data_type == 'e' || data.data_type == 'M'">
             <mode-dragable-two-text :label="t('page_col_meta.options_jb')"
               key0="title" key1="value"
               :sub-label0="t('page_col_meta.options_jb_sub_label0')"
               :sub-label1="t('page_col_meta.options_jb_sub_label1')"
               :mode="detail.mode" 
-              required v-model="data.options_jb" 
+              v-model="data.options_jb" 
               :rules0="[rule.req]"  :rules1="[rule.req]" />
           </v-col>
 
-          <v-col cols="12" md="4" v-if="detail.mode == 'read'">
+          <v-col cols="12" md="4" v-show="detail.mode == 'read'">
             <mode-text-field label="Code" type="text" :mode="detail.mode"
               :counter=16 :readonly="true"
               v-model="data.code"></mode-text-field>
@@ -69,11 +69,6 @@
           </v-col>
           
           <v-col cols="12" md="4">
-            <!--
-            <mode-text-field label="default_jb" type="text" :mode="detail.mode"
-              :counter=16
-              v-model="data.default_jb"></mode-text-field>
-          -->
             <mode-jsonb-field :label="t('page_col_meta.default_value')" type="text" :mode="detail.mode"
               :counter=16
               v-model="data.default_jb" />
@@ -221,6 +216,7 @@ function getAPIDetail(){
     data.column_meta = res.data.column_meta;
     data.visible = res.data.visible;
     data.default_jb = res.data.default_jb;
+    data.options_jb = res.data.options_jb;
     data.detail = res.data.detail;
 
     data.html_detail = res.data.html_detail;
